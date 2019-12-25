@@ -15,19 +15,20 @@ module.exports = {
     queue();
     async function queue() {
       let songInfo = null;
-
       if (ytdl.validateURL(args[0])) {
-        if ((musicModel.isPlaying = true))
-          return musicModel.queue.push(args[0]);
-        else {
-          musicModel.queue.push(args[0]);
-          musicModel.connection = await voiceChannel.join();
-          play();
-        }
+        musicModel.queue.push(args[0]);
+        musicModel.connection = await voiceChannel.join();
+        play();
       }
     }
     function play() {
       var queue = musicModel.queue;
+      if ((musicModel.isPlaying = true)) return musicModel.queue.push(args[0]);
+      if (!queue[0]) {
+        voiceChannel.leave();
+        musicModel.isPlaying = false;
+      }
+      musicModel.isPlaying = true;
       const dispatcher = musicModel.connection
         .playStream(
           ytdl(queue[0], {
@@ -40,7 +41,7 @@ module.exports = {
           console.log("playing");
         })
         .on("end", () => {
-          queue();
+          play();
         });
     }
   }
