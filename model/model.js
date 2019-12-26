@@ -19,7 +19,7 @@ let musicModel = {
       play();
     }
   },
-  play(args) {
+  play() {
     const dispatcher = this.musicModel.connection.playStream(
       ytdl(this.queue[0], {
         filter: "audioonly",
