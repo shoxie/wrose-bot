@@ -13,14 +13,22 @@ let database = {
         msg = message,
             isInit = true;
     },
-    getDB() {
-        var guildID = message.guild.id;
-        db.defaults({
-            guildID: [],
+    async getGuild(guildID) {
+        return await db.get(guildID).value()
+    },
+    getDB(guildID) {
+        db.set(guildID, {
             musicChannel: null,
             musicTextChannel: null
-        });
-        db.get(guildID)
+        }).write();
+        db.get(`${guildID}`).update()
+    },
+    updateDB() {
+
     }
 }
-module.exports = database;
+
+module.exports = {
+    db,
+    database
+};
