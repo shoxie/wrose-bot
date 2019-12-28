@@ -23,8 +23,10 @@ let database = {
         }).write();
         db.get(`${guildID}`).update()
     },
-    updateDB() {
-
+    updateDB(textID, voiceID) {
+        console.log(db.get(`${guildID}`))
+        db.get(`${guildID}`).update('musicTextchannel', textID).write();
+        db.get(`${guildID}`).update('musicChannel', voiceID).write();
     }
 }
 
