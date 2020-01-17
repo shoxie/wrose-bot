@@ -1,0 +1,28 @@
+{
+  "name": "rebuilddiscord",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shoxie/rebuildDiscord.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shoxie/rebuildDiscord/issues"
+  },
+  "homepage": "https://github.com/shoxie/rebuildDiscord#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "lowdb": "^1.0.0",
+    "node-opus": "^0.3.3",
+    "youtube-crawler": "0.0.3",
+    "youtube-dl": "^3.0.0",
+    "yt-dude": "^1.0.13",
+    "ytdl-core": "^1.0.6"
+  }
+}
