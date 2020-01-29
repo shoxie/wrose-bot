@@ -1,5 +1,4 @@
 let request = require("request");
-var crawler = require("youtube-crawler");
 let dude = require("yt-dude");
 module.exports = {
     name: "search",
