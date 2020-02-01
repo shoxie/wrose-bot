@@ -2,8 +2,8 @@ let musicModel = require('../../model/model')
 module.exports = {
     name: 'skip',
     async run(message, args) {
-        musicModel.queue.shift();
-        if (message.author.voiceChannel != musicModel.voiceChannel) {
+
+        if (message.author.voiceChannel.id != musicModel.voiceChannel.id) { // undefined
             message.channel.send({
                 embed: {
                     title: 'You have to be in the same channel with the me to use the command'

@@ -6,6 +6,7 @@ module.exports = async message => {
         .trim()
         .split(/ +/g);
     const cmd = args.shift().toLowerCase();
+    if (args === 'undefined') return;
     if (cmd.length === 0) return;
 
     fs.readdirSync("./commands/").forEach(dir => {
