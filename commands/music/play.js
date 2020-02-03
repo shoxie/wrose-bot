@@ -8,7 +8,7 @@ module.exports = {
   name: "play",
   async run(message, args) {
     if (args === null) {
-      return message.channel.send('fak u')
+      return message.channel.send("fak u");
     }
     if (ytdl.validateURL(args[0])) {
       addQueue(args[0]);
@@ -27,9 +27,8 @@ module.exports = {
       }
       if (musicModel.isPlaying == true) {
         musicModel.queue.push(url);
-        console.log(musicModel.queue);
         musicModel.songInfo = await ytdl.getInfo(url);
-        musicModel.sendMessage(message.channel)
+        musicModel.sendMessage(message.channel);
         // message.channel.send({
         //   embed: {
         //     title: musicModel.songInfo.title,
@@ -86,7 +85,7 @@ module.exports = {
       let ids = getVideoId(url);
       musicModel.thumbnail = `http://img.youtube.com/vi/${ids}/hqdefault.jpg`;
       return `http://img.youtube.com/vi/${ids}/hqdefault.jpg`;
-      console.log(`http://img.youtube.com/vi/${ids}/hqdefault.jpg`)
+      console.log(`http://img.youtube.com/vi/${ids}/hqdefault.jpg`);
     }
   }
 };

@@ -24,7 +24,7 @@ let musicModel = {
           url: this.thumbnail
         },
         footer: {
-          text: `Duration` + this.songInfo.duration
+          text: `Duration ` + this.songInfo.length_seconds
         }
       }
     })
