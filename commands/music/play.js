@@ -7,9 +7,6 @@ const getVideoId = require("get-video-id");
 module.exports = {
   name: "play",
   async run(message, args) {
-    if (args === null) {
-      return message.channel.send("fak u");
-    }
     if (ytdl.validateURL(args[0])) {
       addQueue(args[0]);
     }
@@ -20,26 +17,22 @@ module.exports = {
     }
 
     async function addQueue(url) {
+      let songInfo = await ytdl.getInfo(url);
+      let song = {
+        title: songInfo.title,
+        url: songInfo.video_url,
+        thumbnail: getThumbnail(url),
+        duration: secondsCoverter(songInfo.length_seconds)
+      }
+
       if (musicModel.isPlaying == false) {
-        musicModel.queue.push(url);
-        musicModel.songInfo = await ytdl.getInfo(url);
+        musicModel.queue.push(song);
         play();
       }
       if (musicModel.isPlaying == true) {
-        musicModel.queue.push(url);
-        musicModel.songInfo = await ytdl.getInfo(url);
-        musicModel.sendMessage(message.channel);
-        // message.channel.send({
-        //   embed: {
-        //     title: musicModel.songInfo.title,
-        //     description: "this is the description",
-        //     thumbnail: {
-        //       url: getThumbnail(url)
-        //     }
-        //   }
-        // });
+        musicModel.queue.push(song);
+        musicModel.sendQueueMessage(message.channel);
       }
-      musicModel.thumbnail = getThumbnail(url);
     }
     async function play() {
       if (!musicModel.voiceChannel) {
@@ -48,7 +41,7 @@ module.exports = {
       musicModel.connection = await musicModel.voiceChannel.join();
       musicModel.dispatcher = musicModel.connection
         .playStream(
-          ytdl(musicModel.queue[0], {
+          ytdl(musicModel.queue[0].url, {
             filter: "audioonly",
             quality: "highestaudio",
             highWaterMark: 1 << 25
@@ -57,7 +50,7 @@ module.exports = {
         .on("start", () => {
           console.log(musicModel.queue);
           musicModel.isPlaying = true;
-          musicModel.sendMessage(message.channel);
+          musicModel.sendPlayMessage(message.channel);
           musicModel.queue.shift();
         })
         .on("end", () => {
@@ -70,6 +63,7 @@ module.exports = {
             musicModel.isPlaying = false;
             message.channel.send({
               embed: {
+                color: 15158332,
                 title: "Leaving voiceChannel",
                 description: "No songs left in the queue"
               }
@@ -83,9 +77,15 @@ module.exports = {
 
     function getThumbnail(url) {
       let ids = getVideoId(url);
-      musicModel.thumbnail = `http://img.youtube.com/vi/${ids}/hqdefault.jpg`;
-      return `http://img.youtube.com/vi/${ids}/hqdefault.jpg`;
-      console.log(`http://img.youtube.com/vi/${ids}/hqdefault.jpg`);
+      return `http://img.youtube.com/vi/${ids.id}/hqdefault.jpg`;
+    }
+
+    function secondsCoverter(second) {
+      second = Number(second);
+      var m = Math.floor(second % 3600 / 60);
+      var s = Math.floor(second % 3600 % 60);
+
+      return m + ':' + s;
     }
   }
 };

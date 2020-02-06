@@ -7,24 +7,34 @@ let musicModel = {
   queue: [],
   voiceChannel: null,
   connection: null,
-  songInfo: null,
-  thumbnail: null,
-  dispatcher: null,
-  async getSongInfo(url) {
-    this.songInfo = await ytdl.getInfo(url)
-  },
-  async sendMessage(channel) {
-    let ids = this.songInfo.video_id;
-    this.thumbnail = `http://img.youtube.com/vi/${ids}/hqdefault.jpg`
+  sendQueueMessage(channel) {
     channel.send({
       embed: {
-        title: this.songInfo.title,
-        description: 'this is the description',
+        color: 3066993,
+        title: 'Queue added',
+        url: this.queue[0].url,
+        description: this.queue[0].title,
         thumbnail: {
-          url: this.thumbnail
+          url: this.queue[0].thumbnail
         },
         footer: {
-          text: `Duration ` + this.songInfo.length_seconds
+          text: `Duration ` + this.queue[0].duration
+        }
+      }
+    })
+  },
+  sendPlayMessage(channel) {
+    channel.send({
+      embed: {
+        color: 3447003,
+        title: 'Playing',
+        url: this.queue[0].url,
+        description: this.queue[0].title,
+        thumbnail: {
+          url: this.queue[0].thumbnail
+        },
+        footer: {
+          text: `Duration ` + this.queue[0].duration
         }
       }
     })

@@ -1,7 +1,3 @@
-var {
-    db,
-    database
-} = require('../../model/db.js');
 module.exports = {
     name: 'setMusicChannel',
     async run(message, args) {
@@ -10,7 +6,6 @@ module.exports = {
         else {
             let textChannel = message.channel;
             let voiceChannel = args[0];
-            db.updateDB(textChannel, voiceChannel);
         }
     }
 }
