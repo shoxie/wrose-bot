@@ -1,9 +1,12 @@
 const ytdl = require("ytdl-core");
 const musicModel = require("../../model/model.js");
 const dude = require("yt-dude");
-const youtubeDL = require("youtube-dl");
 const getVideoId = require("get-video-id");
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
 
+const adapter = new FileSync('db.json')
+const db = low(adapter)
 module.exports = {
   name: "play",
   async run(message, args) {
@@ -48,7 +51,7 @@ module.exports = {
           })
         )
         .on("start", () => {
-          console.log(musicModel.queue);
+          console.log(musicModel.dispatcher.volume);
           musicModel.isPlaying = true;
           musicModel.sendPlayMessage(message.channel);
           musicModel.queue.shift();
@@ -86,6 +89,12 @@ module.exports = {
       var s = Math.floor(second % 3600 % 60);
 
       return m + ':' + s;
+    }
+
+    function voiceChannelCheck(voiceChannel) {
+      db.get('guild').find({
+        id: message.member.guild.id
+      })
     }
   }
 };

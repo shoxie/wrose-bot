@@ -1,13 +1,9 @@
 {
-  "song": [
+  "guild": [
     {
-      "id": 1,
-      "title": "Sabrina Carpenter - Paris",
-      "count": 2
+      "id": "606089579174297600",
+      "musicVoiceChannel": "606089579174297604",
+      "musicTextChannel": "606089579174297602"
     }
-  ],
-  "user": {
-    "name": "The Doctor"
-  },
-  "count": 0
+  ]
 }

@@ -7,6 +7,7 @@ let musicModel = {
   queue: [],
   voiceChannel: null,
   connection: null,
+  dispatcher: null,
   sendQueueMessage(channel) {
     channel.send({
       embed: {
