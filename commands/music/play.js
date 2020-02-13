@@ -4,7 +4,7 @@ const dude = require("yt-dude");
 const getVideoId = require("get-video-id");
 const low = require("lowdb");
 const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("../../data/data.json");
+const adapter = new FileSync("./data/data.json");
 const db = low(adapter);
 module.exports = {
   name: "play",
@@ -105,12 +105,12 @@ module.exports = {
       });
     }
 
-    function addTopSong(title) {
-      console.log('niogger')
+    async function addTopSong(title) {
+      console.log(title)
       db.defaults({
         songs: []
-      });
-      let query = db.get('songs').find({
+      }).write();
+      let query = await db.get('songs').find({
         name: title
       }).value();
       if (!query) {
@@ -122,7 +122,7 @@ module.exports = {
       if (query) {
         db.get('songs').find({
           name: title
-        }).update('count', n => n + 1)
+        }).update('count', n => n + 1).write();
       }
     }
   }
