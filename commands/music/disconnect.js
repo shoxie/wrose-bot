@@ -1,6 +1,10 @@
 let musicModel = require('../../model/model.js')
 module.exports = {
-    name: 'disconnect',
+    config: {
+        name: "disconnect",
+        usage: "disconnect",
+        enabled: true
+    },
     async run(message, args) {
         musicModel.queue = [];
 

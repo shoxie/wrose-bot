@@ -3,7 +3,11 @@ let dude = require("yt-dude");
 let ytdl = require('ytdl-core')
 var fetchVideoInfo = require('youtube-info');
 module.exports = {
-    name: "search",
+    config: {
+        name: 'search',
+        enabled: true,
+        usage: 'search [args]'
+    },
     async run(message, args) {
         var start, finish;
 

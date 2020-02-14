@@ -5,8 +5,9 @@ const db = low(adapter);
 let ytdl = require('ytdl-core');
 let dude = require('yt-dude')
 module.exports = {
-    name: 'playlist',
-    help: {
+    config: {
+        name: 'playlist',
+        enabled: true,
         usage: 'playlist --arguement [playlist name] [url]'
     },
     async run(message, args) {

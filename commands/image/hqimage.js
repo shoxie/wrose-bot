@@ -2,7 +2,10 @@ let request = require("request-promise-native");
 let cheerio = require("cheerio");
 let rq = require("request");
 module.exports = {
-  name: "hqimage",
+  config: {
+    name: "hqimage",
+    usage: "hqimage"
+  },
   async run(message, args) {
     let options = {
       method: "GET",
@@ -10,10 +13,10 @@ module.exports = {
       followAllRedirects: true,
       resolveWithFullResponse: true
     };
-    var r = request(options.url, function(e, response) {
+    var r = request(options.url, function (e, response) {
       //console.log(response.request.uri.Url.href);
     });
-    request(options).then(function(body) {
+    request(options).then(function (body) {
       message.channel.send({
         embed: {
           color: 3447003,

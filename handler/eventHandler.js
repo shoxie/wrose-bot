@@ -5,7 +5,6 @@ module.exports = client => {
     let events = fs.readdirSync(eventPath).filter(file => file.endsWith('.js'));
     events.forEach(event => {
         event = event.replace(/\.js$/i, '');
-
         client.on(event, require(path.resolve(eventPath, event)));
     })
 }

@@ -3,7 +3,11 @@ const FileSync = require("lowdb/adapters/FileSync");
 const adapter = new FileSync("./data/guildSettings.json");
 const db = low(adapter);
 module.exports = {
-  name: "setMusicChannel",
+  config: {
+    name: 'setMusicChannel',
+    enabled: true,
+    usage: 'setMusicChannel [textChannelID]'
+  },
   async run(message, args) {
     if (!message.member.voiceChannel) {
       message.channel.send({

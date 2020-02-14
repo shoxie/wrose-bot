@@ -7,7 +7,10 @@ const FileSync = require("lowdb/adapters/FileSync");
 const adapter = new FileSync("./data/data.json");
 const db = low(adapter);
 module.exports = {
-  name: "play",
+  config: {
+    name: 'play',
+    usage: 'play [song name]'
+  },
   async run(message, args) {
     if (!message.member.voiceChannel) {
       return message.channel.send({

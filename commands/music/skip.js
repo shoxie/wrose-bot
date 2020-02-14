@@ -1,6 +1,10 @@
 let musicModel = require('../../model/model')
 module.exports = {
-    name: 'skip',
+    config: {
+        name: "skip",
+        usage: "skip",
+        enabled: true
+    },
     async run(message, args) {
 
         if (message.member.voiceChannelID != musicModel.voiceChannel.voiceChannelID) { // undefined

@@ -1,6 +1,10 @@
 let musicModel = require('../../model/model')
 module.exports = {
-    name: 'repeat',
+    config: {
+        name: 'repeat',
+        enabled: true,
+        usage: 'repeat'
+    },
     async run(message, args) {
         musicModel.queue.unshift(musicModel.songInfo.video_url);
         message.channel.send({

@@ -1,7 +1,10 @@
 let request = require("request-promise-native");
 let cheerio = require("cheerio");
 module.exports = {
-    name: "cat",
+    config: {
+        name: "cat",
+        usage: "cat"
+    },
     async run(message, args) {
         let options = {
             method: "HEAD",
