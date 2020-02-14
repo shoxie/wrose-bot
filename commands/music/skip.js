@@ -8,7 +8,7 @@ module.exports = {
     async run(message, args) {
 
         if (message.member.voiceChannelID != musicModel.voiceChannel.voiceChannelID) { // undefined
-            message.channel.send({
+            return message.channel.send({
                 embed: {
                     title: 'You have to be in the same channel with the me to use the command'
                 }

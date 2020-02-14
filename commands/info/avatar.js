@@ -2,11 +2,10 @@ module.exports = {
     config: {
         name: "avatar",
         usage: "avatar @user"
-    },
+    }, //hold up
     async run(message, args) {
-        console.log(this.config.name)
         if (args[0] == '--help') {
-            return sendHelp();
+            return sendHelp(this.config);
         }
         if (message.mentions.users.first()) {
             message.channel.send({
@@ -31,13 +30,16 @@ module.exports = {
             })
         }
 
-        function sendHelp() {
-            console.log(this.config.name)
+        function sendHelp(config) {
+            console.log(config.name);
             message.channel.send({
                 embed: {
                     color: 3447003,
-                    title: `Description of ` + this.config.name,
-                    description: this.config.usage,
+                    title: `Description of ` + config.name,
+                    fields: [{
+                        name: 'Usage',
+                        value: config.usage
+                    }],
                     thumbnail: {
                         url: message.client.user.avatarURL
                     },
