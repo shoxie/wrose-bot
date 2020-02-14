@@ -13,7 +13,7 @@ module.exports = async message => {
             file.endsWith(".js");
             var filename = file.split('.').slice(0, -1).join('.')
             if (cmd === filename.toLowerCase()) {
-                require("../commands/" + dir + '/' + cmd).run(message, args);
+                require("../commands/" + dir + '/' + filename).run(message, args);
             }
         });
     });
