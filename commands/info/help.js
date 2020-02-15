@@ -6,6 +6,7 @@ module.exports = {
         usage: "help [command name]"
     },
     async run(client, message, args) {
+        
         message.channel.send({
             embed: {
                 color: 3447003,

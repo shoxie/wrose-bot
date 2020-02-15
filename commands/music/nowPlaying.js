@@ -37,26 +37,5 @@ module.exports = {
                 }
             }
         })
-
-
-        if (args[0] === '--help') {
-            return sendHelp(this.config);
-        }
-
-        function sendHelp(config) {
-            message.channel.send({
-                embed: {
-                    color: 3447003,
-                    title: `Description of ` + config.name,
-                    description: config.usage,
-                    thumbnail: {
-                        url: message.client.user.avatarURL
-                    },
-                    footer: {
-                        text: 'Created by wrose'
-                    }
-                }
-            })
-        }
     }
 }

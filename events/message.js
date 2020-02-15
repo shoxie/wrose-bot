@@ -12,7 +12,9 @@ module.exports = (client) => {
     const cmd = args.shift();
     console.log(cmd)
     if (cmd.length === 0) return;
-    client.commands.get(cmd).run(client, message, args)
+    if(cmd.length !== 0){
+        client.commands.get(cmd).run(client, message, args)
+    }
     let guildID = message.guild.id;
     let dbExist = db.get(`${guildID}`).value();
     if (message.author.bot) return;
