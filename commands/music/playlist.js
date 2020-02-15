@@ -1,6 +1,6 @@
 const low = require("lowdb");
 const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("./playlist.json");
+const adapter = new FileSync("./data/playlist.json");
 const db = low(adapter);
 let ytdl = require('ytdl-core');
 let dude = require('yt-dude')
