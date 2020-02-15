@@ -5,7 +5,7 @@ module.exports = {
         enabled: true,
         usage: 'repeat'
     },
-    async run(message, args) {
+    async run(client, message, args) {
         musicModel.queue.unshift(musicModel.songInfo.video_url);
         message.channel.send({
             embed: {

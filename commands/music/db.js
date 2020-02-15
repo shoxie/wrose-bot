@@ -6,7 +6,7 @@ const ytdl = require('ytdl-core')
 const dude = require('yt-dude')
 module.exports = {
     name: "db",
-    async run(message, args) {
+    async run(client, message, args) {
         const db = low(adapter)
         let songInfo
         if (ytdl.validateURL(args[0])) {

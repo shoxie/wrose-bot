@@ -10,7 +10,7 @@ module.exports = {
         enabled: true,
         usage: 'playlist --arguement [playlist name] [url]'
     },
-    async run(message, args) {
+    async run(client, message, args) {
         let messageFlags = args[0];
         if (messageFlags === '--add') {
             if (ytdl.validateURL(args[1])) {

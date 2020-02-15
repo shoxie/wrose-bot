@@ -5,7 +5,7 @@ module.exports = {
         usage: 'summon the bot to your channel',
         enabled: null,
     },
-    async run(message, args) {
+    async run(client, message, args) {
         if (musicModel.isPlaying === true) {
             return message.channel.send({
                 embed: {

@@ -8,7 +8,7 @@ module.exports = {
         enabled: true,
         usage: 'search [args]'
     },
-    async run(message, args) {
+    async run(client, message, args) {
         var start, finish;
 
         start = new Date();

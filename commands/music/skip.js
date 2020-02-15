@@ -5,7 +5,7 @@ module.exports = {
         usage: "skip",
         enabled: true
     },
-    async run(message, args) {
+    async run(client, message, args) {
         if (message.member.voiceChannelID != musicModel.voiceChannel.id) {
             // undefined
             return message.channel.send({

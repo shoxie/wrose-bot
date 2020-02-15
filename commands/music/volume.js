@@ -1,6 +1,6 @@
 module.exports = {
     name: 'volume',
-    async run(message, args) {
+    async run(client, message, args) {
 
     }
 }

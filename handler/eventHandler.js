@@ -5,9 +5,21 @@ module.exports = client => {
     let events = fs.readdirSync(eventPath).filter(file => file.endsWith('.js'));
     events.forEach(event => {
         event = event.replace(/\.js$/i, '');
-        if (event === 'ready') {
-            client.on(event, (client) => require(path.resolve(eventPath, event)))
-        }
-        client.on(event, require(path.resolve(eventPath, event)));
+        // if (event === 'ready') {
+        //     let eventObj=require(path.resolve(eventPath, event))(client);
+        //     client.on(event, eventObj)
+        // }
+        // client.on(event, require(path.resolve(eventPath, event)));
+        let eventObj=require(path.resolve(eventPath, event))(client);
+        client.on(event, eventObj)
     })
 }
+
+
+function wrapper(b){
+    function a(){
+        return 1+b         
+    }
+}
+
+

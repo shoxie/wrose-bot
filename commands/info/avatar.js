@@ -3,7 +3,7 @@ module.exports = {
         name: "avatar",
         usage: "avatar @user"
     }, //hold up
-    async run(message, args) {
+    async run(client, message, args) {
         if (args[0] == '--help') {
             return sendHelp(this.config);
         }

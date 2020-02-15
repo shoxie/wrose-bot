@@ -11,7 +11,7 @@ module.exports = {
     name: 'play',
     usage: 'play [song name]'
   },
-  async run(message, args) {
+  async run(client, message, args) {
     if (!message.member.voiceChannel) {
       return message.channel.send({
         embed: {

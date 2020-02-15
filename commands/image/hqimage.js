@@ -6,7 +6,7 @@ module.exports = {
     name: "hqimage",
     usage: "hqimage"
   },
-  async run(message, args) {
+  async run(client, message, args) {
     let options = {
       method: "GET",
       url: "https://picsum.photos/1920/1080",

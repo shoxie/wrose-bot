@@ -5,7 +5,7 @@ module.exports = {
         usage: 'Send information of playing song',
         enabled: true,
     },
-    async run(message, args) {
+    async run(client, message, args) {
         console.log(`hi`)
         message.channel.send({
             embed: {

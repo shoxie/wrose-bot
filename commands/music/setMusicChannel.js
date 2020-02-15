@@ -8,7 +8,7 @@ module.exports = {
     enabled: true,
     usage: 'setMusicChannel [textChannelID]'
   },
-  async run(message, args) {
+  async run(client, message, args) {
     if (!message.member.voiceChannel) {
       message.channel.send({
         embed: {

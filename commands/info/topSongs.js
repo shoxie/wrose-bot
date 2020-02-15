@@ -5,7 +5,7 @@ const db = low(adapter);
 const Discord = require('discord.js')
 module.exports = {
   name: "topSongs",
-  async run(message, args) {
+  async run(client, message, args) {
     db.read();
     let songs = await db.get("songs").orderBy('count', 'desc').take(10).value();
     console.log(songs)

@@ -8,7 +8,7 @@ module.exports = {
         usage: null,
         enabled: null,
     },
-    async run(message, args) {
+    async run(client, message, args) {
         let guild = db.get('guild').find({
             id: message.member.guild.id
         }).value();

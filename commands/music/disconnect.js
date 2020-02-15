@@ -5,7 +5,7 @@ module.exports = {
         usage: "disconnect",
         enabled: true
     },
-    async run(message, args) {
+    async run(client, message, args) {
         musicModel.queue = [];
 
         if (musicModel.voiceChannel) {

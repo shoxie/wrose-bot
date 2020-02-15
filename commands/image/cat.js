@@ -5,7 +5,7 @@ module.exports = {
         name: "cat",
         usage: "cat"
     },
-    async run(message, args) {
+    async run(client, message, args) {
         let options = {
             method: "HEAD",
             url: "https://thecatapi.com/api/images/get",
