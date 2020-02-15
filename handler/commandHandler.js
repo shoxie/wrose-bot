@@ -10,9 +10,8 @@ module.exports = async (client, message) => {
         const command = fs.readdirSync(`./commands/${dir}/`).filter(file => {
             file.endsWith(".js");
             var filename = file.split('.').slice(0, -1).join('.')
-          
-               let cmdObj= require("../commands/" + dir + '/' + filename);
-               client.commands.set(filename.toLowerCase(),cmdObj)
+            let cmdObj = require("../commands/" + dir + '/' + filename);
+            client.commands.set(filename.toLowerCase(), cmdObj)
         });
     });
 };

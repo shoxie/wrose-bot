@@ -1,7 +1,8 @@
 module.exports = {
     config: {
         name: "avatar",
-        usage: "avatar @user"
+        usage: "avatar @user",
+        enabled: true
     }, //hold up
     async run(client, message, args) {
         if (message.mentions.users.first()) {

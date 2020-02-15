@@ -6,7 +6,14 @@ module.exports = {
         enabled: true,
     },
     async run(client, message, args) {
-        console.log(`hi`)
+        if (!musicModel.queue[0]) {
+            return message.channel.send({
+                embed: {
+                    color: 15158332,
+                    title: 'I\'m not playing anything right now',
+                }
+            })
+        }
         message.channel.send({
             embed: {
                 color: 3447003,

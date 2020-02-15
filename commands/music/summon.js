@@ -3,7 +3,7 @@ module.exports = {
     config: {
         name: 'summon',
         usage: 'summon the bot to your channel',
-        enabled: null,
+        enabled: true,
     },
     async run(client, message, args) {
         if (musicModel.isPlaying === true) {

@@ -8,8 +8,8 @@ const adapter = new FileSync("./data/data.json");
 const db = low(adapter);
 module.exports = {
   config: {
-    name: 'play',
-    usage: 'play [song name]'
+    name: 'Play',
+    usage: '```play [song name]```'
   },
   async run(client, message, args) {
     if (!message.member.voiceChannel) {
