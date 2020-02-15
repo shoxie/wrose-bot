@@ -16,7 +16,8 @@ module.exports = {
     if (songs) {
       let embed = new Discord.RichEmbed()
         .setColor("#0390fc")
-        .setTitle("Top requested song my storage");
+        .setTitle("Top requested song my storage")
+        .setThumbnail(client.user.avatarURL)
       songs.forEach(entry => {
         embed.addField(entry.name, entry.count);
       });
@@ -26,7 +27,10 @@ module.exports = {
       message.channel.send({
         embed: {
           color: 15158332,
-          title: 'My storage is empty'
+          title: 'My storage is empty',
+          thumbnail: {
+            url: client.user.avatarURL
+          }
         }
       })
     }

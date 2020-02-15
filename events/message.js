@@ -13,7 +13,7 @@ module.exports = (client) => {
             .slice(config.prefix.length)
             .trim()
             .split(/ +/g);
-        const cmd = args.shift();
+        const cmd = args.shift().toLowerCase();
         if (cmd.length === 0) return;
         if ((message.content.startsWith(config.prefix)) && (cmd.length !== 0) && (client.commands.has(cmd))) {
             if ((client.commands.get(cmd).config.enabled === true))
@@ -28,8 +28,12 @@ module.exports = (client) => {
         let textChannel = guildSettings.get('guild').find({
             id: message.member.guild.id
         }).value();
-        let textChannelId = textChannel.musicTextChannel;
-        if ((textChannelId) && (!message.content.startsWith(config.prefix))) {
+        let textChannelId, guild;
+        if (textChannel) {
+            textChannelId = textChannel.musicTextChannel;
+            guild = textChannel.id
+        }
+        if ((textChannelId) && (!message.content.startsWith(config.prefix)) && (message.channel.id === textChannelId) && (message.member.guild.id === guild)) {
             message.delete()
         }
     }
