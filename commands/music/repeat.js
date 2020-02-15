@@ -2,8 +2,8 @@ let musicModel = require('../../model/model')
 module.exports = {
     config: {
         name: 'repeat',
+        usage: 'repeat',
         enabled: true,
-        usage: 'repeat'
     },
     async run(client, message, args) {
         musicModel.queue.unshift(musicModel.songInfo.video_url);

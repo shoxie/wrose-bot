@@ -4,9 +4,9 @@ const adapter = new FileSync("./data/guildSettings.json");
 const db = low(adapter);
 module.exports = {
     config: {
-        name: null,
-        usage: null,
-        enabled: null,
+        name: 'musicMasterRole',
+        usage: 'Set the DJ role',
+        enabled: true,
     },
     async run(client, message, args) {
         let guild = db.get('guild').find({

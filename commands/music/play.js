@@ -9,7 +9,8 @@ const db = low(adapter);
 module.exports = {
   config: {
     name: 'Play',
-    usage: '```play [song name]```'
+    usage: '```play [song name]```',
+    enabled: true
   },
   async run(client, message, args) {
     if (!message.member.voiceChannel) {

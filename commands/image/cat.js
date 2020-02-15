@@ -3,7 +3,8 @@ let cheerio = require("cheerio");
 module.exports = {
     config: {
         name: "cat",
-        usage: "cat"
+        usage: "Show random cat images",
+        enabled: true
     },
     async run(client, message, args) {
         let options = {

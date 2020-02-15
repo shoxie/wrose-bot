@@ -4,7 +4,7 @@ let rq = require("request");
 module.exports = {
   config: {
     name: "hqimage",
-    usage: "hqimage"
+    usage: "Show random high quality image"
   },
   async run(client, message, args) {
     let options = {

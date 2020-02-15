@@ -11,8 +11,8 @@ module.exports = (client) => {
             .split(/ +/g);
         const cmd = args.shift();
         if (cmd.length === 0) return;
-        if ((message.content.startsWith(config.prefix)) && (cmd.length !== 0)) {
-            if (client.commands.get(cmd).config.enabled === true)
+        if ((message.content.startsWith(config.prefix)) && (cmd.length !== 0) && (client.commands.has(cmd))) {
+            if ((client.commands.get(cmd).config.enabled === true))
                 client.commands.get(cmd).run(client, message, args)
         }
         let guildID = message.guild.id;

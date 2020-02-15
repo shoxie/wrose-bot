@@ -1,5 +1,9 @@
 module.exports = {
-    name: 'volume',
+    config: {
+        name: 'volume',
+        usage: 'Adjust the song volume',
+        enabled: false,
+    },
     async run(client, message, args) {
 
     }

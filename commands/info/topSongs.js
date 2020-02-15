@@ -4,7 +4,11 @@ const adapter = new FileSync("./data/data.json");
 const db = low(adapter);
 const Discord = require('discord.js')
 module.exports = {
-  name: "topSongs",
+  config: {
+    name: "topSongs",
+    usage: "Show top songs played by me",
+    enabled: true
+  },
   async run(client, message, args) {
     db.read();
     let songs = await db.get("songs").orderBy('count', 'desc').take(10).value();
