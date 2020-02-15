@@ -9,19 +9,6 @@ module.exports = {
         usage: 'search [args]'
     },
     async run(client, message, args) {
-        var start, finish;
-
-        start = new Date();
-        console.log("executing my stuff");
-
-
-        let query = await dude.search(args);
-        fetchVideoInfo(query[0].videoId, function (err, videoInfo) {
-            if (err) throw new Error(err);
-            console.log(videoInfo);
-        });
-        finish = new Date();
-
-        console.log("Operation took " + (finish.getTime() - start.getTime()) + " ms");
+        console.log(message.member)
     }
 };

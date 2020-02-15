@@ -52,7 +52,7 @@ module.exports = {
       message.channel.send({
         embed: {
           color: 15158332,
-          title: message.member.guild.channels.find(x => x.id === args[0]).name + ' and ' + message.member.guild.channels.find(x => x.id === message.member.voiceChannelID) + ' are now the text and voice channel for music',
+          title: message.member.guild.channels.find(x => x.id === args[0]).name + ' and ' + message.member.guild.channels.find(x => x.id === message.member.voiceChannelID).name + ' are now the text and voice channel for music',
         }
       })
     } else {
@@ -63,5 +63,6 @@ module.exports = {
         }
       });
     }
+    db.read();
   }
 };
