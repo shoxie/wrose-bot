@@ -49,6 +49,12 @@ module.exports = {
         .update("musicVoiceChannel", n => (n = message.member.voiceChannelID))
         .update("musicTextChannel", n => (n = args[0]))
         .write();
+      message.channel.send({
+        embed: {
+          color: 15158332,
+          title: message.member.guild.channels.find(x => x.id === args[0]).name + ' and ' + message.member.guild.channels.find(x => x.id === message.member.voiceChannelID) + ' are now the text and voice channel for music',
+        }
+      })
     } else {
       message.channel.send({
         embed: {

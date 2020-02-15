@@ -7,7 +7,8 @@ module.exports = {
   name: "topSongs",
   async run(message, args) {
     db.read();
-    let songs = await db.get("songs").value();
+    let songs = await db.get("songs").orderBy('count', 'desc').take(10).value();
+    console.log(songs)
     if (songs) {
       let embed = new Discord.RichEmbed()
         .setColor("#0390fc")

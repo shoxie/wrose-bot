@@ -24,8 +24,8 @@ let musicModel = {
       }
     })
   },
-  sendPlayMessage(channel) {
-    channel.send({
+  sendPlayMessage(message) {
+    message.channel.send({
       embed: {
         color: 3447003,
         title: 'Playing',
@@ -38,7 +38,13 @@ let musicModel = {
           text: `Duration ` + this.queue[0].duration
         }
       }
-    })
+    });
+    message.client.user.setPresence({
+      game: {
+        name: this.queue[0].title
+      },
+      status: 'online'
+    });
   }
 }
 module.exports = musicModel;

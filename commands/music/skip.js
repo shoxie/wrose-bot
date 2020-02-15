@@ -1,4 +1,4 @@
-let musicModel = require('../../model/model')
+let musicModel = require("../../model/model");
 module.exports = {
     config: {
         name: "skip",
@@ -6,22 +6,26 @@ module.exports = {
         enabled: true
     },
     async run(message, args) {
-
-        if (message.member.voiceChannelID != musicModel.voiceChannel.voiceChannelID) { // undefined
+        if (message.member.voiceChannelID != musicModel.voiceChannel.id) {
+            // undefined
             return message.channel.send({
                 embed: {
-                    title: 'You have to be in the same channel with the me to use the command'
+                    title: "You have to be in the same channel with the me to use the command"
                 }
-            })
+            });
         }
         if (!musicModel.queue[0]) {
             message.channel.send({
                 embed: {
                     color: 15158332,
-                    title: 'No songs in the queue'
+                    title: "No songs in the queue"
                 }
-            })
+            });
         }
         musicModel.connection.dispatcher.end();
+
+        function roleCheck(config) {
+
+        }
     }
-}
+};

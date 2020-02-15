@@ -35,7 +35,8 @@ module.exports = {
         title: songInfo.title,
         url: songInfo.video_url,
         thumbnail: getThumbnail(url),
-        duration: secondsCoverter(songInfo.length_seconds)
+        duration: secondsCoverter(songInfo.length_seconds),
+        requester: message.author.tag
       };
 
       if (musicModel.isPlaying == false) {
@@ -63,11 +64,11 @@ module.exports = {
         .on("start", () => {
           console.log(musicModel.dispatcher.volume);
           musicModel.isPlaying = true;
-          musicModel.sendPlayMessage(message.channel);
+          musicModel.sendPlayMessage(message);
           addTopSong(musicModel.queue[0].title);
-          musicModel.queue.shift();
         })
         .on("end", () => {
+          musicModel.queue.shift();
           if (musicModel.queue[0]) {
             console.log("next song url " + musicModel.queue[0]);
             play();
@@ -91,7 +92,7 @@ module.exports = {
 
     function getThumbnail(url) {
       let ids = getVideoId(url);
-      return `http://img.youtube.com/vi/${ids.id}/hqdefault.jpg`;
+      return `http://img.youtube.com/vi/${ids.id}/maxresdefault.jpg`;
     }
 
     function secondsCoverter(second) {

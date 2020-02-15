@@ -1,0 +1,81 @@
+{
+  "commands": [
+    {
+      "catagory": "image",
+      "list": [
+        {
+          "name": "cat"
+        },
+        {
+          "name": "hqimage"
+        }
+      ]
+    },
+    {
+      "catagory": "info",
+      "list": [
+        {
+          "name": "avatar"
+        },
+        {
+          "name": "help"
+        },
+        {
+          "name": "ping"
+        },
+        {
+          "name": "topSongs"
+        }
+      ]
+    },
+    {
+      "catagory": "music",
+      "list": [
+        {
+          "name": "db"
+        },
+        {
+          "name": "disconnect"
+        },
+        {
+          "name": "musicMasterRole"
+        },
+        {
+          "name": "nowPlaying"
+        },
+        {
+          "name": "play"
+        },
+        {
+          "name": "playlist"
+        },
+        {
+          "name": "repeat"
+        },
+        {
+          "name": "search"
+        },
+        {
+          "name": "setMusicChannel"
+        },
+        {
+          "name": "skip"
+        },
+        {
+          "name": "summon"
+        },
+        {
+          "name": "volume"
+        }
+      ]
+    },
+    {
+      "catagory": "other",
+      "list": [
+        {
+          "name": "speak"
+        }
+      ]
+    }
+  ]
+}
