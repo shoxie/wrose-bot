@@ -16,7 +16,9 @@ module.exports = {
             .setThumbnail(client.user.avatarURL)
             .setFooter('Created by wrose')
         client.commands.forEach(command => {
-            embed.addField(command.config.name, command.config.usage);
+            let status = command.config.enabled ? 'enabled' : 'disabled'
+            let value = `${command.config.usage}` + ' ' + `__***[${status}]***__`
+            embed.addField(command.config.name, value);
         });
         message.channel.send(embed);
     }

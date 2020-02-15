@@ -6,6 +6,14 @@ module.exports = {
         enabled: true,
     },
     async run(client, message, args) {
+        if (!message.member.voiceChannel) {
+            return message.channel.send({
+                embed: {
+                    color: 15158332,
+                    title: '__***N I G G E R***__ join a voice channel first',
+                }
+            })
+        }
         if (musicModel.isPlaying === true) {
             return message.channel.send({
                 embed: {
