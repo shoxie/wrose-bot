@@ -3,6 +3,10 @@ var {
     db,
     database
 } = require('../model/db.js');
+const low = require("lowdb");
+const FileSync = require("lowdb/adapters/FileSync");
+const guildSettingsAdapter = new FileSync("./data/guildSettings.json");
+const guildSettings = low(guildSettingsAdapter)
 module.exports = (client) => {
     return function (message) {
         const args = message.content
@@ -20,6 +24,13 @@ module.exports = (client) => {
         if (message.author.bot) return;
         if (!dbExist) {
             database.getDB(guildID);
+        }
+        let textChannel = guildSettings.get('guild').find({
+            id: message.member.guild.id
+        }).value();
+        let textChannelId = textChannel.musicTextChannel;
+        if ((textChannelId) && (!message.content.startsWith(config.prefix))) {
+            message.delete()
         }
     }
 }

@@ -6,6 +6,8 @@ const low = require("lowdb");
 const FileSync = require("lowdb/adapters/FileSync");
 const adapter = new FileSync("./data/data.json");
 const db = low(adapter);
+const guildSettingsAdapter = new FileSync("./data/guildSettings.json");
+const guildSettings = low(guildSettingsAdapter)
 module.exports = {
   config: {
     name: 'Play',
@@ -67,6 +69,7 @@ module.exports = {
           musicModel.isPlaying = true;
           musicModel.sendPlayMessage(message);
           addTopSong(musicModel.queue[0].title);
+          updatePresence();
         })
         .on("end", () => {
           musicModel.queue.shift();
@@ -84,6 +87,7 @@ module.exports = {
                 description: "No songs left in the queue"
               }
             });
+            updatePresence();
           }
         })
         .on("error", error => {
@@ -128,6 +132,21 @@ module.exports = {
         db.get('songs').find({
           name: title
         }).update('count', n => n + 1).write();
+      }
+    }
+
+    function updatePresence() {
+      let textChannel = guildSettings.get('guild').find({
+        id: message.member.guild.id
+      }).value();
+      let textChannelId = textChannel.musicTextChannel;
+      if (textChannelId) {
+        if (musicModel.isPlaying === true) {
+          message.member.guild.channels.find(x => x.id === textChannelId).setTopic('Playing ' + musicModel.queue[0].title)
+        }
+        if (musicModel.isPlaying === false) {
+          message.member.guild.channels.find(x => x.id === textChannelId).setTopic('Not playing')
+        }
       }
     }
   }
