@@ -30,7 +30,7 @@ module.exports = {
                 }
             })
         }
-        let usage = `${config.prefix}` + client.commands.get(args[0]).config.usage
+        let usage = `${conf.prefix}` + client.commands.get(args[0]).config.usage
         if (args[0]) {
             message.channel.send({
                 embed: {
