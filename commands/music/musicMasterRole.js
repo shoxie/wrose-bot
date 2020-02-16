@@ -5,7 +5,8 @@ const db = low(adapter);
 module.exports = {
     config: {
         name: 'musicMasterRole',
-        usage: 'Set the DJ role',
+        usage: 'musicMasterRole [role id]',
+        description: 'Set the DJ role',
         enabled: true,
     },
     async run(client, message, args) {

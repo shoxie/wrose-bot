@@ -2,7 +2,8 @@ let musicModel = require('../../model/model')
 module.exports = {
     config: {
         name: 'nowPlaying',
-        usage: 'Send information of playing song',
+        usage: 'nowPlaying',
+        description: 'Send information of playing song',
         enabled: true,
     },
     async run(client, message, args) {

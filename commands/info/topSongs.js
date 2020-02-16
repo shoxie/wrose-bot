@@ -6,7 +6,8 @@ const Discord = require('discord.js')
 module.exports = {
   config: {
     name: "topSongs",
-    usage: "Show top songs played by me",
+    usage: "topSongs",
+    description: 'Show top songs played by me',
     enabled: true
   },
   async run(client, message, args) {

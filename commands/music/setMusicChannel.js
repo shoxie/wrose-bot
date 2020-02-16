@@ -5,8 +5,9 @@ const db = low(adapter);
 module.exports = {
   config: {
     name: 'setMusicChannel',
+    usage: 'setMusicChannel [textChannelID]',
+    description: 'Set a textChannel as a music command receiver',
     enabled: true,
-    usage: 'setMusicChannel [textChannelID]'
   },
   async run(client, message, args) {
     if (!message.member.voiceChannel) {
@@ -18,7 +19,6 @@ module.exports = {
       });
       return;
     }
-    let guildName = message.member.guild.name;
     db.defaults({
       guild: []
     }).write();

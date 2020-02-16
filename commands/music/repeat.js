@@ -3,6 +3,7 @@ module.exports = {
     config: {
         name: 'repeat',
         usage: 'repeat',
+        description: 'Set a playing song on repeat',
         enabled: true,
     },
     async run(client, message, args) {

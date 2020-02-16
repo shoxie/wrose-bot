@@ -7,8 +7,9 @@ let dude = require('yt-dude')
 module.exports = {
     config: {
         name: 'playlist',
+        description: 'Add a song to a specific playlist',
+        usage: 'playlist --arguement [playlist name] [url]',
         enabled: true,
-        usage: 'playlist --arguement [playlist name] [url]'
     },
     async run(client, message, args) {
         let messageFlags = args[0];

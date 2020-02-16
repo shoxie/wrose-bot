@@ -5,8 +5,9 @@ var fetchVideoInfo = require('youtube-info');
 module.exports = {
     config: {
         name: 'search',
-        enabled: false,
-        usage: 'search [args]'
+        usage: 'search [args]',
+        description: 'Honestly this is my dev test command',
+        enabled: false
     },
     async run(client, message, args) {
         console.log(message.member)

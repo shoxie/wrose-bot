@@ -2,7 +2,8 @@ let musicModel = require('../../model/model')
 module.exports = {
     config: {
         name: 'summon',
-        usage: 'summon the bot to your channel',
+        usage: 'summon',
+        description: 'It\'s like ShaZam but summon',
         enabled: true,
     },
     async run(client, message, args) {

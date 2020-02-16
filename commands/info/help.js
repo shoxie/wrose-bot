@@ -5,6 +5,7 @@ module.exports = {
     config: {
         name: "help",
         usage: "help [command name]",
+        description: 'Show helps for commands, use ```.commands``` for the list of commands',
         enabled: true
     },
     async run(client, message, args) {
@@ -29,6 +30,7 @@ module.exports = {
                 }
             })
         }
+        let usage = `${config.prefix}` + client.commands.get(args[0]).config.usage
         if (args[0]) {
             message.channel.send({
                 embed: {
@@ -38,7 +40,10 @@ module.exports = {
                         value: client.commands.get(args[0]).config.name
                     }, {
                         name: 'Usage',
-                        value: client.commands.get(args[0]).config.usage
+                        value: usage
+                    }, {
+                        name: 'Description',
+                        value: client.commands.get(args[0]).config.description
                     }],
                     thumbnail: {
                         url: message.client.user.avatarURL

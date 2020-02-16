@@ -6,7 +6,8 @@ const Discord = require('discord.js')
 module.exports = {
     config: {
         name: 'Commands',
-        usage: 'Show available commands',
+        usage: 'commands',
+        description: 'Show available commands',
         enabled: true,
     },
     async run(client, message, args) {

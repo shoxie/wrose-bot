@@ -3,6 +3,7 @@ module.exports = {
     config: {
         name: "skip",
         usage: "skip",
+        description: 'Skip a playing song.',
         enabled: true
     },
     async run(client, message, args) {

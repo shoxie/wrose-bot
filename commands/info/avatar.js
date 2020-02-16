@@ -2,6 +2,7 @@ module.exports = {
     config: {
         name: "avatar",
         usage: "avatar @user",
+        description: 'Show the default resolution of a user avatar',
         enabled: true
     }, //hold up
     async run(client, message, args) {

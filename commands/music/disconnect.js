@@ -3,6 +3,7 @@ module.exports = {
     config: {
         name: "disconnect",
         usage: "disconnect",
+        description: 'Disconnect me from the voiceChannel',
         enabled: true
     },
     async run(client, message, args) {
