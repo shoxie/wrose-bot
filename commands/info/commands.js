@@ -2,7 +2,8 @@ const low = require("lowdb");
 const FileSync = require("lowdb/adapters/FileSync");
 const guildSettingsAdapter = new FileSync("./data/guildSettings.json");
 const guildSettings = low(guildSettingsAdapter);
-const Discord = require('discord.js')
+const Discord = require('discord.js');
+const conf = require('../../config/config.json')
 module.exports = {
     config: {
         name: 'Commands',
@@ -18,7 +19,7 @@ module.exports = {
             .setFooter('Created by wrose')
         client.commands.forEach(command => {
             let status = command.config.enabled ? 'enabled' : 'disabled'
-            let value = `${command.config.usage}` + ' ' + `__***[${status}]***__`
+            let value = `${conf.prefix}${command.config.usage}` + ' ' + `__***[${status}]***__`
             embed.addField(command.config.name, value);
         });
         message.channel.send(embed);
