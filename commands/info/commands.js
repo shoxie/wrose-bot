@@ -14,7 +14,7 @@ module.exports = {
     async run(client, message, args) {
         let embed = new Discord.RichEmbed()
             .setColor("#0390fc")
-            .setTitle("Top requested song my storage")
+            .setTitle("Commands that i can execute")
             .setThumbnail(client.user.avatarURL)
             .setFooter('Created by wrose')
         client.commands.forEach(command => {
