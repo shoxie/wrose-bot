@@ -11,7 +11,7 @@ const guildSettings = low(guildSettingsAdapter)
 module.exports = {
   config: {
     name: 'Play',
-    usage: '```play [song name]```',
+    usage: 'play [song name]',
     description: 'Play a song from youtube',
     enabled: true
   },
