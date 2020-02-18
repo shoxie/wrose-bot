@@ -7,12 +7,13 @@ const FileSync = require("lowdb/adapters/FileSync");
 const adapter = new FileSync("./data/data.json");
 const db = low(adapter);
 const guildSettingsAdapter = new FileSync("./data/guildSettings.json");
-const guildSettings = low(guildSettingsAdapter)
+const guildSettings = low(guildSettingsAdapter);
+const discordStream = require("ytdl-core-discord");
 module.exports = {
   config: {
-    name: 'Play',
-    usage: 'play [song name]',
-    description: 'Play a song from youtube',
+    name: "Play",
+    usage: "play [song name]",
+    description: "Play a song from youtube",
     enabled: true
   },
   async run(client, message, args) {
@@ -20,9 +21,9 @@ module.exports = {
       return message.channel.send({
         embed: {
           color: 15158332,
-          description: 'You have to be in a voiceChannel to use the command.'
+          description: "You have to be in a voiceChannel to use the command."
         }
-      })
+      });
     }
     if (ytdl.validateURL(args[0])) {
       addQueue(args[0]);
@@ -116,37 +117,52 @@ module.exports = {
     }
 
     async function addTopSong(title) {
-      console.log(title)
+      console.log(title);
       db.defaults({
         songs: []
       }).write();
-      let query = await db.get('songs').find({
-        name: title
-      }).value();
+      let query = await db
+        .get("songs")
+        .find({
+          name: title
+        })
+        .value();
       if (!query) {
-        db.get('songs').push({
-          name: title,
-          count: 1
-        }).write()
+        db.get("songs")
+          .push({
+            name: title,
+            count: 1
+          })
+          .write();
       }
       if (query) {
-        db.get('songs').find({
-          name: title
-        }).update('count', n => n + 1).write();
+        db.get("songs")
+          .find({
+            name: title
+          })
+          .update("count", n => n + 1)
+          .write();
       }
     }
 
     function updatePresence() {
-      let textChannel = guildSettings.get('guild').find({
-        id: message.member.guild.id
-      }).value();
+      let textChannel = guildSettings
+        .get("guild")
+        .find({
+          id: message.member.guild.id
+        })
+        .value();
       let textChannelId = textChannel.musicTextChannel;
       if (textChannelId) {
         if (musicModel.isPlaying === true) {
-          message.member.guild.channels.find(x => x.id === textChannelId).setTopic('Playing ' + musicModel.queue[0].title)
+          message.member.guild.channels
+            .find(x => x.id === textChannelId)
+            .setTopic("Playing " + musicModel.queue[0].title);
         }
         if (musicModel.isPlaying === false) {
-          message.member.guild.channels.find(x => x.id === textChannelId).setTopic('Not playing')
+          message.member.guild.channels
+            .find(x => x.id === textChannelId)
+            .setTopic("Not playing");
         }
       }
     }

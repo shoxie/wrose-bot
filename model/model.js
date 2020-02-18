@@ -13,13 +13,13 @@ let musicModel = {
       embed: {
         color: 3066993,
         title: 'Queue added',
-        url: this.queue[0].url,
-        description: this.queue[0].title,
+        url: this.queue[this.queue.length].url,
+        description: this.queue[this.queue.length].title,
         thumbnail: {
-          url: this.queue[0].thumbnail
+          url: this.queue[this.queue.length].thumbnail
         },
         footer: {
-          text: `Duration ` + this.queue[0].duration
+          text: `Duration ` + this.queue[this.queue.length].duration
         }
       }
     })
