@@ -2,23 +2,26 @@ const low = require("lowdb");
 const FileSync = require("lowdb/adapters/FileSync");
 const adapter = new FileSync("./data/data.json");
 const db = low(adapter);
-const Discord = require('discord.js')
+const Discord = require("discord.js");
 module.exports = {
   config: {
     name: "topSongs",
     usage: "topSongs",
-    description: 'Show top songs played by me',
+    description: "Show top songs played by me",
     enabled: true
   },
   async run(client, message, args) {
     db.read();
-    let songs = await db.get("songs").orderBy('count', 'desc').take(10).value();
-    console.log(songs)
+    let songs = await db
+      .get("songs")
+      .orderBy("count", "desc")
+      .take(10)
+      .value();
     if (songs) {
       let embed = new Discord.RichEmbed()
         .setColor("#0390fc")
         .setTitle("Top requested song my storage")
-        .setThumbnail(client.user.avatarURL)
+        .setThumbnail(client.user.avatarURL);
       songs.forEach(entry => {
         embed.addField(entry.name, entry.count);
       });
@@ -28,12 +31,12 @@ module.exports = {
       message.channel.send({
         embed: {
           color: 15158332,
-          title: 'My storage is empty',
+          title: "My storage is empty",
           thumbnail: {
             url: client.user.avatarURL
           }
         }
-      })
+      });
     }
   }
 };

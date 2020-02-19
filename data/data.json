@@ -1,7 +1,8 @@
 {
-  "songs": [{
+  "songs": [
+    {
       "name": "Billie Eilish - everything i wanted (Audio)",
-      "count": 11
+      "count": 15
     },
     {
       "name": "Sabrina Carpenter - Paris",
@@ -33,6 +34,14 @@
     },
     {
       "name": "DJ Okawari - Luv Letter",
+      "count": 1
+    },
+    {
+      "name": "Le Festin English Cover",
+      "count": 1
+    },
+    {
+      "name": "Ta Thấy Gì Dêm Nay - Khánh Ly - Album Da Vàng (Yellow-Skinned Songs) Vol.4 2005",
       "count": 1
     }
   ]

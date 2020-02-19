@@ -8,7 +8,6 @@ const adapter = new FileSync("./data/data.json");
 const db = low(adapter);
 const guildSettingsAdapter = new FileSync("./data/guildSettings.json");
 const guildSettings = low(guildSettingsAdapter);
-const discordStream = require("ytdl-core-discord");
 module.exports = {
   config: {
     name: "Play",
@@ -67,7 +66,6 @@ module.exports = {
           })
         )
         .on("start", () => {
-          console.log(musicModel.dispatcher.volume);
           musicModel.isPlaying = true;
           musicModel.sendPlayMessage(message);
           addTopSong(musicModel.queue[0].title);
@@ -76,7 +74,7 @@ module.exports = {
         .on("end", () => {
           musicModel.queue.shift();
           if (musicModel.queue[0]) {
-            console.log("next song url " + musicModel.queue[0]);
+            console.log("next song url " + musicModel.queue[0].url);
             play();
           }
           if (!musicModel.queue[0]) {

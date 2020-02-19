@@ -9,17 +9,18 @@ let musicModel = {
   connection: null,
   dispatcher: null,
   sendQueueMessage(channel) {
+    console.log(this.queue)
     channel.send({
       embed: {
         color: 3066993,
         title: 'Queue added',
-        url: this.queue[this.queue.length].url,
-        description: this.queue[this.queue.length].title,
+        url: this.queue[this.queue.length - 1].url,
+        description: this.queue[this.queue.length - 1].title,
         thumbnail: {
-          url: this.queue[this.queue.length].thumbnail
+          url: this.queue[this.queue.length - 1].thumbnail
         },
         footer: {
-          text: `Duration ` + this.queue[this.queue.length].duration
+          text: `Duration ` + this.queue[this.queue.length - 1].duration
         }
       }
     })
