@@ -1,4 +1,4 @@
-let ytdl = require('ytdl-core')
+let ytdl = require("ytdl-core");
 let message;
 const getVideoId = require("get-video-id");
 
@@ -9,11 +9,11 @@ let musicModel = {
   connection: null,
   dispatcher: null,
   sendQueueMessage(channel) {
-    console.log(this.queue)
+    console.log(this.queue);
     channel.send({
       embed: {
         color: 3066993,
-        title: 'Queue added',
+        title: "Queue added",
         url: this.queue[this.queue.length - 1].url,
         description: this.queue[this.queue.length - 1].title,
         thumbnail: {
@@ -23,13 +23,13 @@ let musicModel = {
           text: `Duration ` + this.queue[this.queue.length - 1].duration
         }
       }
-    })
+    });
   },
   sendPlayMessage(message) {
     message.channel.send({
       embed: {
         color: 3447003,
-        title: 'Playing',
+        title: "Playing",
         url: this.queue[0].url,
         description: this.queue[0].title,
         thumbnail: {
@@ -44,8 +44,13 @@ let musicModel = {
       game: {
         name: this.queue[0].title
       },
-      status: 'online'
+      status: "online"
     });
+  },
+  clearInstances() {
+    this.connection = null;
+    this.voiceChannel = null;
+    this.dispatcher = null;
   }
-}
+};
 module.exports = musicModel;

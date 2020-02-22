@@ -87,6 +87,7 @@ module.exports = {
                 description: "No songs left in the queue"
               }
             });
+            musicModel.clearInstances();
             updatePresence();
           }
         })
