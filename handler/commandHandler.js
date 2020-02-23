@@ -20,7 +20,7 @@ module.exports = async (client, message) => {
       client.commands.set(filename.toLowerCase(), cmdObj);
       table.addRow(
         client.commands.get(filename.toLowerCase()).config.name,
-        client.commands.get(filename.toLowerCase()).config.enabled
+        client.commands.get(filename.toLowerCase()).config.enabled ? "✅" : "❌"
       );
     });
   });
