@@ -87,7 +87,7 @@ module.exports = {
                 description: "No songs left in the queue"
               }
             });
-            musicModel.clearInstances();
+            musicModel.clearInstances(message);
             updatePresence();
           }
         })
@@ -145,13 +145,8 @@ module.exports = {
     }
 
     function updatePresence() {
-      let textChannel = guildSettings
-        .get("guild")
-        .find({
-          id: message.member.guild.id
-        })
-        .value();
-      let textChannelId = textChannel.musicTextChannel;
+      let textChannelId = client.guildSettings.get(message.member.guild.id)
+        .musicTextChannel;
       if (textChannelId) {
         if (musicModel.isPlaying === true) {
           message.member.guild.channels
