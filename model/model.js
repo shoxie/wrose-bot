@@ -9,7 +9,6 @@ let musicModel = {
   connection: null,
   dispatcher: null,
   sendQueueMessage(channel) {
-    console.log(this.queue);
     channel.send({
       embed: {
         color: 3066993,
