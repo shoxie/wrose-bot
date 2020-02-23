@@ -5,7 +5,7 @@ const db = low(adapter);
 const fs = require("fs");
 let data = require("../data/guildSettings.json").guilds;
 let Discord = require("discord.js");
-
+let util = require("../utils/utility");
 module.exports = client => {
   return function() {
     client.guildSettings = new Discord.Collection();

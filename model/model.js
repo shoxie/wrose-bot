@@ -47,7 +47,13 @@ let musicModel = {
       status: "online"
     });
   },
-  clearInstances() {
+  clearInstances(message) {
+    message.client.user.setPresence({
+      game: {
+        name: "with the Doctor"
+      },
+      status: "online"
+    });
     this.connection = null;
     this.voiceChannel = null;
     this.dispatcher = null;
