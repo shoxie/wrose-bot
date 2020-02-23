@@ -11,7 +11,7 @@ module.exports = {
     if (message.member.guild.channels.find(x => x.id === args[0])) {
       let data = {
         guildID: message.member.guild.id,
-        ignoredChannel: args[0]
+        ignoredChannels: args[0]
       };
       guildSettings.updateIgnoredChannels(data);
       client.guildSettings.set(data.guildID, data);
