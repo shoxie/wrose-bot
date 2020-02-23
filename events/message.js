@@ -13,18 +13,25 @@ module.exports = client => {
     const cmd = args.shift().toLowerCase();
     //message filter
     let guildID = message.guild.id;
-    if (message.author.bot) return;
-    //ignore message when it's in ignored channels
+    if (message.author.bot) {
+      return;
+    }
+    // ignore message when it's in ignored channels
     let ignoredChannels = client.guildSettings.get(guildID).ignoredChannels;
-    for (let index in ignoredChannels) {
-      if (message.channel.id === ignoredChannels[index]) {
+    for (let ignoredChannel of ignoredChannels) {
+      if (message.channel.id === ignoredChannel) {
         return;
       }
     }
-    //delete message when it's in ignored channels
+    //delete message when it's in delete channels
     let musicTextChannel = client.guildSettings.get(guildID).musicTextChannel;
-    for (let key in musicTextChannel) {
-      if (message.channel.id === musicTextChannel[key]) message.delete();
+    if (
+      message.channel.id === musicTextChannel &&
+      !message.content.startsWith(config.prefix)
+    ) {
+      //console.log(message.channel.id === musicTextChannel[key]);
+
+      message.delete();
     }
     //command execution
     if (cmd.length === 0) return;

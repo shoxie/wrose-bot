@@ -27,7 +27,18 @@ function update(data, guildID) {
     .write();
   db.read();
 }
+function updateMusicChannel(musicTextChannel, musicVoiceChannel, guildID) {
+  db.get("guilds")
+    .find({
+      id: guildID
+    })
+    .update("musicVoiceChannel", n => (n = musicVoiceChannel))
+    .update("musicTextChannel", n => (n = musicTextChannel))
+    .write();
+  db.read();
+}
 module.exports = {
   addNewGuild,
-  update
+  update,
+  updateMusicChannel
 };

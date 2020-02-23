@@ -1,7 +1,4 @@
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("./data/guildSettings.json");
-const db = low(adapter);
+const guildSettingsModel = require("../../model/guildSettingsModel");
 module.exports = {
   config: {
     name: "setMusicChannel",
@@ -19,36 +16,15 @@ module.exports = {
       });
       return;
     }
-    db.defaults({
-      guild: []
-    }).write();
-    let guildID = await db
-      .get("guild")
-      .find({
-        id: message.member.guild.id
-      })
-      .value();
-    if (!guildID) {
-      db.get("guild")
-        .push({
-          id: message.member.guild.id,
-          musicVoiceChannel: null,
-          musicTextChannel: null
-        })
-        .write();
-    }
-    if (
-      args[0] != undefined &&
-      message.member.guild.channels.find(x => x.id === args[0])
-    ) {
-      //console.log(message.member.guild.channels.find(x => x.id === args[0]))
-      db.get("guild")
-        .find({
-          id: message.member.guild.id
-        })
-        .update("musicVoiceChannel", n => (n = message.member.voiceChannelID))
-        .update("musicTextChannel", n => (n = args[0]))
-        .write();
+    if (message.member.guild.channels.find(x => x.id === args[0])) {
+      let guildID = message.member.guild.id;
+      let musicTextChannel = args[0];
+      let musicVoiceChannel = message.member.voiceChannelID;
+      guildSettingsModel.updateMusicChannel(
+        musicTextChannel,
+        musicVoiceChannel,
+        guildID
+      );
       message.channel.send({
         embed: {
           color: 15158332,
@@ -69,6 +45,5 @@ module.exports = {
         }
       });
     }
-    db.read();
   }
 };
