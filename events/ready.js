@@ -1,13 +1,7 @@
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("./data/guildSettings.json");
-const db = low(adapter);
-const fs = require("fs");
-let data = require("../data/guildSettings.json").guilds;
 let Discord = require("discord.js");
-let util = require("../utils/utility");
+let guildSettings = require("../model/guildSettingsModel");
 module.exports = client => {
-  return function() {
+  return async function() {
     client.guildSettings = new Discord.Collection();
     console.log("done loading");
     client.user.setPresence({
@@ -16,8 +10,15 @@ module.exports = client => {
       },
       status: "online"
     });
-    for (let key in data) {
-      client.guildSettings.set(data[key].id, data[key]);
-    }
+    //let data = await guildSettings.queryGuildSettings(null);
+    //console.log(data);
+    let guilds = client.guilds;
+    guilds.forEach(async guild => {
+      let data = await guildSettings.queryGuildSettings(guild.id);
+      if (!data) return;
+      if (data) {
+        await client.guildSettings.set(data.guildID, data);
+      }
+    });
   };
 };

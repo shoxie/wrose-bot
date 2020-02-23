@@ -1,8 +1,5 @@
-const config = require("../config/config.json");
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-const guildSettingsAdapter = new FileSync("./data/guildSettings.json");
-const guildSettings = low(guildSettingsAdapter);
+const guildSettings = require("../model/guildSettingsModel");
+let config = require("../config/config.json");
 module.exports = client => {
   return async function(message) {
     //args definition
@@ -16,17 +13,19 @@ module.exports = client => {
     if (message.author.bot) {
       return;
     }
-    // ignore message when it's in ignored channels
-    let ignoredChannels = client.guildSettings.get(guildID).ignoredChannels;
-    for (let ignoredChannel of ignoredChannels) {
-      if (message.channel.id === ignoredChannel) {
-        return;
+    //ignore message when it's in ignored channels
+    let guildConfig = client.guildSettings.get(guildID);
+    if (guildConfig && guildConfig.ignoredChannels) {
+      for (let ignoredChannel of guildConfig.ignoredChannels) {
+        if (message.channel.id === ignoredChannel) {
+          return;
+        }
       }
     }
     //delete message when it's in delete channels
-    let musicTextChannel = client.guildSettings.get(guildID).musicTextChannel;
     if (
-      message.channel.id === musicTextChannel &&
+      guildConfig &&
+      message.channel.id === guildConfig.musicTextChannel &&
       !message.content.startsWith(config.prefix)
     ) {
       //console.log(message.channel.id === musicTextChannel[key]);

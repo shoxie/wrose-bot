@@ -1,4 +1,4 @@
-const guildSettingsModel = require("../../model/guildSettingsModel");
+let guildSettings = require("../../model/guildSettingsModel");
 module.exports = {
   config: {
     name: "setMusicChannel",
@@ -17,14 +17,13 @@ module.exports = {
       return;
     }
     if (message.member.guild.channels.find(x => x.id === args[0])) {
-      let guildID = message.member.guild.id;
-      let musicTextChannel = args[0];
-      let musicVoiceChannel = message.member.voiceChannelID;
-      guildSettingsModel.updateMusicChannel(
-        musicTextChannel,
-        musicVoiceChannel,
-        guildID
-      );
+      let data = {
+        guildID: message.member.guild.id,
+        musicTextChannel: args[0],
+        musicVoiceChannel: message.member.voiceChannelID
+      };
+      guildSettings.updateMusicChannel(data);
+      client.guildSettings.set(data.guildID, data);
       message.channel.send({
         embed: {
           color: 15158332,

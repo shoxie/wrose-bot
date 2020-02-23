@@ -1,7 +1,4 @@
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("./data/data.json");
-const db = low(adapter);
+const music = require("../../model/musicData");
 const Discord = require("discord.js");
 module.exports = {
   config: {
@@ -11,12 +8,8 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
-    db.read();
-    let songs = await db
-      .get("songs")
-      .orderBy("count", "desc")
-      .take(10)
-      .value();
+    let songs = await music.getSongs();
+    console.log(songs);
     if (songs) {
       let embed = new Discord.RichEmbed()
         .setColor("#0390fc")

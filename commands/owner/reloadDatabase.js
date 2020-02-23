@@ -1,21 +1,29 @@
-const guildSettingsModel = require("../../model/guildSettingsModel");
+const guildSettings = require("../../model/guildSettingsModel");
 module.exports = {
   config: {
     name: "reloadDatabase",
     usage: "reloadDatabase",
     description:
       "Reload the whole database, this will overwrite the current database",
-    enabled: true
+    enabled: false
   },
   async run(client, message, args) {
-    for (let guildId of client.guilds.keys()) {
-      let guildSettings = {
-        id: guildId,
-        musicVoiceChannel: null,
-        musicTextChannel: null,
-        ignoredChannels: []
+    // for (let guildId of client.guilds.keys()) {
+    //   let guildSettings = {
+    //     id: guildId,
+    //     musicVoiceChannel: null,
+    //     musicTextChannel: null,
+    //     ignoredChannels: []
+    //   };
+    //   guildSettingsModel.addNewGuild();
+    // }
+    let guilds = client.guilds;
+    for (const [key, guild] of guilds.entries()) {
+      let data = {
+        name: guild.name,
+        id: guild.id
       };
-      guildSettingsModel.addNewGuild(guildId, guildSettings);
+      await guildSettings.addNewGuild(data);
     }
   }
 };

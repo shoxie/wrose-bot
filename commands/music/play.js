@@ -2,12 +2,7 @@ const ytdl = require("ytdl-core");
 const musicModel = require("../../model/model.js");
 const dude = require("yt-dude");
 const getVideoId = require("get-video-id");
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("./data/data.json");
-const db = low(adapter);
-const guildSettingsAdapter = new FileSync("./data/guildSettings.json");
-const guildSettings = low(guildSettingsAdapter);
+let musicDB = require("../../model/musicData");
 module.exports = {
   config: {
     name: "Play",
@@ -115,33 +110,8 @@ module.exports = {
       });
     }
 
-    async function addTopSong(title) {
-      console.log(title);
-      db.defaults({
-        songs: []
-      }).write();
-      let query = await db
-        .get("songs")
-        .find({
-          name: title
-        })
-        .value();
-      if (!query) {
-        db.get("songs")
-          .push({
-            name: title,
-            count: 1
-          })
-          .write();
-      }
-      if (query) {
-        db.get("songs")
-          .find({
-            name: title
-          })
-          .update("count", n => n + 1)
-          .write();
-      }
+    function addTopSong(title) {
+      musicDB.updateCount(title);
     }
 
     function updatePresence() {

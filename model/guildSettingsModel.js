@@ -1,44 +1,66 @@
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("./data/guildSettings.json");
-const db = low(adapter);
-const Discord = require("discord.js");
-let guildSettings = new Discord.Collection();
-
-function addNewGuild(guildID, options) {
-  db.defaults({ guilds: [] }).write();
-  let find = db
-    .get("guilds")
-    .find({ id: guildID })
-    .value();
-  if (!find) {
-    db.get("guilds")
-      .push(options)
-      .write();
-  }
+let mongoose = require("mongoose");
+let guildSettingsSchema = mongoose.Schema({
+  guildID: {
+    type: String,
+    unique: true
+  },
+  guildName: {
+    type: String
+  },
+  musicTextChannel: {
+    type: String,
+    unique: true
+  },
+  musicVoiceChannel: {
+    type: String,
+    unique: true
+  },
+  ignoredChannels: []
+});
+var guildSettings = mongoose.model("guildSettings", guildSettingsSchema);
+function updateMusicChannel(data) {
+  guildSettings.findOneAndUpdate(
+    { guildID: data.guildID },
+    {
+      musicTextChannel: data.musicTextChannel,
+      musicVoiceChannel: data.musicVoiceChannel
+    },
+    function(error, doc, res) {
+      if (error) console.log(error);
+      if (res) console.log("done");
+    }
+  );
+}
+function updateIgnoredChannels(data) {
+  guildSettings.findOne({ guildID: data.guildID }, function(error, result) {
+    if (error) console.log(error);
+    if (result) {
+      result.ignoredChannels.push(data.ignoredChannel);
+      result.save().then(() => {
+        console.log("saved ignore channel");
+      });
+    }
+  });
 }
 
-function update(data, guildID) {
-  console.log(data, guildID);
-  db.get("guilds")
-    .find({ id: guildID })
-    .get("ignoredChannels")
-    .push(data)
-    .write();
-  db.read();
+function addNewGuild(guild) {
+  let newGuild = new guildSettings({
+    guildID: guild.id,
+    guildName: guild.name,
+    musicVoiceChannel: null,
+    musicTextChannel: null
+  });
+  return newGuild.save().then(function(err) {
+    if (err) console.log(err);
+  });
 }
-function updateMusicChannel(musicTextChannel, musicVoiceChannel, guildID) {
-  db.get("guilds")
-    .find({
-      id: guildID
-    })
-    .update("musicVoiceChannel", n => (n = musicVoiceChannel))
-    .update("musicTextChannel", n => (n = musicTextChannel))
-    .write();
-  db.read();
+async function queryGuildSettings(guildID) {
+  let result = await guildSettings.findOne({ guildID: guildID }).exec();
+  return result;
 }
 module.exports = {
+  updateIgnoredChannels,
+  updateMusicChannel,
   addNewGuild,
-  update,
-  updateMusicChannel
+  queryGuildSettings
 };
