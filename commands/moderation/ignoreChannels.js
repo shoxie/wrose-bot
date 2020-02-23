@@ -1,7 +1,4 @@
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync("./data/guildSettings.json");
-const db = low(adapter);
+const guildSettingsModel = require("../../model/guildSettingsModel");
 module.exports = {
   config: {
     name: "ignoreChannels",
@@ -11,32 +8,21 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
-    let query = await db
-      .get("guild")
-      .find({ id: message.member.guild.id })
-      .value();
-    if (!query) {
-      db.get("guild")
-        .push({
-          id: message.member.guild.id
-        })
-        .write();
-    }
-
-    if (query && message.member.guild.channels.find(x => x.id === args[0])) {
-      console.log("here");
-      await db
-        .get("guild")
-        .find({ id: message.member.guild.id })
-        .get("ignoredChannels")
-        .push(args[0])
-        .write();
+    if (message.member.guild.channels.find(x => x.id === args[0])) {
+      guildSettingsModel.update(args[0], message.member.guild.id);
       message.channel.send({
         embed: {
           color: 3447003,
           title:
             message.member.guild.channels.find(x => x.id === args[0]).name +
             " will be ignored"
+        }
+      });
+    } else {
+      message.channel.send({
+        embed: {
+          color: 15158332,
+          title: "No such channel found."
         }
       });
     }
