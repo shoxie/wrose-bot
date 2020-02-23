@@ -7,7 +7,7 @@ module.exports = client => {
       id: guildId,
       musicVoiceChannel: null,
       musicTextChannel: null,
-      ignoreChannels: []
+      ignoredChannels: []
     };
     guildSettingsModel.addNewGuild(guildId, guildSettings);
   };

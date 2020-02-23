@@ -13,7 +13,7 @@ module.exports = {
         id: guildId,
         musicVoiceChannel: null,
         musicTextChannel: null,
-        ignoreChannels: []
+        ignoredChannels: []
       };
       guildSettingsModel.addNewGuild(guildId, guildSettings);
     }

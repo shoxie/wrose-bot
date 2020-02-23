@@ -1,1 +1,24 @@
-{}
+{
+  "guilds": [
+    {
+      "id": "335604901730058243",
+      "musicVoiceChannel": null,
+      "musicTextChannel": null,
+      "ignoredChannels": []
+    },
+    {
+      "id": "470478971147124747",
+      "musicVoiceChannel": null,
+      "musicTextChannel": null,
+      "ignoredChannels": []
+    },
+    {
+      "id": "606089579174297600",
+      "musicVoiceChannel": null,
+      "musicTextChannel": null,
+      "ignoredChannels": [
+        "654300387226157067"
+      ]
+    }
+  ]
+}
