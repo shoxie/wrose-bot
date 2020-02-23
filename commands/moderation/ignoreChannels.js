@@ -1,4 +1,4 @@
-const guildSettingsModel = require("../../model/guildSettingsModel");
+const guildSettings = require("../../model/guildSettingsModel");
 module.exports = {
   config: {
     name: "ignoreChannels",
@@ -9,7 +9,12 @@ module.exports = {
   },
   async run(client, message, args) {
     if (message.member.guild.channels.find(x => x.id === args[0])) {
-      guildSettingsModel.update(args[0], message.member.guild.id);
+      let data = {
+        guildID: message.member.guild.id,
+        ignoredChannel: args[0]
+      };
+      guildSettings.updateIgnoredChannels(data);
+      client.guildSettings.set(data.guildID, data);
       message.channel.send({
         embed: {
           color: 3447003,

@@ -16,9 +16,7 @@
       "id": "606089579174297600",
       "musicVoiceChannel": "606089579174297604",
       "musicTextChannel": "606089579174297602",
-      "ignoredChannels": [
-        "654300387226157067"
-      ]
+      "ignoredChannels": []
     }
   ]
 }
