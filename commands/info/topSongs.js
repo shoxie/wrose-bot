@@ -9,7 +9,6 @@ module.exports = {
   },
   async run(client, message, args) {
     let songs = await music.getSongs();
-    console.log(songs);
     if (songs) {
       let embed = new Discord.RichEmbed()
         .setColor("#0390fc")

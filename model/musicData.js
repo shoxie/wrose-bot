@@ -13,7 +13,6 @@ var music = mongoose.model("music", musicSchema);
 async function updateCount(title) {
   music.findOne({ name: title }, async function(error, result) {
     if (result) {
-      console.log(result);
       music.findOneAndUpdate(
         { name: title },
         { $inc: { count: 1 } },
