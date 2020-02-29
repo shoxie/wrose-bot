@@ -1,6 +1,6 @@
 {
   "name": "discordbot",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,6 @@
     "dotenv": "^8.2.0",
     "ffmpeg": "0.0.4",
     "get-video-id": "^3.1.4",
-    "happi-dev-sdk": "^1.0.26",
     "lowdb": "^1.0.0",
     "mongoose": "^5.9.2",
     "node-opus": "^0.3.3",
