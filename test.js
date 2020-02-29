@@ -5,7 +5,7 @@ const fs = require("fs");
 const prism = require("prism-media");
 const ytdl = require("discord-ytdl-core");
 
-client.login("NDcwMjQyMzY4NzE3NTg2NDQ0.XlnxiQ.twPs9985iIynE864rLo1VW3CUBQ");
+client.login("");
 client.on("ready", () => {
   console.log("loaded");
 });
@@ -27,4 +27,3 @@ client.on("message", async message => {
     });
   }
 });
-  
