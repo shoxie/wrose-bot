@@ -13,15 +13,31 @@ module.exports = {
         embed: {
           color: 15158332,
           title: "__***YOU IDIOT***__",
-          description: "I AM NOT EVEN IN A VOICE CHANNEL"
+          description: "I AM NOT EVEN IN A VOICE CHANNEL",
+          author: {
+            name: message.client.user.username,
+            icon_url: message.client.user.avatarURL({
+              format: "png",
+              dynamic: true,
+              size: 1024
+            })
+          }
         }
       });
     }
     if (musicModel.voiceChannel) {
-      musicModel.connection.dispatcher.end();
+      musicModel.connection.dispatcher.finish();
       message.channel.send({
         embed: {
-          title: "Disconnected from voiceChannel"
+          title: "Disconnected from voiceChannel",
+          author: {
+            name: message.client.user.username,
+            icon_url: message.client.user.avatarURL({
+              format: "png",
+              dynamic: true,
+              size: 1024
+            })
+          }
         }
       });
     }

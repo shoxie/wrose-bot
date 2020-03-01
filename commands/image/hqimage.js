@@ -4,7 +4,7 @@ let rq = require("request");
 module.exports = {
   config: {
     name: "hqimage",
-    usage: 'hqimage',
+    usage: "hqimage",
     description: "Show random high quality image",
     enabled: true
   },
@@ -15,15 +15,23 @@ module.exports = {
       followAllRedirects: true,
       resolveWithFullResponse: true
     };
-    var r = request(options.url, function (e, response) {
+    var r = request(options.url, function(e, response) {
       //console.log(response.request.uri.Url.href);
     });
-    request(options).then(function (body) {
+    request(options).then(function(body) {
       message.channel.send({
         embed: {
           color: 3447003,
           image: {
             url: r.uri.href
+          },
+          author: {
+            name: message.client.user.username,
+            icon_url: message.client.user.avatarURL({
+              format: "png",
+              dynamic: true,
+              size: 1024
+            })
           }
         }
       });

@@ -12,12 +12,20 @@ module.exports = {
         return;
       }
     } else {
-      if (message.member.voiceChannelID != musicModel.voiceChannel.id) {
+      if (message.member.voice.channel != musicModel.voiceChannel) {
         // undefined
         return message.channel.send({
           embed: {
             title:
-              "You have to be in the same channel with the me to use the command"
+              "You have to be in the same channel with the me to use the command",
+            author: {
+              name: message.client.user.username,
+              icon_url: message.client.user.avatarURL({
+                format: "png",
+                dynamic: true,
+                size: 1024
+              })
+            }
           }
         });
       }
@@ -25,7 +33,15 @@ module.exports = {
         message.channel.send({
           embed: {
             color: 15158332,
-            title: "No songs in the queue"
+            title: "No songs in the queue",
+            author: {
+              name: message.client.user.username,
+              icon_url: message.client.user.avatarURL({
+                format: "png",
+                dynamic: true,
+                size: 1024
+              })
+            }
           }
         });
       }

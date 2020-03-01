@@ -1,18 +1,18 @@
 let musicModel = require("../../model/model");
 module.exports = {
   config: {
-    name: "volume",
-    usage: "volume [0-1]",
-    description: "Adjust the song volume",
-    enabled: true
+    name: "seek",
+    usage: "seek [time]",
+    description: "Resume song at specific time",
+    enabled: false
   },
   async run(client, message, args) {
-    if (args[0] < 0 && args[0] > 100 && !Number.isInteger(args[0])) {
-      return message.channel.send({
+    if (!args[0]) {
+      message.channel.send({
         embed: {
           color: 15158332,
-          title:
-            "Wrong usage, please read the command usage using __.help volume__",
+          title: "__***YOU THINK I'M A FOOL?***__",
+          description: "Input a text",
           author: {
             name: message.client.user.username,
             icon_url: message.client.user.avatarURL({
@@ -23,8 +23,8 @@ module.exports = {
           }
         }
       });
+    } else {
+      musicModel.dispatcher.seek(args[0]);
     }
-    let volume = args[0] / 100;
-    musicModel.dispatcher.setVolume(volume);
   }
 };

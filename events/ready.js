@@ -5,14 +5,12 @@ module.exports = client => {
     client.guildSettings = new Discord.Collection();
     console.log("done loading");
     client.user.setPresence({
-      game: {
-        name: "with depression"
-      },
-      status: "online"
+      activity: { name: "developed by the Doctor" },
+      status: "dnd"
     });
     //let data = await guildSettings.queryGuildSettings(null);
     //console.log(data);
-    let guilds = client.guilds;
+    let guilds = client.guilds.cache;
     guilds.forEach(async guild => {
       let data = await guildSettings.queryGuildSettings(guild.id);
       if (!data) return;

@@ -11,7 +11,15 @@ module.exports = {
         embed: {
           color: 15158332,
           title: "__***YOU THINK I'M A FOOL ?***__",
-          description: "Specify the amount !!!"
+          description: "Specify the amount !!!",
+          author: {
+            name: message.client.user.username,
+            icon_url: message.client.user.avatarURL({
+              format: "png",
+              dynamic: true,
+              size: 1024
+            })
+          }
         }
       });
     }
