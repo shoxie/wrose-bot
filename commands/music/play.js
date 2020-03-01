@@ -57,7 +57,8 @@ module.exports = {
           ytdl(musicModel.queue[0].url, {
             filter: "audioonly",
             quality: "highestaudio",
-            highWaterMark: 1 << 25
+            highWaterMark: 1 << 25,
+            encoderArgs: ["-af", `equalizer=f=40:width_type=h:width=50:g=50`]
           })
         )
         .on("start", () => {
