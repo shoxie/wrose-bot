@@ -23,6 +23,14 @@ module.exports = {
           color: 3447003,
           image: {
             url: JSON.parse(body).image
+          },
+          author: {
+            name: message.client.user.username,
+            icon_url: message.client.user.avatarURL({
+              format: "png",
+              dynamic: true,
+              size: 1024
+            })
           }
         }
       });

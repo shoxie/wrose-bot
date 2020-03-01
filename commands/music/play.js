@@ -11,7 +11,7 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
-    if (!message.member.voiceChannel) {
+    if (!message.member.voice.channel) {
       return message.channel.send({
         embed: {
           color: 15158332,
@@ -41,7 +41,7 @@ module.exports = {
       if (musicModel.isPlaying == false) {
         musicModel.queue.push(song);
         if (!musicModel.voiceChannel) {
-          musicModel.voiceChannel = message.member.voiceChannel;
+          musicModel.voiceChannel = message.member.voice.channel;
         }
         musicModel.connection = await musicModel.voiceChannel.join();
         play();
@@ -53,7 +53,7 @@ module.exports = {
     }
     async function play() {
       musicModel.dispatcher = musicModel.connection
-        .playStream(
+        .play(
           ytdl(musicModel.queue[0].url, {
             filter: "audioonly",
             quality: "highestaudio",
@@ -67,7 +67,7 @@ module.exports = {
           addTopSong(musicModel.queue[0].title);
           updatePresence();
         })
-        .on("end", () => {
+        .on("finish", () => {
           musicModel.queue.shift();
           if (musicModel.queue[0]) {
             console.log("next song url " + musicModel.queue[0].url);
@@ -87,6 +87,25 @@ module.exports = {
             updatePresence();
           }
         })
+        .on("volumeChange", (oldVolume, newVolume) => {
+          message.channel.send({
+            embed: {
+              title: `Volume changed from ${oldVolume} to ${newVolume}.`,
+              author: {
+                name: message.client.user.username,
+                icon_url: message.client.user.avatarURL({
+                  format: "png",
+                  dynamic: true,
+                  size: 1024
+                })
+              }
+            }
+          });
+        })
+        .on("end", () => {
+          musicModel.isPlaying = false;
+          updatePresence();
+        })
         .on("error", error => {
           console.log(error);
         });
@@ -104,13 +123,6 @@ module.exports = {
 
       return m + ":" + s;
     }
-
-    function voiceChannelCheck(voiceChannel) {
-      db.get("guild").find({
-        id: message.member.guild.id
-      });
-    }
-
     function addTopSong(title) {
       musicDB.updateCount(title);
     }
@@ -120,12 +132,12 @@ module.exports = {
         .musicTextChannel;
       if (textChannelId) {
         if (musicModel.isPlaying === true) {
-          message.member.guild.channels
+          message.member.guild.channels.cache
             .find(x => x.id === textChannelId)
             .setTopic("Playing " + musicModel.queue[0].title);
         }
         if (musicModel.isPlaying === false) {
-          message.member.guild.channels
+          message.member.guild.channels.cache
             .find(x => x.id === textChannelId)
             .setTopic("Not playing");
         }

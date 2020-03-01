@@ -25,9 +25,10 @@
     "ascii-table": "0.0.9",
     "cheerio": "^1.0.0-rc.3",
     "discord-ytdl-core": "^1.0.1",
-    "discord.js": "^11.5.1",
+    "discord.js": "^12.0.0",
     "dotenv": "^8.2.0",
     "ffmpeg": "0.0.4",
+    "figlet": "^1.3.0",
     "get-video-id": "^3.1.4",
     "lowdb": "^1.0.0",
     "mongoose": "^5.9.2",
@@ -37,9 +38,10 @@
     "request-promise-native": "^1.0.8",
     "youtube-info": "^1.3.2",
     "yt-dude": "^1.0.13",
-    "ytdl-core": "^1.0.9"
+    "ytdl-core": "^2.0.0"
   },
   "devDependencies": {
+    "progress": "^2.0.3",
     "semantic-release": "^17.0.4"
   }
 }

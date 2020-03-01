@@ -8,10 +8,16 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
       .setColor("#0390fc")
       .setTitle("Commands that i can execute")
-      .setThumbnail(client.user.avatarURL)
+      .setThumbnail(
+        client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })({
+          format: "png",
+          dynamic: true,
+          size: 1024
+        })
+      )
       .setFooter("Created by wrose");
     client.commands.forEach(command => {
       let status = command.config.enabled ? "✅" : "❌";

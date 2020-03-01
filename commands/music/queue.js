@@ -20,7 +20,9 @@ module.exports = {
     let embed = new Discord.RichEmbed()
       .setColor("#0390fc")
       .setTitle("Songs in queue")
-      .setThumbnail(client.user.avatarURL);
+      .setThumbnail(
+        client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
+      );
     songs.forEach(entry => {
       let requestedBy = "Requested " + entry.requester;
       embed.addField(entry.title, requestedBy);

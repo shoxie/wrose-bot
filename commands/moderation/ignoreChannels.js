@@ -8,7 +8,7 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
-    if (message.member.guild.channels.find(x => x.id === args[0])) {
+    if (message.member.guild.channels.cache.find(x => x.id === args[0])) {
       let data = {
         guildID: message.member.guild.id,
         ignoredChannels: args[0]
@@ -19,8 +19,8 @@ module.exports = {
         embed: {
           color: 3447003,
           title:
-            message.member.guild.channels.find(x => x.id === args[0]).name +
-            " will be ignored"
+            message.member.guild.channels.cache.find(x => x.id === args[0])
+              .name + " will be ignored"
         }
       });
     } else {

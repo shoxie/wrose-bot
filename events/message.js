@@ -42,5 +42,12 @@ module.exports = client => {
       if (client.commands.get(cmd).config.enabled === true)
         client.commands.get(cmd).run(client, message, args);
     }
+    if (message.mentions.users.has(client.user.id)) {
+      message.channel.send("My prefix is " + config.prefix);
+    }
+    if (message.channel.id === "683780012541083704") {
+      let util = require("../utils/utility");
+      util.sendResponse(message);
+    }
   };
 };

@@ -40,10 +40,10 @@ let musicModel = {
       }
     });
     message.client.user.setPresence({
-      game: {
+      activity: {
         name: this.queue[0].title
       },
-      status: "online"
+      status: "dnd"
     });
   },
   clearInstances(message) {
