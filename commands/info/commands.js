@@ -12,11 +12,7 @@ module.exports = {
       .setColor("#0390fc")
       .setTitle("Commands that i can execute")
       .setThumbnail(
-        client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })({
-          format: "png",
-          dynamic: true,
-          size: 1024
-        })
+        client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
       )
       .setFooter("Created by wrose");
     client.commands.forEach(command => {
