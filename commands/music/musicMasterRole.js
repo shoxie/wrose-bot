@@ -7,6 +7,7 @@ module.exports = {
     name: "musicMasterRole",
     usage: "musicMasterRole [role id]",
     description: "Set the DJ role",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

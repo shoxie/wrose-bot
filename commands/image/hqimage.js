@@ -6,6 +6,7 @@ module.exports = {
     name: "hqimage",
     usage: "hqimage",
     description: "Show random high quality image",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

@@ -3,6 +3,11 @@ let guildSettings = require("../model/guildSettingsModel");
 module.exports = client => {
   return async function() {
     client.guildSettings = new Discord.Collection();
+    client.config = new Discord.Collection();
+    let config = require("../config/config.json");
+    for (let key in config) {
+      client.config.set(key, config[key]);
+    }
     console.log("done loading");
     client.user.setPresence({
       activity: { name: "developed by the Doctor" },

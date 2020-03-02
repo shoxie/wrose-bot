@@ -2,8 +2,9 @@ let musicModel = require("../../model/model");
 module.exports = {
   config: {
     name: "volume",
-    usage: "volume [0-1]",
+    usage: "volume [0-100]",
     description: "Adjust the song volume",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

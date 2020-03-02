@@ -4,6 +4,7 @@ module.exports = {
     name: "repeat",
     usage: "repeat",
     description: "Set a playing song on repeat",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

@@ -5,6 +5,7 @@ module.exports = {
     name: "topSongs",
     usage: "topSongs",
     description: "Show top songs played by me",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

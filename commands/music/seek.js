@@ -4,6 +4,7 @@ module.exports = {
     name: "seek",
     usage: "seek [time]",
     description: "Resume song at specific time",
+    ownerOnly: false,
     enabled: false
   },
   async run(client, message, args) {

@@ -7,6 +7,7 @@ module.exports = {
     usage: "help [command name]",
     description:
       "Show helps for commands, use ```.commands``` for the list of commands",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {
@@ -23,7 +24,7 @@ module.exports = {
             },
             {
               name: "Running in ",
-              value: client.guilds.size + " servers"
+              value: client.guilds.cache.size + " servers"
             }
           ],
           thumbnail: {

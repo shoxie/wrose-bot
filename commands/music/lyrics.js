@@ -5,6 +5,7 @@ module.exports = {
     name: "lyrics",
     usage: "lyrics [song name]",
     description: "Show lyrics for requested song.",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

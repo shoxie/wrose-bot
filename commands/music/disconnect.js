@@ -4,6 +4,7 @@ module.exports = {
     name: "disconnect",
     usage: "disconnect",
     description: "Disconnect me from the voiceChannel",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

@@ -8,6 +8,7 @@ module.exports = {
     name: "Play",
     usage: "play [song name]",
     description: "Play a song from youtube",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {
