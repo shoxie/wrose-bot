@@ -4,6 +4,7 @@ module.exports = {
     name: "setMusicChannel",
     usage: "setMusicChannel [textChannelID]",
     description: "Set a textChannel as a music command receiver",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

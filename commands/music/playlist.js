@@ -5,6 +5,7 @@ module.exports = {
     name: "playlist",
     description: "Add a song to a specific playlist",
     usage: "playlist --arguement [playlist name] [url]",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

@@ -1,4 +1,5 @@
 const guildSettings = require("../model/guildSettingsModel");
+let util = require("../utils/utility");
 let config = require("../config/config.json");
 module.exports = client => {
   return async function(message) {
@@ -34,20 +35,38 @@ module.exports = client => {
     }
     //command execution
     if (cmd.length === 0) return;
-    if (
-      message.content.startsWith(config.prefix) &&
-      cmd.length !== 0 &&
-      client.commands.has(cmd)
-    ) {
-      if (client.commands.get(cmd).config.enabled === true)
+    if (message.content.startsWith(config.prefix) && client.commands.has(cmd)) {
+      if (
+        client.commands.get(cmd).config.enabled === true &&
+        !util.validateUser(message) &&
+        client.commands.get(cmd).config.ownerOnly === false
+      )
         client.commands.get(cmd).run(client, message, args);
+      if (
+        client.commands.get(cmd).config.enabled === true &&
+        util.validateUser(message) &&
+        client.commands.get(cmd).config.ownerOnly === true
+      ) {
+        client.commands.get(cmd).run(client, message, args);
+      }
     }
     if (message.mentions.users.has(client.user.id)) {
       message.channel.send("My prefix is " + config.prefix);
     }
+
+    //misc utilities
     if (message.channel.id === "683780012541083704") {
       let util = require("../utils/utility");
       util.sendResponse(message);
+    }
+    if (client.awayuser && message.mentions.users.first()) {
+      let mentionedUser = message.mentions.users.first().username;
+
+      if (
+        message.mentions.users.has(client.awayuser.get(mentionedUser).user.id)
+      ) {
+        util.sendShit(message);
+      }
     }
   };
 };

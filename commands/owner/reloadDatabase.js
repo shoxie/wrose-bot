@@ -5,7 +5,8 @@ module.exports = {
     usage: "reloadDatabase",
     description:
       "Reload the whole database, this will overwrite the current database",
-    enabled: false
+    ownerOnly: true,
+    enabled: true
   },
   async run(client, message, args) {
     // for (let guildId of client.guilds.keys()) {

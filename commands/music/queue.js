@@ -5,6 +5,7 @@ module.exports = {
     name: "queue",
     usage: "queue",
     description: "Show current queue songs.",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

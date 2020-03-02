@@ -20,6 +20,17 @@ function sendResponse(message) {
     }
   });
 }
+function validateUser(message) {
+  for (let key in config.ownerID) {
+    if (message.member.id === config.ownerID[key]) return true;
+  }
+  return false;
+}
+function sendShit(message) {
+  message.channel.send(`https://discord.gg/grd5J3K`);
+}
 module.exports = {
-  sendResponse
+  sendResponse,
+  validateUser,
+  sendShit
 };

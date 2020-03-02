@@ -4,6 +4,7 @@ module.exports = {
     name: "skip",
     usage: "skip",
     description: "Skip a playing song.",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

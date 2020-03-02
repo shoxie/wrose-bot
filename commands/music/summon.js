@@ -4,6 +4,7 @@ module.exports = {
     name: "summon",
     usage: "summon",
     description: "It's like ShaZam but summon",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

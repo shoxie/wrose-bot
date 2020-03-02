@@ -5,6 +5,7 @@ module.exports = {
     name: "Commands",
     usage: "commands",
     description: "Show available commands",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

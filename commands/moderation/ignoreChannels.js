@@ -5,6 +5,7 @@ module.exports = {
     usage: "ignoreChannels [channelID]",
     description:
       "Set a text channel as an ignored channel, i will not notice any messages from this channel",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

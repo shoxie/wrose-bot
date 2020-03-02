@@ -4,6 +4,7 @@ module.exports = {
     name: "nowPlaying",
     usage: "nowPlaying",
     description: "Send information of playing song",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

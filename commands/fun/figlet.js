@@ -4,6 +4,7 @@ module.exports = {
     name: "figlet",
     usage: "figlet [text]",
     description: "ASCII a text",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

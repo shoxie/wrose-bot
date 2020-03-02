@@ -6,6 +6,7 @@ module.exports = {
     name: "fox",
     usage: "fox",
     description: "Show random fox image",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {

@@ -3,6 +3,7 @@ module.exports = {
     name: "Clear",
     usage: "clear [number of messages]",
     description: "Delete specific amount of messages",
+    ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {
