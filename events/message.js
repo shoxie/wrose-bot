@@ -19,7 +19,8 @@ module.exports = client => {
     if (guildConfig && guildConfig.ignoredChannels) {
       for (let ignoredChannel of guildConfig.ignoredChannels) {
         if (message.channel.id === ignoredChannel) {
-          return;
+          if (message.author.bot) message.delete();
+          else return;
         }
       }
     }
@@ -36,19 +37,8 @@ module.exports = client => {
     //command execution
     if (cmd.length === 0) return;
     if (message.content.startsWith(config.prefix) && client.commands.has(cmd)) {
-      if (
-        client.commands.get(cmd).config.enabled === true &&
-        !util.validateUser(message) &&
-        client.commands.get(cmd).config.ownerOnly === false
-      )
+      if (client.commands.get(cmd).config.enabled === true)
         client.commands.get(cmd).run(client, message, args);
-      if (
-        client.commands.get(cmd).config.enabled === true &&
-        util.validateUser(message) &&
-        client.commands.get(cmd).config.ownerOnly === true
-      ) {
-        client.commands.get(cmd).run(client, message, args);
-      }
     }
     if (message.mentions.users.has(client.user.id)) {
       message.channel.send("My prefix is " + config.prefix);

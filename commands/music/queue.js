@@ -18,7 +18,7 @@ module.exports = {
       });
     }
     let songs = musicModel.queue;
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
       .setColor("#0390fc")
       .setTitle("Songs in queue")
       .setThumbnail(

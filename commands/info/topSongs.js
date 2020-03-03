@@ -11,7 +11,7 @@ module.exports = {
   async run(client, message, args) {
     let songs = await music.getSongs();
     if (songs) {
-      let embed = new Discord.RichEmbed()
+      let embed = new Discord.MessageEmbed()
         .setColor("#0390fc")
         .setTitle("Top requested song my storage")
         .setThumbnail(
