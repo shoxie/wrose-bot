@@ -11,9 +11,6 @@ module.exports = client => {
     const cmd = args.shift().toLowerCase();
     //message filter
     let guildID = message.guild.id;
-    if (message.author.bot) {
-      return;
-    }
     //ignore message when it's in ignored channels
     let guildConfig = client.guildSettings.get(guildID);
     if (guildConfig && guildConfig.ignoredChannels) {
@@ -22,8 +19,12 @@ module.exports = client => {
           if (message.author.bot) message.delete();
           else return;
         }
+		if (message.author.bot && message.channel.id !== ignoredChannel) {
+      return;
+    }
       }
     }
+	
     //delete message when it's in delete channels
     if (
       guildConfig &&
