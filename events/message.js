@@ -16,15 +16,16 @@ module.exports = client => {
     if (guildConfig && guildConfig.ignoredChannels) {
       for (let ignoredChannel of guildConfig.ignoredChannels) {
         if (message.channel.id === ignoredChannel) {
-          if (message.author.bot) message.delete();
+          if (message.author.id !== client.user.id && message.author.bot)
+            message.delete();
           else return;
         }
-		if (message.author.bot && message.channel.id !== ignoredChannel) {
-      return;
-    }
+        if (message.author.bot && message.channel.id !== ignoredChannel) {
+          return;
+        }
       }
     }
-	
+
     //delete message when it's in delete channels
     if (
       guildConfig &&

@@ -13,6 +13,7 @@ module.exports = client => {
       activity: { name: "developed by the Doctor" },
       status: "dnd"
     });
+    client.queue = new Discord.Collection();
     //let data = await guildSettings.queryGuildSettings(null);
     //console.log(data);
     let guilds = client.guilds.cache;
