@@ -13,20 +13,8 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
-    client.queue = new Discord.Collection();
-    const guildQueue = client.queue.get(message.guild.id);
-    if (!guildQueue) {
-      let construct = {
-        guildID: message.guild.id,
-        queue: [],
-        isPlaying: false,
-        voiceChannel: null,
-        connection: null,
-        dispatcher: null
-      };
-      await client.queue.set(message.guild.id, construct);
-    }
-
+    const serverQueue = client.queue.get(message.guild.id);
+    const voiceChannel = message.member.voice.channel;
     if (!message.member.voice.channel) {
       return message.channel.send({
         embed: {
@@ -43,11 +31,9 @@ module.exports = {
       let videoUrl = "https://www.youtube.com/watch?v=" + query[0].videoId;
       addQueue(videoUrl);
     }
-
     //functions
     async function addQueue(url) {
       let songInfo = await ytdl.getInfo(url);
-      let songQueue = client.queue.get(message.guild.id);
       let song = {
         title: songInfo.title,
         url: songInfo.video_url,
@@ -55,24 +41,51 @@ module.exports = {
         duration: secondsCoverter(songInfo.length_seconds),
         requester: message.author.tag
       };
-      if (songQueue.isPlaying == false) {
-        songQueue.queue.push(song);
-        if (!songQueue.voiceChannel) {
-          songQueue.voiceChannel = message.member.voice.channel;
-        }
-        songQueue.connection = await songQueue.voiceChannel.join();
-        play();
-      }
-      if (songQueue.isPlaying == true) {
-        songQueue.queue.push(song);
-        songQueue.sendQueueMessage(message.channel);
+      if (!serverQueue) {
+        let tempQueue = {
+          guildID: null,
+          queue: [],
+          isPlaying: false,
+          voiceChannel: voiceChannel,
+          textChannel: message.channel,
+          connection: null,
+          dispatcher: null
+        };
+        tempQueue.queue.push(song);
+        client.queue.set(message.guild.id, tempQueue);
+        play(message.guild.id);
+      } else {
+        serverQueue.queue.push(song);
+        message.channel.send({
+          embed: {
+            color: 3066993,
+            title: "Queue added",
+            url: serverQueue.queue[serverQueue.queue.length - 1].url,
+            description: serverQueue.queue[serverQueue.queue.length - 1].title,
+            thumbnail: {
+              url: serverQueue.queue[serverQueue.queue.length - 1].thumbnail
+            },
+            footer: {
+              text:
+                `Duration ` +
+                serverQueue.queue[serverQueue.queue.length - 1].duration
+            }
+          }
+        });
       }
     }
-    async function play() {
-      let songQueue = client.queue.get(message.guild.id);
-      songQueue.dispatcher = songQueue.connection
+    async function play(guild) {
+      const serverQueue = client.queue.get(guild);
+      if (!serverQueue.queue[0]) {
+        serverQueue.isPlaying = false;
+        serverQueue.voiceChannel.leave();
+        updatePresence(serverQueue);
+        client.queue.delete(guild);
+      }
+      serverQueue.connection = await serverQueue.voiceChannel.join();
+      serverQueue.dispatcher = serverQueue.connection
         .play(
-          ytdl(songQueue.queue[0].url, {
+          ytdl(serverQueue.queue[0].url, {
             filter: "audioonly",
             quality: "highestaudio",
             highWaterMark: 1 << 25,
@@ -80,29 +93,29 @@ module.exports = {
           })
         )
         .on("start", () => {
-          console.log(songQueue.queue);
-          songQueue.isPlaying = true;
-          model.sendPlayMessage(songQueue, message);
-          addTopSong(songQueue.queue[0].title);
+          serverQueue.isPlaying = true;
+
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              title: "Playing",
+              url: serverQueue.queue[0].url,
+              description: serverQueue.queue[0].title,
+              thumbnail: {
+                url: serverQueue.queue[0].thumbnail
+              },
+              footer: {
+                text: `Duration ` + serverQueue.queue[0].duration
+              }
+            }
+          });
+          updatePresence(serverQueue);
+          addTopSong(serverQueue.queue[0].title);
         })
         .on("finish", () => {
-          songQueue.queue.shift();
-          if (songQueue.queue[0]) {
-            console.log("next song url " + songQueue.queue[0].url);
-            play();
-          }
-          if (!songQueue.queue[0]) {
-            songQueue.voiceChannel.leave();
-            songQueue.isPlaying = false;
-            message.channel.send({
-              embed: {
-                color: 15158332,
-                title: "Leaving voiceChannel",
-                description: "No songs left in the queue"
-              }
-            });
-            client.queue.delete(message.guild.id);
-          }
+          console.log("stop playing");
+          serverQueue.queue.shift();
+          play(message.guild.id);
         })
         .on("volumeChange", (oldVolume, newVolume) => {
           message.channel.send({
@@ -120,13 +133,13 @@ module.exports = {
           });
         })
         .on("end", () => {
-          songQueue.isPlaying = false;
-          updatePresence();
+          serverQueue.queue.shift();
         })
         .on("error", error => {
           console.log(error);
         });
     }
+
     function getThumbnail(url) {
       let ids = getVideoId(url);
       return `http://img.youtube.com/vi/${ids.id}/maxresdefault.jpg`;
@@ -141,21 +154,16 @@ module.exports = {
 
       return m + ":" + s;
     }
-    function updatePresence() {
-      let songQueue = client.queue.get(message.guild.id);
-      let textChannelId = client.guildSettings.get(message.member.guild.id)
-        .musicTextChannel;
-      if (textChannelId) {
-        if (songQueue.isPlaying === true) {
-          message.member.guild.channels.cache
-            .find(x => x.id === textChannelId)
-            .setTopic("Playing " + songQueue.queue[0].title);
-        }
-        if (songQueue.isPlaying === false) {
-          message.member.guild.channels.cache
-            .find(x => x.id === textChannelId)
-            .setTopic("Not playing");
-        }
+    function updatePresence(serverQueue) {
+      if (serverQueue.isPlaying === true) {
+        message.member.guild.channels.cache
+          .find(x => x.id === textChannelId)
+          .setTopic("Playing " + serverQueue.queue[0].title);
+      }
+      if (serverQueue.isPlaying === false) {
+        message.member.guild.channels.cache
+          .find(x => x.id === textChannelId)
+          .setTopic("Not playing");
       }
     }
   }
