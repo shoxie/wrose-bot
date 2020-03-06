@@ -79,7 +79,7 @@ module.exports = {
       if (!serverQueue.queue[0]) {
         serverQueue.isPlaying = false;
         serverQueue.voiceChannel.leave();
-        updatePresence(serverQueue);
+        //updatePresence(serverQueue);
         client.queue.delete(guild);
       }
       serverQueue.connection = await serverQueue.voiceChannel.join();
@@ -109,7 +109,7 @@ module.exports = {
               }
             }
           });
-          updatePresence(serverQueue);
+          //updatePresence(serverQueue);
           addTopSong(serverQueue.queue[0].title);
         })
         .on("finish", () => {
