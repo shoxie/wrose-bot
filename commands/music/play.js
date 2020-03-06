@@ -157,12 +157,12 @@ module.exports = {
     function updatePresence(serverQueue) {
       if (serverQueue.isPlaying === true) {
         message.member.guild.channels.cache
-          .find(x => x.id === textChannelId)
+          .find(x => x.id === serverQueue.textChannel)
           .setTopic("Playing " + serverQueue.queue[0].title);
       }
       if (serverQueue.isPlaying === false) {
         message.member.guild.channels.cache
-          .find(x => x.id === textChannelId)
+          .find(x => x.id === serverQueue.textChannel)
           .setTopic("Not playing");
       }
     }
