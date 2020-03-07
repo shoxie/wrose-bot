@@ -3,7 +3,7 @@ const model = require("../../model/model.js");
 const dude = require("yt-dude");
 const getVideoId = require("get-video-id");
 let musicDB = require("../../model/musicData");
-let Discord = require("discord.js");
+let util = require("../../");
 module.exports = {
   config: {
     name: "Play",
@@ -52,6 +52,7 @@ module.exports = {
           dispatcher: null
         };
         tempQueue.queue.push(song);
+        tempQueue.connection = await tempQueue.voiceChannel.join();
         client.queue.set(message.guild.id, tempQueue);
         play(message.guild.id);
       } else {
@@ -81,63 +82,64 @@ module.exports = {
         serverQueue.voiceChannel.leave();
         //updatePresence(serverQueue);
         client.queue.delete(guild);
-      }
-      serverQueue.connection = await serverQueue.voiceChannel.join();
-      serverQueue.dispatcher = serverQueue.connection
-        .play(
-          ytdl(serverQueue.queue[0].url, {
-            filter: "audioonly",
-            quality: "highestaudio",
-            highWaterMark: 1 << 25,
-            encoderArgs: ["-af", `equalizer=f=40:width_type=h:width=50:g=50`]
+      } else {
+        console.log(serverQueue.queue);
+        serverQueue.dispatcher = serverQueue.connection
+          .play(
+            ytdl(serverQueue.queue[0].url, {
+              filter: "audioonly",
+              quality: "highestaudio",
+              highWaterMark: 1 << 25,
+              encoderArgs: ["-af", `equalizer=f=40:width_type=h:width=50:g=50`]
+            })
+          )
+          .on("start", () => {
+            serverQueue.isPlaying = true;
+            message.channel.send({
+              embed: {
+                color: 3447003,
+                title: "Playing",
+                url: serverQueue.queue[0].url,
+                description: serverQueue.queue[0].title,
+                thumbnail: {
+                  url: serverQueue.queue[0].thumbnail
+                },
+                footer: {
+                  text: `Duration ` + serverQueue.queue[0].duration
+                }
+              }
+            });
+            //updatePresence(serverQueue);
+            addTopSong(serverQueue.queue[0].title);
           })
-        )
-        .on("start", () => {
-          serverQueue.isPlaying = true;
-
-          message.channel.send({
-            embed: {
-              color: 3447003,
-              title: "Playing",
-              url: serverQueue.queue[0].url,
-              description: serverQueue.queue[0].title,
-              thumbnail: {
-                url: serverQueue.queue[0].thumbnail
-              },
-              footer: {
-                text: `Duration ` + serverQueue.queue[0].duration
+          .on("finish", () => {
+            console.log("stop playing");
+            serverQueue.queue.shift();
+            console.log(serverQueue.queue);
+            play(message.guild.id);
+          })
+          .on("volumeChange", (oldVolume, newVolume) => {
+            message.channel.send({
+              embed: {
+                title: `Volume changed from ${oldVolume} to ${newVolume}.`,
+                author: {
+                  name: message.client.user.username,
+                  icon_url: message.client.user.avatarURL({
+                    format: "png",
+                    dynamic: true,
+                    size: 1024
+                  })
+                }
               }
-            }
+            });
+          })
+          .on("end", () => {
+            serverQueue.queue.shift();
+          })
+          .on("error", error => {
+            console.log(error);
           });
-          //updatePresence(serverQueue);
-          addTopSong(serverQueue.queue[0].title);
-        })
-        .on("finish", () => {
-          console.log("stop playing");
-          serverQueue.queue.shift();
-          play(message.guild.id);
-        })
-        .on("volumeChange", (oldVolume, newVolume) => {
-          message.channel.send({
-            embed: {
-              title: `Volume changed from ${oldVolume} to ${newVolume}.`,
-              author: {
-                name: message.client.user.username,
-                icon_url: message.client.user.avatarURL({
-                  format: "png",
-                  dynamic: true,
-                  size: 1024
-                })
-              }
-            }
-          });
-        })
-        .on("end", () => {
-          serverQueue.queue.shift();
-        })
-        .on("error", error => {
-          console.log(error);
-        });
+      }
     }
 
     function getThumbnail(url) {
@@ -164,6 +166,9 @@ module.exports = {
         message.member.guild.channels.cache
           .find(x => x.id === serverQueue.textChannel)
           .setTopic("Not playing");
+      }
+      if (message.content.includes("--lyrics")) {
+        util;
       }
     }
   }
