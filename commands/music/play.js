@@ -80,10 +80,37 @@ module.exports = {
       if (!serverQueue.queue[0]) {
         serverQueue.isPlaying = false;
         serverQueue.voiceChannel.leave();
-        //updatePresence(serverQueue);
+        message.channel.send({
+          embed: {
+            color: 15158332,
+            title: "No songs in the queue",
+            author: {
+              name: message.client.user.username,
+              icon_url: message.client.user.avatarURL({
+                format: "png",
+                dynamic: true,
+                size: 1024
+              })
+            }
+          }
+        });
+        updatePresence(serverQueue);
         client.queue.delete(guild);
       } else {
-        console.log(serverQueue.queue);
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: "Playing",
+            url: serverQueue.queue[0].url,
+            description: serverQueue.queue[0].title,
+            thumbnail: {
+              url: serverQueue.queue[0].thumbnail
+            },
+            footer: {
+              text: `Duration ` + serverQueue.queue[0].duration
+            }
+          }
+        });
         serverQueue.dispatcher = serverQueue.connection
           .play(
             ytdl(serverQueue.queue[0].url, {
@@ -95,27 +122,12 @@ module.exports = {
           )
           .on("start", () => {
             serverQueue.isPlaying = true;
-            message.channel.send({
-              embed: {
-                color: 3447003,
-                title: "Playing",
-                url: serverQueue.queue[0].url,
-                description: serverQueue.queue[0].title,
-                thumbnail: {
-                  url: serverQueue.queue[0].thumbnail
-                },
-                footer: {
-                  text: `Duration ` + serverQueue.queue[0].duration
-                }
-              }
-            });
-            //updatePresence(serverQueue);
+            updatePresence(serverQueue);
             addTopSong(serverQueue.queue[0].title);
           })
           .on("finish", () => {
             console.log("stop playing");
             serverQueue.queue.shift();
-            console.log(serverQueue.queue);
             play(message.guild.id);
           })
           .on("volumeChange", (oldVolume, newVolume) => {
@@ -159,16 +171,16 @@ module.exports = {
     function updatePresence(serverQueue) {
       if (serverQueue.isPlaying === true) {
         message.member.guild.channels.cache
-          .find(x => x.id === serverQueue.textChannel)
+          .find(x => x.id === serverQueue.textChannel.id)
           .setTopic("Playing " + serverQueue.queue[0].title);
       }
       if (serverQueue.isPlaying === false) {
         message.member.guild.channels.cache
-          .find(x => x.id === serverQueue.textChannel)
+          .find(x => x.id === serverQueue.textChannel.id)
           .setTopic("Not playing");
       }
       if (message.content.includes("--lyrics")) {
-        util;
+        // util;
       }
     }
   }
