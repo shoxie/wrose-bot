@@ -29,16 +29,31 @@ module.exports = {
         await geniusLyrics();
         return;
       }
-      if (data.lyrics.length >= 2048) {
-        var cut = data.lyrics.length - 2000;
-        data.lyrics = data.lyrics.slice(0, 0 - cut) + "...";
+      var output = data.lyrics.split("\n");
+      var myfields = [];
+      var tmp = 0;
+      var sttmp = "";
+      for (var i = 0; i <= output.length; i++) {
+        sttmp += output[i] + " \n ";
+        tmp++;
+        if (tmp == 15) {
+          myfields.push({ name: "\u200B", value: sttmp });
+          tmp = 0;
+          sttmp = "";
+        }
       }
+      // if (data.lyrics.length >= 2048) {
+      //   var cut = data.lyrics.length - 2000;
+      //   data.lyrics = data.lyrics.slice(0, 0 - cut) + "...";
+      // }
+
       message.channel.send({
         embed: {
           color: 3447003,
           title: "Lyrics for requested song",
           url: data.links.genius,
-          description: data.lyrics,
+          //description: data.lyrics,
+          fields: myfields,
           author: {
             name: message.client.user.username,
             icon_url: message.client.user.avatarURL({
