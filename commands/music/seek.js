@@ -5,27 +5,21 @@ module.exports = {
     usage: "seek [time]",
     description: "Resume song at specific time",
     ownerOnly: false,
-    enabled: false
+    enabled: true
   },
   async run(client, message, args) {
-    if (!args[0]) {
-      message.channel.send({
-        embed: {
-          color: 15158332,
-          title: "__***YOU THINK I'M A FOOL?***__",
-          description: "Input a text",
-          author: {
-            name: message.client.user.username,
-            icon_url: message.client.user.avatarURL({
-              format: "png",
-              dynamic: true,
-              size: 1024
-            })
-          }
-        }
-      });
+    const serverQueue = client.queue.get(message.guild.id);
+    console.log(message.member.voice.channel.id, serverQueue.voiceChannel.id);
+
+    if (!message.member.voice.channel)
+      return message.channel.send("Join voice channel first");
+    if (!serverQueue) return message.channel.send("No songs to seek");
+    if (serverQueue.voiceChannel.id !== message.member.voice.channel.id) {
+      message.chanel.send(
+        `You must in **${serverQueue.voiceChannel.name}** to seek the song`
+      );
     } else {
-      musicModel.dispatcher.seek(args[0]);
+      serverQueue.dispatcher.end(`seek 02:38`);
     }
   }
 };
