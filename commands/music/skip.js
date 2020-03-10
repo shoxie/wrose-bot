@@ -1,4 +1,4 @@
-let musicModel = require("../../model/model");
+let serverQueue = require("../../model/model");
 module.exports = {
   config: {
     name: "skip",
@@ -8,12 +8,13 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
+    let serverQueue = client.queue.get(message.guild.id);
     if (message.member.guild.id === "335604901730058243") {
-      if (!message.member.roles.has("520470163653525505")) {
+      if (!message.member.cache.roles.has("520470163653525505")) {
         return;
       }
     } else {
-      if (message.member.voice.channel != musicModel.voiceChannel) {
+      if (message.member.voice.channel != serverQueue.voiceChannel) {
         // undefined
         return message.channel.send({
           embed: {
@@ -30,7 +31,7 @@ module.exports = {
           }
         });
       }
-      if (!musicModel.queue[0]) {
+      if (!serverQueue.queue[0]) {
         message.channel.send({
           embed: {
             color: 15158332,
@@ -46,7 +47,7 @@ module.exports = {
           }
         });
       }
-      musicModel.connection.dispatcher.end();
+      serverQueue.connection.dispatcher.end();
     }
     function roleCheck(config) {}
   }

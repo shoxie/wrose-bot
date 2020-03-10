@@ -1,4 +1,4 @@
-let musicModel = require("../../model/model.js");
+let serverQueue = require("../../model/model.js");
 module.exports = {
   config: {
     name: "disconnect",
@@ -8,8 +8,8 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
-    musicModel.queue = [];
-    if (!musicModel.voiceChannel) {
+    let serverQueue = client.queue.get(message.guild.id);
+    if (!serverQueue.voiceChannel) {
       return message.channel.send({
         embed: {
           color: 15158332,
@@ -26,8 +26,8 @@ module.exports = {
         }
       });
     }
-    if (musicModel.voiceChannel) {
-      musicModel.connection.dispatcher.finish();
+    if (serverQueue.voiceChannel) {
+      serverQueue.connection.dispatcher.finish();
       message.channel.send({
         embed: {
           title: "Disconnected from voiceChannel",
