@@ -27,7 +27,7 @@ module.exports = {
       });
     }
     if (serverQueue.voiceChannel) {
-      serverQueue.connection.dispatcher.finish();
+      serverQueue.connection.dispatcher.end();
       message.channel.send({
         embed: {
           title: "Disconnected from voiceChannel",
