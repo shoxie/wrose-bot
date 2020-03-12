@@ -1,3 +1,7 @@
 {
-    "prefix": "."
+    "prefix": ".",
+    "timer": 5000,
+    "getID64URL": "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=669019B4CBEEAF255DF849BD8BD295FC&vanityurl=",
+    "getDAC": "http://autochess.varena.com/api/autochess/player/",
+    "getUserInfo": "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=669019B4CBEEAF255DF849BD8BD295FC&steamids="
 }
