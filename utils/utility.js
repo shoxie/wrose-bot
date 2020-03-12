@@ -262,13 +262,36 @@ function getStats(username, msg) {
   msg.channel.send(embed);
 }
 
-module.exports.getRandomColor = getRandomColor;
-module.exports.convert_data = convert_data;
-module.exports.updateNews = updateNews;
-module.exports.sendNews = sendNews;
-module.exports.getChess = getChess;
-module.exports.getStats = getStats;
+function updateCorona(message) {
+  request("https://coronavirus-tracker-api.herokuapp.com/all", function(
+    error,
+    response,
+    body
+  ) {
+    let data = JSON.parse(body);
+    message.channel.send({
+      embed: {
+        color: 14177041,
+        title: "Corona(COVID-19) updates",
+        fields: [
+          {
+            name: "Infected",
+            value: data.latest.confirmed
+          },
 
+          {
+            name: "Deaths confirmed",
+            value: data.latest.deaths
+          },
+          {
+            name: "Recoverd",
+            value: data.latest.recovered
+          }
+        ]
+      }
+    });
+  });
+}
 module.exports = {
   sendResponse,
   validateUser,
@@ -278,5 +301,6 @@ module.exports = {
   updateNews,
   sendNews,
   getChess,
-  getStats
+  getStats,
+  updateCorona
 };
