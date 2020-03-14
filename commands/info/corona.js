@@ -11,10 +11,10 @@ module.exports = {
   },
   async run(client, message, args) {
     if (message.content.includes("--stop")) {
-      clearInterval(myInter);
+      clearInterval(coronaInterval);
     }
     if (message.content.includes("--track")) {
-      myInter = setInterval(async function() {
+      coronaInterval = setInterval(async function() {
         await util.updateCorona(message);
       }, 5000);
     } else {
