@@ -1,4 +1,3 @@
-let musicModel = require("../../model/model");
 module.exports = {
   config: {
     name: "seek",

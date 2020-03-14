@@ -1,4 +1,3 @@
-let musicModel = require("../../model/model");
 module.exports = {
   config: {
     name: "volume",
@@ -8,6 +7,7 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
+    const serverQueue = client.queue.get(message.guild.id);
     if (args[0] < 0 && args[0] > 100 && !Number.isInteger(args[0])) {
       return message.channel.send({
         embed: {
@@ -26,6 +26,6 @@ module.exports = {
       });
     }
     let volume = args[0] / 100;
-    musicModel.dispatcher.setVolume(volume);
+    serverQueue.dispatcher.setVolume(volume);
   }
 };
