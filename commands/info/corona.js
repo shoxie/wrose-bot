@@ -16,7 +16,7 @@ module.exports = {
     if (message.content.includes("--track")) {
       coronaInterval = setInterval(async function() {
         await util.updateCorona(message);
-      }, 5000);
+      }, 3600000);
     } else {
       request("https://coronavirus-tracker-api.herokuapp.com/all", function(
         error,
