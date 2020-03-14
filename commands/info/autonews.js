@@ -10,9 +10,9 @@ module.exports = {
   },
   async run(client, message, args) {
     if (message.content.includes("--stop")) {
-      clearInterval(myInter);
+      clearInterval(newsInterval);
     } else {
-      myInter = setInterval(async function() {
+      newsInterval = setInterval(async function() {
         await util.sendNews(message);
         util.updateNews();
       }, config.timer);
