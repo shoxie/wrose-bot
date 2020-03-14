@@ -1,6 +1,6 @@
 {
   "name": "discordbot",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -45,7 +45,11 @@
     "ytdl-core": "^2.0.0"
   },
   "devDependencies": {
+    "canvas": "^2.6.1",
+    "canvasjs": "^1.8.3",
+    "chart.js": "^2.9.3",
     "progress": "^2.0.3",
-    "semantic-release": "^17.0.4"
+    "semantic-release": "^17.0.4",
+    "vega": "^5.10.0"
   }
 }

@@ -56,8 +56,9 @@ function sendNews(msg) {
     if (sendData) {
       fs.writeFile("./newsData.json", JSON.stringify(data), "", err => {});
       var { link, desc } = convert_data(sendData.description._cdata);
+      let title = sendData.title._text ? sendData.title._text : "Article";
       const embed = new Discord.MessageEmbed()
-        .setTitle(sendData.title._text)
+        .setTitle(title)
         .setColor(getRandomColor())
         .setDescription(desc)
         .setURL(link)

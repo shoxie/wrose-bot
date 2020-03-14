@@ -1,4 +1,3 @@
-let musicModel = require("../../model/model");
 module.exports = {
   config: {
     name: "summon",
@@ -8,6 +7,7 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
+    const serverQueue = client.queue.get(message.guild.id);
     if (!message.member.voice.channel) {
       return message.channel.send({
         embed: {
@@ -24,7 +24,7 @@ module.exports = {
         }
       });
     }
-    if (musicModel.isPlaying === true) {
+    if (serverQueue.isPlaying === true) {
       return message.channel.send({
         embed: {
           color: 15158332,
@@ -41,9 +41,9 @@ module.exports = {
         }
       });
     }
-    if (musicModel.isPlaying === false && !musicModel.voiceChannel) {
-      musicModel.voiceChannel = message.member.voice.channel;
-      musicModel.connection = await message.member.voice.channel.join();
+    if (serverQueue.isPlaying === false && !serverQueue.voiceChannel) {
+      serverQueue.voiceChannel = message.member.voice.channel;
+      serverQueue.connection = await message.member.voice.channel.join();
     }
   }
 };

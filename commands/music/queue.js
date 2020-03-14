@@ -1,4 +1,3 @@
-let musicModel = require("../../model/model");
 let Discord = require("discord.js");
 module.exports = {
   config: {
@@ -9,7 +8,8 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
-    if (!musicModel.queue[0]) {
+    const serverQueue = client.queue.get(message.guild.id);
+    if (!serverQueue.queue[0]) {
       message.channel.send({
         embed: {
           color: 15158332,
@@ -17,7 +17,7 @@ module.exports = {
         }
       });
     }
-    let songs = musicModel.queue;
+    let songs = serverQueue.queue;
     let embed = new Discord.MessageEmbed()
       .setColor("#0390fc")
       .setTitle("Songs in queue")
