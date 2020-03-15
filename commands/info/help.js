@@ -5,6 +5,7 @@ module.exports = {
   config: {
     name: "help",
     usage: "help [command name]",
+    aliases: ["h", "help"],
     description:
       "Show helps for commands, use ```.commands``` for the list of commands",
     ownerOnly: false,

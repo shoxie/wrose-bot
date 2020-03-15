@@ -1,4 +1,3 @@
-const guildSettings = require("../model/guildSettingsModel");
 let util = require("../utils/utility");
 let config = require("../config/config.json");
 module.exports = client => {
@@ -34,10 +33,17 @@ module.exports = client => {
     }
     //command execution
     if (cmd.length === 0) return;
-    if (message.content.startsWith(config.prefix) && client.commands.has(cmd)) {
-      if (client.commands.get(cmd).config.enabled === true)
-        client.commands.get(cmd).run(client, message, args);
+    if (message.content.startsWith(config.prefix)) {
+      let alias = client.aliases;
+      if (client.commands.has(cmd)) {
+        if (client.commands.get(cmd).config.enabled === true)
+          client.commands.get(cmd).run(client, message, args);
+      } else if (client.aliases.has(cmd)) {
+        if (client.aliases.get(cmd).config.enabled === true)
+          client.aliases.get(cmd).run(client, message, args);
+      }
     }
+
     if (message.mentions.users.has(client.user.id)) {
       message.channel.send("My prefix is " + config.prefix);
     }
