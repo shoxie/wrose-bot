@@ -1,8 +1,8 @@
 module.exports = {
   config: {
-    name: "moveMembers",
-    usage: "moveMembers [source channelID] [destination ID]",
-    description: "Move all members from one channel to another",
+    name: "lockdown",
+    usage: "lockdown [--remove]",
+    description: "Turn textChannel into lockdown status",
     ownerOnly: false,
     enabled: false
   },
