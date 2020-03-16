@@ -31,7 +31,7 @@ module.exports = {
           }
         });
       }
-      if (!serverQueue.queue[0]) {
+      if (!serverQueue) {
         message.channel.send({
           embed: {
             color: 15158332,
