@@ -2,6 +2,7 @@ module.exports = {
   config: {
     name: "nowPlaying",
     usage: "nowPlaying",
+    aliases: ["np"],
     description: "Send information of playing song",
     ownerOnly: false,
     enabled: true

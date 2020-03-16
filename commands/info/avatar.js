@@ -2,6 +2,7 @@ module.exports = {
   config: {
     name: "avatar",
     usage: "avatar @user",
+    aliases: ["avt"],
     description: "Show the default resolution of a user avatar",
     ownerOnly: false,
     enabled: true

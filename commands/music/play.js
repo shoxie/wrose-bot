@@ -8,6 +8,7 @@ module.exports = {
   config: {
     name: "Play",
     usage: "play [song name]",
+    aliases: ["p"],
     description: "Play a song from youtube",
     ownerOnly: false,
     enabled: true

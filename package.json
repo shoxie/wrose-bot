@@ -48,6 +48,7 @@
     "canvas": "^2.6.1",
     "canvasjs": "^1.8.3",
     "chart.js": "^2.9.3",
+    "discord-logs": "^1.7.5",
     "progress": "^2.0.3",
     "semantic-release": "^17.0.4",
     "vega": "^5.10.0"

@@ -3,6 +3,7 @@ module.exports = {
   config: {
     name: "queue",
     usage: "queue",
+    aliases: ["q"],
     description: "Show current queue songs.",
     ownerOnly: false,
     enabled: true
