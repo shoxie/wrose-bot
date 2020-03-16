@@ -76,7 +76,7 @@ function updateNews() {
     response,
     body
   ) {
-    if (err) throw err;
+    if (err) console.log(err);
     var result1 = convert.xml2js(body, { compact: true, spaces: 4 });
     var dataTmp = result1.rss.channel.item;
     for (const key of Object.keys(dataTmp)) {
