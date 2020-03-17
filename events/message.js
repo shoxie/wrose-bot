@@ -2,17 +2,26 @@ let util = require("../utils/utility");
 let config = require("../config/config.json");
 module.exports = client => {
   return async function(message) {
+    let guildID = message.guild.id;
+    let guildConfig = client.guildSettings.get(guildID);
+    let prefix = "";
+    if (guildConfig) {
+      prefix = guildConfig.prefix.toString();
+    } else {
+      prefix = config.prefix;
+    }
     //args definition
+    if (prefix.length === 0) return;
     const args = message.content
-      .slice(config.prefix.length)
+      .slice(prefix.length)
       .trim()
       .split(/ +/g);
     const cmd = args.shift().toLowerCase();
     //message filter
-    let guildID = message.guild.id;
+
     if (message.author.bot) return;
     //ignore message when it's in ignored channels
-    let guildConfig = client.guildSettings.get(guildID);
+
     if (guildConfig && guildConfig.ignoredChannels) {
       for (let ignoredChannel of guildConfig.ignoredChannels) {
         if (message.channel.id === ignoredChannel) {
@@ -25,7 +34,7 @@ module.exports = client => {
     if (
       guildConfig &&
       message.channel.id === guildConfig.musicTextChannel &&
-      !message.content.startsWith(config.prefix)
+      !message.content.startsWith(prefix)
     ) {
       //console.log(message.channel.id === musicTextChannel[key]);
 
@@ -33,7 +42,7 @@ module.exports = client => {
     }
     //command execution
     if (cmd.length === 0) return;
-    if (message.content.startsWith(config.prefix)) {
+    if (message.content.startsWith(prefix)) {
       let alias = client.aliases;
       if (client.commands.has(cmd)) {
         if (client.commands.get(cmd).config.enabled === true)
@@ -45,7 +54,7 @@ module.exports = client => {
     }
 
     if (message.mentions.users.has(client.user.id)) {
-      message.channel.send("My prefix is " + config.prefix);
+      message.channel.send("My prefix is " + prefix);
     }
 
     //misc utilities
