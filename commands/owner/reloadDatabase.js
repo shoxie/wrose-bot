@@ -18,13 +18,23 @@ module.exports = {
     //   };
     //   guildSettingsModel.addNewGuild();
     // }
-    let guilds = client.guilds;
-    for (const [key, guild] of guilds.entries()) {
+    if (message.author.id !== "155622262660268033") return;
+    const guilds = client.guilds.cache;
+    //console.log(guilds);
+    //console.log(typeof guilds);
+    // for (const [key, guild] of guilds) {
+    //   let data = {
+    //     name: guild.name,
+    //     id: guild.id
+    //   };
+    //   await guildSettings.addNewGuild(data);
+    // }
+    client.guilds.cache.map(async guild => {
       let data = {
         name: guild.name,
         id: guild.id
       };
       await guildSettings.addNewGuild(data);
-    }
+    });
   }
 };

@@ -7,6 +7,11 @@ let guildSettingsSchema = mongoose.Schema({
   guildName: {
     type: String
   },
+  prefix: {
+    type: String,
+    max: 1,
+    default: "."
+  },
   musicTextChannel: {
     type: String,
     unique: true
@@ -58,9 +63,19 @@ async function queryGuildSettings(guildID) {
   let result = await guildSettings.findOne({ guildID: guildID }).exec();
   return result;
 }
+async function updatePrefix(prefix, guildID) {
+  let a = await guildSettings.findOneAndUpdate(
+    { guildID: guildID },
+    {
+      prefix: prefix
+    }
+  );
+  return a;
+}
 module.exports = {
   updateIgnoredChannels,
   updateMusicChannel,
   addNewGuild,
-  queryGuildSettings
+  queryGuildSettings,
+  updatePrefix
 };
