@@ -1,9 +1,9 @@
-const ytdl = require("ytdl-core");
+const ytcore = require("ytdl-core");
 const model = require("../../model/model.js");
 const dude = require("yt-dude");
 const getVideoId = require("get-video-id");
 let musicDB = require("../../model/musicData");
-let util = require("../../");
+const ytDiscord = require("ytdl-core-discord");
 module.exports = {
   config: {
     name: "Play",
@@ -24,17 +24,17 @@ module.exports = {
         }
       });
     }
-    if (ytdl.validateURL(args[0])) {
+    if (ytcore.validateURL(args[0])) {
       addQueue(args[0]);
     }
-    if (!ytdl.validateURL(args[0])) {
+    if (!ytcore.validateURL(args[0])) {
       let query = await dude.search(args);
       let videoUrl = "https://www.youtube.com/watch?v=" + query[0].videoId;
       addQueue(videoUrl);
     }
     //functions
     async function addQueue(url) {
-      let songInfo = await ytdl.getInfo(url);
+      let songInfo = await ytcore.getInfo(url);
       let song = {
         title: songInfo.title,
         url: songInfo.video_url,
@@ -112,15 +112,17 @@ module.exports = {
             }
           }
         });
+        // serverQueue.dispatcher = serverQueue.connection
+        //   .play(
+        //     ytDiscord(serverQueue.queue[0].url, {
+        //       filter: "audioonly",
+        //       quality: "highestaudio",
+        //       highWaterMark: 1 << 25,
+        //       encoderArgs: ["-af", `equalizer=f=40:width_type=h:width=50:g=50`]
+        //     })
+        //   )
         serverQueue.dispatcher = serverQueue.connection
-          .play(
-            ytdl(serverQueue.queue[0].url, {
-              filter: "audioonly",
-              quality: "highestaudio",
-              highWaterMark: 1 << 25,
-              encoderArgs: ["-af", `equalizer=f=40:width_type=h:width=50:g=50`]
-            })
-          )
+          .play(await ytDiscord(serverQueue.queue[0].url), { type: "opus" })
           .on("start", () => {
             serverQueue.isPlaying = true;
             updatePresence(serverQueue);
