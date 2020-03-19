@@ -112,22 +112,22 @@ module.exports = {
             }
           }
         });
-        // serverQueue.dispatcher = serverQueue.connection
-        //   .play(
-        //     ytDiscord(serverQueue.queue[0].url, {
-        //       filter: "audioonly",
-        //       quality: "highestaudio",
-        //       highWaterMark: 1 << 25,
-        //       encoderArgs: ["-af", `equalizer=f=40:width_type=h:width=50:g=50`]
-        //     })
-        //   )
         serverQueue.dispatcher = serverQueue.connection
-          .play(await ytDiscord(serverQueue.queue[0].url), { type: "opus" })
-          .on("start", () => {
-            serverQueue.isPlaying = true;
-            updatePresence(serverQueue);
-            addTopSong(serverQueue.queue[0].title);
-          })
+          .play(
+            ytcore(serverQueue.queue[0].url, {
+              filter: "audioonly",
+              quality: "highestaudio",
+              highWaterMark: 1 << 25,
+              encoderArgs: ["-af", `equalizer=f=40:width_type=h:width=50:g=50`]
+            })
+          )
+          // serverQueue.dispatcher = serverQueue.connection
+          //   .play(await ytDiscord(serverQueue.queue[0].url), { type: "opus" })
+          //   .on("start", () => {
+          //     serverQueue.isPlaying = true;
+          //     updatePresence(serverQueue);
+          //     addTopSong(serverQueue.queue[0].title);
+          //   })
           .on("finish", () => {
             console.log("stop playing");
             serverQueue.queue.shift();
