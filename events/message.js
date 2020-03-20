@@ -43,13 +43,21 @@ module.exports = client => {
     //command execution
     if (cmd.length === 0) return;
     if (message.content.startsWith(prefix)) {
-      let alias = client.aliases;
-      if (client.commands.has(cmd)) {
-        if (client.commands.get(cmd).config.enabled === true)
-          client.commands.get(cmd).run(client, message, args);
-      } else if (client.aliases.has(cmd)) {
-        if (client.aliases.get(cmd).config.enabled === true)
-          client.aliases.get(cmd).run(client, message, args);
+      let aliases = client.aliases;
+      let commands = client.commands;
+      let author = message.author;
+      let ownerID = client.config.get('ownerID')
+      if (commands.has(cmd)) {
+        if (commands.get(cmd).config.ownerOnly === true && author.id !== ownerID)
+          return message.channel.send("This is owner only command"); else commands.get(cmd).run(client, message, args);
+        if (commands.get(cmd).config.enabled === true)
+          commands.get(cmd).run(client, message, args);
+      } else if (aliases.has(cmd)) {
+        if (aliases.get(cmd).config.ownerOnly === true && author.id === ownerID)
+          aliases.get(cmd).run(client, message, args);
+          else return message.channel.send("This is owner only command");
+        if (aliases.get(cmd).config.enabled === true)
+          aliases.get(cmd).run(client, message, args);
       }
     }
 
@@ -69,6 +77,15 @@ module.exports = client => {
         message.mentions.users.has(client.awayuser.get(mentionedUser).user.id)
       ) {
         util.sendShit(message);
+      }
+    }
+    // functions
+    function runCommands(cmd) {
+      if (commands.has(cmd)) {
+        commands.get(cmd).run(client, message, args);
+      }
+      if (aliases.has(cmd)) {
+        aliases.get(cmd).run(client, message, args);
       }
     }
   };
