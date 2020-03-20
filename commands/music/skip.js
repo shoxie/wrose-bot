@@ -26,7 +26,7 @@ module.exports = {
       });
     }
     if (message.member.guild.id === "335604901730058243") {
-      if (!message.member.hasPermissions('ADMINISTRATOR') {
+      if (!message.member.hasPermissions("ADMINISTRATOR")) {
         return;
       }
     } else if (message.member.voice.channel != serverQueue.voiceChannel) {

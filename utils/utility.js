@@ -293,6 +293,20 @@ function updateCorona(message) {
     });
   });
 }
+function progressBar(message, duration) {
+  let progressCount = 30;
+  let intervalTime = duration / progressCount;
+  let count = 0;
+  let bar = "";
+  thisInterval = setInterval(async function() {
+    msg.edit({ embed: {} });
+    bar = bar + "=";
+    count++;
+  }, intervalTime);
+}
+function progressBarStop() {
+  clearInterval(thisInterval);
+}
 module.exports = {
   sendResponse,
   validateUser,
