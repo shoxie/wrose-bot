@@ -48,14 +48,15 @@ module.exports = client => {
       let author = message.author;
       let ownerID = client.config.get('ownerID')
       if (commands.has(cmd)) {
-        if (commands.get(cmd).config.ownerOnly === true && author.id !== ownerID)
-          return message.channel.send("This is owner only command"); else commands.get(cmd).run(client, message, args);
+        if (commands.get(cmd).config.ownerOnly === true && author.id === ownerID)
+              commands.get(cmd).run(client, message, args);
+                  else return message.channel.send("This is owner only command"); 
         if (commands.get(cmd).config.enabled === true)
           commands.get(cmd).run(client, message, args);
       } else if (aliases.has(cmd)) {
         if (aliases.get(cmd).config.ownerOnly === true && author.id === ownerID)
-          aliases.get(cmd).run(client, message, args);
-          else return message.channel.send("This is owner only command");
+              aliases.get(cmd).run(client, message, args);
+                  else return message.channel.send("This is owner only command");
         if (aliases.get(cmd).config.enabled === true)
           aliases.get(cmd).run(client, message, args);
       }
