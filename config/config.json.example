@@ -1,5 +1,6 @@
 {
     "prefix": ".",
+    "ownerID": "155622262660268033",
     "timer": 5000,
     "getID64URL": "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=669019B4CBEEAF255DF849BD8BD295FC&vanityurl=",
     "getDAC": "http://autochess.varena.com/api/autochess/player/",
