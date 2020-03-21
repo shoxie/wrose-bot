@@ -1,5 +1,3 @@
-let fs = require("fs");
-let noob = require("../music/playlist");
 let conf = require("../../config/config.json");
 module.exports = {
   config: {
@@ -21,7 +19,7 @@ module.exports = {
           fields: [
             {
               name: "Prefix",
-              value: conf.prefix
+              value: client.guildSettings.get(message.guild.id).prefix
             },
             {
               name: "Running in ",
@@ -38,8 +36,10 @@ module.exports = {
         }
       });
     }
-    let usage = `${conf.prefix}` + client.commands.get(args[0]).config.usage;
     if (args[0]) {
+      let usage =
+        `${client.guildSettings.get(message.guild.id).prefix}` +
+        client.commands.get(args[0]).config.usage;
       message.channel.send({
         embed: {
           color: 3447003,
