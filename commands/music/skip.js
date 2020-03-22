@@ -9,6 +9,18 @@ module.exports = {
   },
   async run(client, message, args) {
     let serverQueue = client.queue.get(message.guild.id);
+    let requiredRole = message.guild.roles.cache.find(
+      x => x.name === "DJ" || "dj"
+    );
+    if (!requiredRole) {
+      return message.channel.send({
+        embed: {
+          color: 15158332,
+          title:
+            "Your guild does not have the DJ role, please contact your guild owner/administrator/moderator to create and add the role."
+        }
+      });
+    }
     if (!serverQueue) {
       return message.channel.send({
         embed: {
@@ -25,10 +37,14 @@ module.exports = {
         }
       });
     }
-    if (message.member.guild.id === "335604901730058243") {
-      if (!message.member.hasPermission("ADMINISTRATOR")) {
-        return;
-      }
+
+    if (!message.member.roles.cache.has(requiredRole.id)) {
+      return message.channel.send({
+        embeD: {
+          color: 15158332,
+          title: "You do not have the DJ role."
+        }
+      });
     } else if (message.member.voice.channel != serverQueue.voiceChannel) {
       // undefined
       return message.channel.send({

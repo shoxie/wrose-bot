@@ -34,6 +34,10 @@ module.exports = {
             {
               name: "Requested by",
               value: serverQueue.queue[0].requester
+            },
+            {
+              name: "Current seek",
+              value: msToTime()
             }
           ],
           thumbnail: {
@@ -51,6 +55,19 @@ module.exports = {
           }
         }
       });
+    }
+    function msToTime() {
+      let duration = serverQueue.dispatcher.streamTime;
+      var milliseconds = parseInt((duration % 1000) / 100),
+        seconds = Math.floor((duration / 1000) % 60),
+        minutes = Math.floor((duration / (1000 * 60)) % 60),
+        hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+      hours = hours < 10 ? "0" + hours : hours;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      return minutes + ":" + seconds;
     }
   }
 };
