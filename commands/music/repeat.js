@@ -7,13 +7,13 @@ module.exports = {
     enabled: true
   },
   async run(client, message, args) {
-    let serverQueue = client.queue.get(message.guild.id)
-    serverQueue.queue.unshift(serverQueue.songInfo.video_url);
+    let serverQueue = client.queue.get(message.guild.id);
+    serverQueue.queue.unshift(serverQueue.queue[0]);
     message.channel.send({
       embed: {
         color: 3066993,
         title: "Repeating one song",
-        description: "Song name " + serverQueue.songInfo.title,
+        description: "Song name " + serverQueue.queue[0].title,
         author: {
           name: message.client.user.username,
           icon_url: message.client.user.avatarURL({

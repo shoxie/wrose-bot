@@ -24,6 +24,20 @@ module.exports = {
         }
       });
     }
+    if (
+      message.member.voice.channel &&
+      serverQueue.voiceChannel.id !== message.member.voice.channel
+    ) {
+      return message.channel.send({
+        embed: {
+          color: 15158332,
+          title:
+            "I'm now playing in another voiceChannel, please wait or join that voiceChannel",
+          //description:
+            //"If you are desperate to listen to music, use --wait in your order and i will join you immediately after i finished playing for someone else"
+        }
+      });
+    }
     if (ytcore.validateURL(args[0])) {
       addQueue(args[0]);
     }
@@ -40,6 +54,7 @@ module.exports = {
         url: songInfo.video_url,
         thumbnail: getThumbnail(url),
         duration: secondsCoverter(songInfo.length_seconds),
+        seconds: songInfo.length_seconds,
         requester: message.author.tag
       };
       if (!serverQueue) {
@@ -80,6 +95,7 @@ module.exports = {
       const serverQueue = client.queue.get(guild);
       if (!serverQueue.queue[0]) {
         serverQueue.isPlaying = false;
+        updatePresence(serverQueue);
         serverQueue.voiceChannel.leave();
         message.channel.send({
           embed: {
@@ -95,7 +111,6 @@ module.exports = {
             }
           }
         });
-        updatePresence(serverQueue);
         client.queue.delete(guild);
       } else {
         message.channel.send({
@@ -123,11 +138,11 @@ module.exports = {
           )
           // serverQueue.dispatcher = serverQueue.connection
           //   .play(await ytDiscord(serverQueue.queue[0].url), { type: "opus" })
-          //   .on("start", () => {
-          //     serverQueue.isPlaying = true;
-          //     updatePresence(serverQueue);
-          //     addTopSong(serverQueue.queue[0].title);
-          //   })
+          .on("start", () => {
+            serverQueue.isPlaying = true;
+            updatePresence(serverQueue);
+            addTopSong(serverQueue.queue[0].title);
+          })
           .on("finish", () => {
             console.log("stop playing");
             serverQueue.queue.shift();
