@@ -19,7 +19,7 @@ module.exports = {
     if (serverQueue) {
       if (
         message.member.voice.channel &&
-        serverQueue.voiceChannel.id !== message.member.voice.channel
+        serverQueue.voiceChannel !== message.member.voice.channel
       ) {
         return message.channel.send({
           embed: {
