@@ -23,8 +23,7 @@ module.exports = {
           description: "You have to be in a voiceChannel to use the command."
         }
       });
-    }
-    if (
+    } else if (
       message.member.voice.channel &&
       serverQueue.voiceChannel.id !== message.member.voice.channel
     ) {
