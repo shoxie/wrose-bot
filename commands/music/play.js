@@ -16,24 +16,27 @@ module.exports = {
   async run(client, message, args) {
     const serverQueue = client.queue.get(message.guild.id);
     const voiceChannel = message.member.voice.channel;
+    if (serverQueue) {
+      if (
+        message.member.voice.channel &&
+        serverQueue.voiceChannel.id !== message.member.voice.channel
+      ) {
+        return message.channel.send({
+          embed: {
+            color: 15158332,
+            title:
+              "I'm now playing in another voiceChannel, please wait or join that voiceChannel"
+            //description:
+            //"If you are desperate to listen to music, use --wait in your order and i will join you immediately after i finished playing for someone else"
+          }
+        });
+      }
+    }
     if (!message.member.voice.channel) {
       return message.channel.send({
         embed: {
           color: 15158332,
           description: "You have to be in a voiceChannel to use the command."
-        }
-      });
-    } else if (
-      message.member.voice.channel &&
-      serverQueue.voiceChannel.id !== message.member.voice.channel
-    ) {
-      return message.channel.send({
-        embed: {
-          color: 15158332,
-          title:
-            "I'm now playing in another voiceChannel, please wait or join that voiceChannel",
-          //description:
-            //"If you are desperate to listen to music, use --wait in your order and i will join you immediately after i finished playing for someone else"
         }
       });
     }
