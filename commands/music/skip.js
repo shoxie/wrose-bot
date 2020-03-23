@@ -9,7 +9,7 @@ module.exports = {
   },
   async run(client, message, args) {
     let serverQueue = client.queue.get(message.guild.id);
-    let requiredRole = message.guild.roles.cache.find(
+    let requiredRole = await message.guild.roles.cache.find(
       x => x.name === "DJ" || "dj"
     );
     if (!requiredRole) {
@@ -38,7 +38,11 @@ module.exports = {
       });
     }
 
-    if (!message.member.roles.cache.has(requiredRole.id)) {
+    if (
+      !message.member.roles.cache.has(
+        message.guild.roles.cache.find(x => x.name === "DJ" || "dj").id
+      )
+    ) {
       return message.channel.send({
         embeD: {
           color: 15158332,
@@ -61,8 +65,6 @@ module.exports = {
           }
         }
       });
-    }
-
-    serverQueue.connection.dispatcher.end();
+    } else serverQueue.connection.dispatcher.end();
   }
 };
