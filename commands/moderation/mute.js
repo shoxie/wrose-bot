@@ -37,7 +37,10 @@ module.exports = {
     async function addMute(role) {
       //console.log(user);
       if (user.roles) {
-        await removeRoles();
+        user.roles.cache.forEach(role => {
+          knownRoles.push(role.id);
+        });
+        user.roles.remove(knownRoles);
       }
       user.roles.add(role);
       message.guild.channels.cache.forEach(async (channel, id) => {
@@ -68,6 +71,7 @@ module.exports = {
         }
       });
       setTimeout(function() {
+        console.log(knownRoles);
         user.roles.remove(role.id);
         user.roles.add(knownRoles);
         knownRoles = [];
@@ -89,6 +93,14 @@ module.exports = {
           }
         });
       }, args[1] * 1000);
+    }
+    async function roleChanger(mutedRole) {
+      user.roles.cache.forEach(role => {
+        console.log(role.id);
+        knownRoles.push(role.id);
+      });
+      user.roles.remove(knownRoles);
+      user.roles.add(mutedRole.id);
     }
     async function disconnectUser() {
       let findVoice = await message.guild.channels.cache.find(
@@ -114,18 +126,6 @@ module.exports = {
           });
         }
       }
-    }
-    async function removeRoles() {
-      user.roles.cache.forEach(role => {
-        console.log(role.id);
-        knownRoles.push(role.id);
-      });
-      user.roles.remove(knownRoles);
-      roleModel.addUser(id.id, knownRoles);
-    }
-    async function getDataFromDB() {
-      let data = await roleModel.queryRoles(id.id);
-      return data;
     }
     function secondsCoverter(second) {
       second = Number(second);
