@@ -1,3 +1,4 @@
+let roleModel = require("../../model/roles.model");
 module.exports = {
   config: {
     name: "mute",
@@ -11,6 +12,7 @@ module.exports = {
     let muteRole = message.guild.roles.cache.find(x => x.name === "Muted");
     let id = message.mentions.users.first();
     let user = await message.guild.members.cache.get(id.id);
+    let knownRoles = [];
     //return if member has no permission
     if (!message.member.hasPermission("MANAGE_GUILD"))
       return message.channel.send("Đừng cố tạo phản nữa.");
@@ -34,7 +36,10 @@ module.exports = {
     }
     async function addMute(role) {
       //console.log(user);
-      await user.roles.add(role.id);
+      if (user.roles) {
+        await removeRoles();
+      }
+      user.roles.add(role);
       message.guild.channels.cache.forEach(async (channel, id) => {
         await channel.updateOverwrite(role, {
           SEND_MESSAGES: false,
@@ -64,6 +69,8 @@ module.exports = {
       });
       setTimeout(function() {
         user.roles.remove(role.id);
+        user.roles.add(knownRoles);
+        knownRoles = [];
         message.channel.send({
           embed: {
             color: 3066993,
@@ -107,6 +114,18 @@ module.exports = {
           });
         }
       }
+    }
+    async function removeRoles() {
+      user.roles.cache.forEach(role => {
+        console.log(role.id);
+        knownRoles.push(role.id);
+      });
+      user.roles.remove(knownRoles);
+      roleModel.addUser(id.id, knownRoles);
+    }
+    async function getDataFromDB() {
+      let data = await roleModel.queryRoles(id.id);
+      return data;
     }
     function secondsCoverter(second) {
       second = Number(second);
