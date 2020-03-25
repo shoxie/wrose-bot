@@ -9,11 +9,14 @@ module.exports = client => {
       client.config.set(key, config[key]);
     }
     console.log("done loading");
-    client.user.setPresence({
-      activity: { name: "developed by the Doctor" },
-      status: "dnd"
-    });
+    setInterval(() => {
+      client.user.setPresence({
+        activity: { name:"on "+ client.ws.ping + " ms" },
+        status: "dnd"
+      });
+    }, 10000);
     client.queue = new Discord.Collection();
+    client.mute = new Discord.Collection();
     //let data = await guildSettings.queryGuildSettings(null);
     //console.log(data);
     let guilds = client.guilds.cache;
