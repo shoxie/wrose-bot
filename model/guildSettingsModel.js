@@ -48,15 +48,22 @@ function updateIgnoredChannels(data) {
   });
 }
 
-function addNewGuild(guild) {
-  let newGuild = new guildSettings({
-    guildID: guild.id,
-    guildName: guild.name,
-    musicVoiceChannel: null,
-    musicTextChannel: null
-  });
-  return newGuild.save().then(function(err) {
-    if (err) console.log(err);
+async function addNewGuild(guild) {
+  guildSettings.findOne({ guildID: guild.id }, async function(error, result) {
+    if (error) console.log(error);
+    if (result) return;
+    if (!result) {
+      let newGuild = new guildSettings({
+        guildID: guild.id,
+        guildName: guild.name,
+        musicVoiceChannel: null,
+        musicTextChannel: null
+      });
+      await newGuild.save().then(function(err) {
+        if (err) console.log(err);
+        console.log("saved new guild\n" + newGuild);
+      });
+    }
   });
 }
 async function queryGuildSettings(guildID) {

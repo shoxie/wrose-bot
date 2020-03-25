@@ -9,8 +9,8 @@ module.exports = {
   },
   async run(client, message, args) {
     let serverQueue = client.queue.get(message.guild.id);
-    let normaldj = message.guild.roles.cache.find(x => x.name === 'dj');
-    let bigdj = message.guild.roles.cache.find(x => x.name === 'DJ');
+    let normaldj = message.guild.roles.cache.find(x => x.name === "dj");
+    let bigdj = message.guild.roles.cache.find(x => x.name === "DJ");
     let roleID = bigdj ? bigdj : normaldj;
     if (!roleID) {
       return message.channel.send({
@@ -40,6 +40,7 @@ module.exports = {
     }
     if (serverQueue.voiceChannel) {
       if (message.member.roles.cache.has(roleID.id)) {
+        serverQueuel.queue = [];
         serverQueue.connection.dispatcher.end();
         message.channel.send({
           embed: {
