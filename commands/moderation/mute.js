@@ -9,7 +9,7 @@ module.exports = {
   },
   async run(client, message, args) {
     //variables
-    let muteRole = message.guild.roles.cache.find(x => x.name === "Muted");
+    const muteRole = message.guild.roles.cache.find(x => x.name === "Muted");
     let id = message.mentions.users.first();
     let user = await message.guild.members.cache.get(id.id);
     let knownRoles = [];
@@ -70,10 +70,9 @@ module.exports = {
           ]
         }
       });
-      setTimeout(function() {
-        console.log(knownRoles);
-        user.roles.remove(role.id);
-        user.roles.add(knownRoles);
+      setTimeout(async function() {
+        await user.roles.remove(role.id);
+        await user.roles.add(knownRoles);
         knownRoles = [];
         message.channel.send({
           embed: {
@@ -96,11 +95,10 @@ module.exports = {
     }
     async function roleChanger(mutedRole) {
       user.roles.cache.forEach(role => {
-        console.log(role.id);
         knownRoles.push(role.id);
       });
-      user.roles.remove(knownRoles);
-      user.roles.add(mutedRole.id);
+      await user.roles.remove(knownRoles);
+      await user.roles.add(mutedRole.id);
     }
     async function disconnectUser() {
       let findVoice = await message.guild.channels.cache.find(
