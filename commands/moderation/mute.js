@@ -40,9 +40,9 @@ module.exports = {
         user.roles.cache.forEach(role => {
           knownRoles.push(role.id);
         });
-        user.roles.remove(knownRoles);
+        await user.roles.remove(knownRoles);
       }
-      user.roles.add(role);
+      await user.roles.add(role);
       message.guild.channels.cache.forEach(async (channel, id) => {
         await channel.updateOverwrite(role, {
           SEND_MESSAGES: false,
