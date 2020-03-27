@@ -182,11 +182,19 @@ module.exports = {
       musicDB.updateCount(title);
     }
     function secondsCoverter(second) {
-      second = Number(second);
-      var m = Math.floor((second % 3600) / 60);
-      var s = Math.floor((second % 3600) % 60);
+      var timestamp = second;
 
-      return m + ":" + s;
+      // 2
+      var hours = Math.floor(timestamp / 60 / 60);
+
+      // 37
+      var minutes = Math.floor(timestamp / 60) - hours * 60;
+
+      // 42
+      var seconds = timestamp % 60;
+      if (hours > 0) {
+        return hours + ":" + minutes + ":" + seconds;
+      } else return minutes + ":" + seconds;
     }
     function updatePresence(serverQueue) {
       if (serverQueue.isPlaying === true) {
