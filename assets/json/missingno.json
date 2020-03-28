@@ -1,0 +1,63 @@
+{
+	"names": [
+		{
+			"language": {
+				"name": "en"
+			},
+			"name": "MissingNo."
+		},
+		{
+			"language": {
+				"name": "ja"
+			},
+			"name": "けつばん"
+		}
+	],
+	"flavor_text_entries": [
+		{
+			"language": {
+				"name": "en"
+			},
+			"flavor_text": "Comment to be written."
+		}
+	],
+	"id": 0,
+	"genera": [
+		{
+			"language": {
+				"name": "en"
+			},
+			"genus": "??? Pokémon"
+		}
+	],
+	"varieties": [
+		{
+			"is_default": true,
+			"pokemon": {
+				"name": "missingno"
+			},
+			"types": [
+				"Bird",
+				"Normal"
+			]
+		},
+		{
+			"is_default": false,
+			"pokemon": {
+				"name": "missingno-yellow"
+			},
+			"types": [
+				"Normal",
+				"999"
+			]
+		}
+	],
+	"evolution_chain": {
+		"url": null
+	},
+	"chain": [0],
+	"missingno": true,
+	"sprite": "https://cdn.bulbagarden.net/upload/9/98/Missingno_RB.png",
+	"box": "https://cdn.bulbagarden.net/upload/1/1f/AniMS_Missingno_I.png",
+	"url": "https://bulbapedia.bulbagarden.net/wiki/MissingNo."
+}

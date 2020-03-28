@@ -6,6 +6,7 @@ const convert = require("xml-js");
 const Discord = require("discord.js");
 const moment = require("moment");
 const jsdom = require("jsdom");
+const { createCanvas } = require("canvas");
 const { JSDOM } = jsdom;
 function sendResponse(message) {
   const args = message.content
@@ -307,6 +308,121 @@ function progressBar(message, duration) {
 function progressBarStop() {
   clearInterval(thisInterval);
 }
+async function verify(channel, user, time = 30000) {
+  const yes = ["yes", "y", "ye", "yeah", "yup", "yea", "ya"];
+  const no = ["no", "n", "nah", "nope", "nop"];
+  const filter = res => {
+    const value = res.content.toLowerCase();
+    return (
+      (user ? res.author.id === user.id : true) &&
+      (yes.includes(value) || no.includes(value))
+    );
+  };
+  const verify = await channel.awaitMessages(filter, {
+    max: 1,
+    time
+  });
+  if (!verify.size) return 0;
+  const choice = verify.first().content.toLowerCase();
+  if (yes.includes(choice)) return true;
+  if (no.includes(choice)) return false;
+  return false;
+}
+async function verifyWord(word) {
+  if (startWords.includes(word.toLowerCase())) return true;
+  try {
+    const { body } = await request
+      .get(
+        `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}`
+      )
+      .query({ key: WEBSTER_KEY });
+    if (!body.length) return false;
+    return true;
+  } catch (err) {
+    if (err.status === 404) return false;
+    return null;
+  }
+}
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+function shortenText(ctx, text, maxWidth) {
+  let shorten = false;
+  while (ctx.measureText(text).width > maxWidth) {
+    if (!shorten) shorten = true;
+    text = text.substr(0, text.length - 1);
+  }
+  return shorten ? `${text}...` : text;
+}
+function list(arr, conj = "and") {
+  const len = arr.length;
+  return `${arr.slice(0, -1).join(", ")}${
+    len > 1 ? `${len > 2 ? "," : ""} ${conj} ` : ""
+  }${arr.slice(-1)}`;
+}
+function silhouette(ctx, x, y, width, height) {
+  const data = ctx.getImageData(x, y, width, height);
+  for (let i = 0; i < data.data.length; i += 4) {
+    data.data[i] = 0;
+    data.data[i + 1] = 0;
+    data.data[i + 2] = 0;
+  }
+  ctx.putImageData(data, x, y);
+  return ctx;
+}
+function invert(ctx, x, y, width, height) {
+  const data = ctx.getImageData(x, y, width, height);
+  for (let i = 0; i < data.data.length; i += 4) {
+    data.data[i] = 255 - data.data[i];
+    data.data[i + 1] = 255 - data.data[i + 1];
+    data.data[i + 2] = 255 - data.data[i + 2];
+  }
+  ctx.putImageData(data, x, y);
+  return ctx;
+}
+function centerImage(base, data) {
+  const dataRatio = data.width / data.height;
+  const baseRatio = base.width / base.height;
+  let { width, height } = data;
+  let x = 0;
+  let y = 0;
+  if (baseRatio < dataRatio) {
+    height = data.height;
+    width = base.width * (height / base.height);
+    x = (data.width - width) / 2;
+    y = 0;
+  } else if (baseRatio > dataRatio) {
+    width = data.width;
+    height = base.height * (width / base.width);
+    x = 0;
+    y = (data.height - height) / 2;
+  }
+  return { x, y, width, height };
+}
+function sepia(ctx, x, y, width, height) {
+  const data = ctx.getImageData(x, y, width, height);
+  for (let i = 0; i < data.data.length; i += 4) {
+    const brightness =
+      0.34 * data.data[i] + 0.5 * data.data[i + 1] + 0.16 * data.data[i + 2];
+    data.data[i] = brightness + 100;
+    data.data[i + 1] = brightness + 50;
+    data.data[i + 2] = brightness;
+  }
+  ctx.putImageData(data, x, y);
+  return ctx;
+}
+function shorten(text, maxLen = 2000) {
+  return text.length > maxLen ? `${text.substr(0, maxLen - 3)}...` : text;
+}
+function trimArray(arr, maxLen = 10) {
+  if (arr.length > maxLen) {
+    const len = arr.length - maxLen;
+    arr = arr.slice(0, maxLen);
+    arr.push(`${len} more...`);
+  }
+  return arr;
+}
+
 module.exports = {
   sendResponse,
   validateUser,
@@ -317,5 +433,16 @@ module.exports = {
   sendNews,
   getChess,
   getStats,
-  updateCorona
+  updateCorona,
+  verify,
+  verifyWord,
+  delay,
+  shortenText,
+  list,
+  silhouette,
+  invert,
+  centerImage,
+  sepia,
+  shorten,
+  trimArray
 };

@@ -17,6 +17,7 @@ module.exports = client => {
     }, 10000);
     client.queue = new Discord.Collection();
     client.mute = new Discord.Collection();
+    client.games = new Discord.Collection();
     //let data = await guildSettings.queryGuildSettings(null);
     //console.log(data);
     let guilds = client.guilds.cache;
