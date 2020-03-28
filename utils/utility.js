@@ -335,7 +335,7 @@ async function verifyWord(word) {
       .get(
         `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}`
       )
-      .query({ key: WEBSTER_KEY });
+      .query({ key: "d1bc37f2-10d5-4b0e-9171-54d13e7b7475" });
     if (!body.length) return false;
     return true;
   } catch (err) {

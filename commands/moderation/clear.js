@@ -1,6 +1,6 @@
 module.exports = {
   config: {
-    name: "Clear",
+    name: "clear",
     usage: "clear [number of messages]",
     description: "Delete specific amount of messages",
     ownerOnly: false,

@@ -4,9 +4,9 @@ module.exports = {
   config: {
     name: "playlist",
     description: "Add a song to a specific playlist",
-    usage: "playlist --arguement [playlist name] [url]",
+    usage: "playlist [playlist] [url]",
     ownerOnly: false,
-    enabled: true
+    enabled: false
   },
   async run(client, message, args) {
     let messageFlags = args[0];

@@ -6,7 +6,7 @@ let musicDB = require("../../model/musicData");
 const ytDiscord = require("ytdl-core-discord");
 module.exports = {
   config: {
-    name: "Play",
+    name: "play",
     usage: "play [song name]",
     aliases: ["p"],
     description: "Play a song from youtube",

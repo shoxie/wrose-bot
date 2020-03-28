@@ -1,17 +1,17 @@
 const { stripIndents } = require("common-tags");
 const startWords = require("../../assets/json/word-list");
-const util = require('../../utils/utility')
+const util = require("../../utils/utility");
 module.exports = {
   config: {
     name: "wordChain",
     usage: "wordChain",
     description: "Challenge a user to play word following game.",
-    aliases:[],
+    aliases: [],
     ownerOnly: false,
     enabled: true
   },
   async run(client, message, args) {
-      let time = 10;
+    let time = 10;
     let opponent = message.mentions.users.first();
     if (opponent.bot) return message.reply("Bots may not be played against.");
     if (opponent.id === message.author.id)
@@ -85,11 +85,12 @@ module.exports = {
       }
       client.games.delete(message.channel.id);
       if (!winner) return message.channel.send("Oh... No one won.");
-      return message.channel.send(`The game is over! The winner is ${winner}!`);
+      return message.channel.send(
+        `The game is over! The winner is ${winner}! \n ${words.length} was answered`
+      );
     } catch (err) {
       client.games.delete(message.channel.id);
       throw err;
     }
-    
   }
 };

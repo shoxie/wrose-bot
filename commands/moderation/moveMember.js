@@ -1,7 +1,7 @@
 module.exports = {
   config: {
     name: "moveMembers",
-    usage: "moveMembers [source channelID] [destination ID]",
+    usage: "moveMembers [source] [destination]",
     description: "Move all members from one channel to another",
     ownerOnly: false,
     enabled: true
