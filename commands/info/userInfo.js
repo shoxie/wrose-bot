@@ -4,10 +4,10 @@ const { stripIndents } = require("common-tags");
 const { trimArray } = require("../../utils/utility");
 module.exports = {
   config: {
-    name: "",
-    usage: "",
+    name: "userInfo",
+    usage: "userInfo",
     aliases: [],
-    description: "",
+    description: "Send message author information",
     ownerOnly: false,
     enabled: true
   },

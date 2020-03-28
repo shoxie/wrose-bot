@@ -3,10 +3,10 @@ const request = require('node-superfetch');
 const {sepia} = require('../../utils/utility');
 module.exports = {
   config: {
-    name: "",
-    usage: "",
+    name: "sepia",
+    usage: "sepia",
     aliases: [],
-    description: "",
+    description: "idk",
     ownerOnly: false,
     enabled: true
   },

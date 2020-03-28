@@ -1,10 +1,10 @@
 const request = require("node-superfetch");
 module.exports = {
   config: {
-    name: "",
-    usage: "",
+    name: "roboHash",
+    usage: "roboHash",
     aliases: [],
-    description: "",
+    description: "idk",
     ownerOnly: false,
     enabled: true
   },

@@ -2,10 +2,10 @@ const { createCanvas, loadImage } = require("canvas");
 const path = require("path");
 module.exports = {
   config: {
-    name: "",
-    usage: "",
+    name: "cursedSponge",
+    usage: "cursedSponge",
     aliases: [],
-    description: "",
+    description: "cursedSponge image",
     ownerOnly: false,
     enabled: true
   },
