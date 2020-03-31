@@ -18,6 +18,7 @@ module.exports = client => {
     client.queue = new Discord.Collection();
     client.mute = new Discord.Collection();
     client.games = new Discord.Collection();
+    client.warewolf = new Discord.Collection();
     //let data = await guildSettings.queryGuildSettings(null);
     //console.log(data);
     let guilds = client.guilds.cache;

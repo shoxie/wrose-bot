@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const client = new Discord.Client({ disableEveryone: true });
 const config = require("./config/config.json");
 const mongoose = require("mongoose");
 const logs = require("discord-logs");
