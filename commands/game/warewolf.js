@@ -6,8 +6,8 @@ module.exports = {
     usage: "warewolf",
     aliases: [],
     description: "Start a warewolf game [9+ users required]",
-    ownerOnly: false,
-    enabled: false
+    ownerOnly: true,
+    enabled: true
   },
   async run(client, message, args) {
     const serverGame = client.warewolf.get(message.guild.id);

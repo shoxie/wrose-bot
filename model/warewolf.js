@@ -1,19 +1,20 @@
 let rules = require("../config/rules.json");
 let roles = [
   "Tiên tri",
-  //"Bảo vệ",
-  //"Thợ săn",
-  //"Phù thủy",
-  //"Sói",
-  "Sói"
-  //"Sói lửa",
-  //"Nguyện nữ",
-  //"Thầy đồng"
+  "Bảo vệ",
+  "Thợ săn",
+  "Phù thủy",
+  "Sói",
+  "Sói",
+  "Sói lửa",
+  "Nguyện nữ",
+  "Thầy đồng"
 ];
 const Discord = require("discord.js");
 const ascii = require("ascii-table");
 
 async function init(client, message, players) {
+  roles = shuffle(roles)
   let gameCategory = message.guild.channels.cache.find(
     x => x.name === "warewolf"
   );
@@ -39,13 +40,17 @@ async function init(client, message, players) {
     gameChannel: null,
     wolves: [],
     roles: roles,
-    time: "day"
+    time: null,
+    log: [],
+    wolvesVote: [],
+    lynchVote: []
   };
 
   for (player of players) {
-    player.isSlept = false;
-    player.isKilled = false;
-    player.isProtected = false;
+    player.isSlept = null;
+    player.isKilled = null;
+    player.isProtected = null;
+    player.isSaved = null;
     model.players.push(player);
   }
   client.warewolf.set(message.guild.id, model);
@@ -66,7 +71,7 @@ async function sendRole(client, message) {
   //console.log(serverGame.alivePlayers);
   for (player of game.alivePlayers) {
     await player.send(player.role);
-    if (player.role === "Sói") {
+    if (player.role === "Sói" || "Sói lửa") {
       game.wolves.push(player);
     }
   }
@@ -83,8 +88,32 @@ async function gettingReady(client, message, game) {
   }, 10000);
 }
 async function night(client, message, game) {
+  game.time = "night";
   moonGirl(client, message, game);
 }
+async function day(client, message, game) {
+  game.time = "day";
+  if (parseInt(getVote(wolvesVote)) >= game.wolves.length / 2) {
+    game.alivePlayers[parseInt(getVote(wolvesVote))].isKilled = true;
+    log(
+      "Sói",
+      "đã giết",
+      game.alivePlayers[parseInt(getVote(wolvesVote))],
+      game
+    );
+    game.wolvesVote = [];
+  }
+  for (player in game.alivePlayers) {
+    if (player.isKilled) {
+      if (player.isProtected) return;
+      if (player.isSaved) return;
+      if (!player.isProtected || !player.isSaved)
+        await game.deadPlayers.push(player);
+    }
+  }
+  night(client, message, game);
+}
+async function lynch() {}
 async function moonGirl(client, message, game) {
   for (player of game.alivePlayers) {
     if (player.role === "Nguyệt Nữ") {
@@ -93,11 +122,11 @@ async function moonGirl(client, message, game) {
 
       const collector = new Discord.MessageCollector(
         player.dmChannel,
-        m => m.author.id === message.author.id,
+        m => true,
         { time: 30000 },
         { limit: 1 }
       );
-      collector.on("collect", async collected => {
+      collector.on("end", async collected => {
         if (!collected.length) {
           player.send(
             "Bạn đã không chọn người chơi, hệ thống sẽ chọn ngẫu nhiên"
@@ -115,7 +144,8 @@ async function moonGirl(client, message, game) {
             return;
           } else {
             let choice = parseInt(collected.first().content);
-            game.alivePlayers[alivePlayers.indexOf(choice)].isSlept = true;
+            game.alivePlayers[choice].isSlept = true;
+            log(player.name, "đã ngủ với", game.alivePlayers[choice].name);
           }
         }
       });
@@ -130,12 +160,12 @@ async function protector(client, message, game) {
       await player.send("Bạn muốn bảo vệ ai ?");
       const collector = new Discord.MessageCollector(
         player.dmChannel,
-        m => m.author.id === message.author.id,
+        m => true,
         { time: 30000 },
         { limit: 1 }
       );
-      collector.on("collect", collected => {
-        if (!collected.length) {
+      collector.on("end", collected => {
+        if (!Number.isInteger(parseInt(collected[0].content))) {
           player.send(
             "Bạn đã không chọn người chơi, hệ thống sẽ chọn ngẫu nhiên"
           );
@@ -149,10 +179,11 @@ async function protector(client, message, game) {
             let alive = game.alivePlayers;
             let random = alive[Math.floor(Math.random() * alive.length)];
             random.isProtected = true;
-            return;
+            log(player.name, "đã bảo vệ", random.name);
           } else {
             let choice = parseInt(collected.first().content);
-            game.alivePlayers[alivePlayers.indexOf(choice)].isProtected = true;
+            game.alivePlayers[choice].isProtected = true;
+            log(player.name, "đã bảo vệ", game.alivePlayers[choice].name);
           }
         }
       });
@@ -173,31 +204,45 @@ async function prophet(client, message, game) {
         });
       const collector = new Discord.MessageCollector(
         player.dmChannel,
-        m => m.channel.id === player.dmChannel.id && !player.bot,
+        m => true, //m.channel.id === player.dmChannel.id && !player.bot,
         { time: 30000, max: 1 }
       ).on("end", async collected => {
-        console.log(collected.content);
-        if (!parseInt(collected.content))
+        console.log(Number.isInteger(parseInt(collected.first().content)));
+        if (!Number.isInteger(parseInt(collected.first().content)))
           return player.send("Sai quy tắc, mất lượt");
         else {
-          let choice = parseInt(collected.content);
-          if (game.alivePlayers[alivePlayers.indexOf(choice)].role === "Sói")
+          let choice = parseInt(collected.first().content);
+          if (game.alivePlayers[choice].role === "Sói")
             await player.send("tiên tri đúng");
           else await player.send("Tiên tri sai");
         }
       });
-      // collector.on("collect", async collected => {
-      //   console.log(collected.content);
-      //   if (!parseInt(collected.content))
-      //     return player.send("Sai quy tắc, mất lượt");
-      //   else {
-      //     let choice = parseInt(collected.content);
-      //     if (game.alivePlayers[alivePlayers.indexOf(choice)].role === "Sói")
-      //       await player.send("tiên tri đúng");
-      //     else await player.send("Tiên tri sai");
-      //   }
-      // });
     }
+  }
+}
+async function wolves(client, message, game) {
+  for (player of game.wolves) {
+    await player.send("Đêm nay bạn muốn giết ai ?");
+    await player
+      .send("```" + getAlivePlayers(game) + "```")
+      .catch(function(err) {
+        str = "Unable to send you the list because you cannot receive DMs.";
+        if (err != "DiscordAPIError: Cannot send messages to this user")
+          console.log(err);
+      });
+    const collector = new Discord.MessageCollector(
+      player.dmChannel,
+      m => true,
+      { time: 30000, max: 1 }
+    ).on("end", async collected => {
+      console.log(Number.isInteger(parseInt(collected.first().content)));
+      if (!Number.isInteger(parseInt(collected.first().content)))
+        return player.send("Sai quy tắc, mất lượt");
+      else {
+        let choice = parseInt(collected.first().content);
+        game.wolvesVote.push(choice);
+      }
+    });
   }
 }
 function getAlivePlayers(game) {
@@ -206,8 +251,6 @@ function getAlivePlayers(game) {
   let tempDes = "";
   let alive = game.alivePlayers;
   for (player of alive) {
-    //tempDes = tempDes + alive.indexOf(player) + " " + player.username +"\n";
-    //console.log(alive.indexOf(player) + " " + player.username);
     table.addRow(alive.indexOf(player), player.username);
   }
   return table.toString();
@@ -216,7 +259,18 @@ function shuffle(array) {
   array.sort(() => Math.random() - 0.5);
   return array;
 }
-
+function createLog(who, reason, victim, game) {
+  let logData = `${who} ${reason} ${victim} \n`;
+  game.log.push(logData);
+}
+function getVote(arr) {
+  return arr
+    .sort(
+      (a, b) =>
+        arr.filter(v => v === a).length - arr.filter(v => v === b).length
+    )
+    .pop();
+}
 module.exports = {
   init
 };

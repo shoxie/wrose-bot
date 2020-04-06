@@ -11,7 +11,7 @@ module.exports = {
     aliases: ["p"],
     description: "Play a song from youtube",
     ownerOnly: false,
-    enabled: true
+    enabled: true,
   },
   async run(client, message, args) {
     const serverQueue = client.queue.get(message.guild.id);
@@ -25,10 +25,10 @@ module.exports = {
           embed: {
             color: 15158332,
             title:
-              "I'm now playing in another voiceChannel, please wait or join that voiceChannel"
+              "I'm now playing in another voiceChannel, please wait or join that voiceChannel",
             //description:
             //"If you are desperate to listen to music, use --wait in your order and i will join you immediately after i finished playing for someone else"
-          }
+          },
         });
       }
     }
@@ -36,17 +36,27 @@ module.exports = {
       return message.channel.send({
         embed: {
           color: 15158332,
-          description: "You have to be in a voiceChannel to use the command."
-        }
+          description: "You have to be in a voiceChannel to use the command.",
+        },
       });
     }
-    if (ytcore.validateURL(args[0])) {
-      addQueue(args[0]);
-    }
-    if (!ytcore.validateURL(args[0])) {
-      let query = await dude.search(args);
-      let videoUrl = "https://www.youtube.com/watch?v=" + query[0].videoId;
-      addQueue(videoUrl);
+    try {
+      if (ytcore.validateURL(args[0])) {
+        addQueue(args[0]);
+      }
+      if (!ytcore.validateURL(args[0])) {
+        let query = await dude.search(args);
+        let videoUrl = "https://www.youtube.com/watch?v=" + query[0].videoId;
+        addQueue(videoUrl);
+      }
+    } catch (error) {
+      message.channel.send({
+        embed: {
+          color: 15158332,
+          title: error.name,
+          description: error.message,
+        },
+      });
     }
     //functions
     async function addQueue(url) {
@@ -57,7 +67,7 @@ module.exports = {
         thumbnail: getThumbnail(url),
         duration: secondsCoverter(songInfo.length_seconds),
         seconds: songInfo.length_seconds,
-        requester: message.author.tag
+        requester: message.author.tag,
       };
       if (!serverQueue) {
         let tempQueue = {
@@ -67,7 +77,7 @@ module.exports = {
           voiceChannel: voiceChannel,
           textChannel: message.channel,
           connection: null,
-          dispatcher: null
+          dispatcher: null,
         };
         tempQueue.queue.push(song);
         tempQueue.connection = await tempQueue.voiceChannel.join();
@@ -82,14 +92,14 @@ module.exports = {
             url: serverQueue.queue[serverQueue.queue.length - 1].url,
             description: serverQueue.queue[serverQueue.queue.length - 1].title,
             thumbnail: {
-              url: serverQueue.queue[serverQueue.queue.length - 1].thumbnail
+              url: serverQueue.queue[serverQueue.queue.length - 1].thumbnail,
             },
             footer: {
               text:
                 `Duration ` +
-                serverQueue.queue[serverQueue.queue.length - 1].duration
-            }
-          }
+                serverQueue.queue[serverQueue.queue.length - 1].duration,
+            },
+          },
         });
       }
     }
@@ -108,10 +118,10 @@ module.exports = {
               icon_url: message.client.user.avatarURL({
                 format: "png",
                 dynamic: true,
-                size: 1024
-              })
-            }
-          }
+                size: 1024,
+              }),
+            },
+          },
         });
         client.queue.delete(guild);
       } else {
@@ -122,12 +132,12 @@ module.exports = {
             url: serverQueue.queue[0].url,
             description: serverQueue.queue[0].title,
             thumbnail: {
-              url: serverQueue.queue[0].thumbnail
+              url: serverQueue.queue[0].thumbnail,
             },
             footer: {
-              text: `Duration ` + serverQueue.queue[0].duration
-            }
-          }
+              text: `Duration ` + serverQueue.queue[0].duration,
+            },
+          },
         });
         serverQueue.dispatcher = serverQueue.connection
           .play(
@@ -135,7 +145,7 @@ module.exports = {
               filter: "audioonly",
               quality: "highestaudio",
               highWaterMark: 1 << 25,
-              encoderArgs: ["-af", `equalizer=f=40:width_type=h:width=50:g=50`]
+              encoderArgs: ["-af", `equalizer=f=40:width_type=h:width=50:g=50`],
             })
           )
           // serverQueue.dispatcher = serverQueue.connection
@@ -159,16 +169,16 @@ module.exports = {
                   icon_url: message.client.user.avatarURL({
                     format: "png",
                     dynamic: true,
-                    size: 1024
-                  })
-                }
-              }
+                    size: 1024,
+                  }),
+                },
+              },
             });
           })
           .on("end", () => {
             serverQueue.queue.shift();
           })
-          .on("error", error => {
+          .on("error", (error) => {
             console.log(error);
           });
       }
@@ -199,17 +209,17 @@ module.exports = {
     function updatePresence(serverQueue) {
       if (serverQueue.isPlaying === true) {
         message.member.guild.channels.cache
-          .find(x => x.id === serverQueue.textChannel.id)
+          .find((x) => x.id === serverQueue.textChannel.id)
           .setTopic("Playing " + serverQueue.queue[0].title);
       }
       if (serverQueue.isPlaying === false) {
         message.member.guild.channels.cache
-          .find(x => x.id === serverQueue.textChannel.id)
+          .find((x) => x.id === serverQueue.textChannel.id)
           .setTopic("Not playing");
       }
       if (message.content.includes("--lyrics")) {
         // util;
       }
     }
-  }
+  },
 };

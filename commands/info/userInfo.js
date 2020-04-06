@@ -33,7 +33,7 @@ module.exports = {
         const roles = member.roles.cache
           .filter(role => role.id !== defaultRole.id)
           .sort((a, b) => b.position - a.position)
-          .map(role => role.name);
+          .map(role => role);
         description += "\n\n";
         description += stripIndents`
             **Server Member Info:**

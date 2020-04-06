@@ -45,6 +45,7 @@
     "ytdl-core-discord": "^1.1.0"
   },
   "devDependencies": {
+    "axios": "^0.19.2",
     "canvas": "^2.6.1",
     "canvasjs": "^1.8.3",
     "chart.js": "^2.9.3",
