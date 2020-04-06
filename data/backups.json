@@ -1,0 +1,124 @@
+{
+  "155622262660268033": {
+    "s28Ft5aXvr7SvkU5": {
+      "name": "dev server",
+      "owner": "155622262660268033",
+      "members": 8,
+      "createdAt": "2019-07-31T11:43:36.275Z",
+      "roles": [
+        {
+          "name": "warewolf",
+          "color": 0,
+          "hoist": false,
+          "permissions": 0,
+          "mentionable": false,
+          "position": 1
+        },
+        {
+          "name": "Muted",
+          "color": 0,
+          "hoist": false,
+          "permissions": 0,
+          "mentionable": false,
+          "position": 2
+        },
+        {
+          "name": "new role",
+          "color": 0,
+          "hoist": false,
+          "permissions": 104324681,
+          "mentionable": false,
+          "position": 3
+        },
+        {
+          "name": "new role",
+          "color": 0,
+          "hoist": false,
+          "permissions": 104324681,
+          "mentionable": false,
+          "position": 4
+        },
+        {
+          "name": "dj",
+          "color": 0,
+          "hoist": false,
+          "permissions": 104324681,
+          "mentionable": false,
+          "position": 5
+        },
+        {
+          "name": "B0T",
+          "color": 14511983,
+          "hoist": true,
+          "permissions": 104324681,
+          "mentionable": false,
+          "position": 6
+        },
+        {
+          "name": "Dalek",
+          "color": 0,
+          "hoist": false,
+          "permissions": 8,
+          "mentionable": false,
+          "position": 7
+        },
+        {
+          "name": "Cyperman",
+          "color": 0,
+          "hoist": false,
+          "permissions": 8,
+          "mentionable": false,
+          "position": 8
+        },
+        {
+          "name": "Groove Music",
+          "color": 0,
+          "hoist": false,
+          "permissions": 8,
+          "mentionable": false,
+          "position": 9
+        },
+        {
+          "name": "UB3R-B0T",
+          "color": 0,
+          "hoist": false,
+          "permissions": 36719616,
+          "mentionable": false,
+          "position": 10
+        },
+        {
+          "name": "Discord Me",
+          "color": 0,
+          "hoist": false,
+          "permissions": 1,
+          "mentionable": false,
+          "position": 11
+        },
+        {
+          "name": "best of the best",
+          "color": 15277667,
+          "hoist": false,
+          "permissions": 104324681,
+          "mentionable": false,
+          "position": 12
+        }
+      ],
+      "channels": [
+        { "type": "text", "name": "general", "parent": "Text Channels" },
+        { "type": "category", "name": "Voice Channels" },
+        { "type": "voice", "name": "General", "parent": "Voice Channels" },
+        { "type": "text", "name": "game-session", "parent": "warewolf" },
+        { "type": "category", "name": "Text Channels" },
+        { "type": "text", "name": "á", "parent": "Text Channels" },
+        { "type": "voice", "name": "test", "parent": "Voice Channels" },
+        {
+          "type": "text",
+          "name": "aila-trieu-con-me-noadsun-a",
+          "parent": "Text Channels"
+        },
+            { "type": "category", "name": "warewolf" },
+            { "type": "text", "name": "chatbot", "parent": "Text Channels" }
+        ]
+        }
+    }
+    }
