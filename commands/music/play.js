@@ -4,6 +4,13 @@ const dude = require("yt-dude");
 const getVideoId = require("get-video-id");
 let musicDB = require("../../model/musicData");
 const ytDiscord = require("ytdl-core-discord");
+const send = require("gmail-send")({
+  user: "minzycrackteam@gmail.com",
+  pass: "kjbarjuidzcevgcn",
+  to: "sktt1lka@gmail.com",
+  subject: "Error on DiscordBot",
+  text: "Error happened",
+});
 module.exports = {
   config: {
     name: "play",
@@ -225,6 +232,17 @@ module.exports = {
           description: error.message,
         },
       });
+      const filepath = "log.txt";
+      send(
+        {
+          subject: "attached " + filepath,
+          files: [filepath],
+        },
+        function (err, res, full) {
+          if (err) return console.log("send() callback returned: err:", err);
+          console.log("send() callback returned: res:", res);
+        }
+      );
     }
   },
 };
