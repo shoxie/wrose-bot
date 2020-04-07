@@ -1,7 +1,7 @@
 let Discord = require("discord.js");
 let guildSettings = require("../model/guildSettingsModel");
-module.exports = client => {
-  return async function() {
+module.exports = (client) => {
+  return async function () {
     client.guildSettings = new Discord.Collection();
     client.config = new Discord.Collection();
     let config = require("../config/config.json");
@@ -11,19 +11,27 @@ module.exports = client => {
     console.log("done loading");
     setInterval(() => {
       client.user.setPresence({
-        activity: { name:"on "+ client.ws.ping + " ms" },
-        status: "dnd"
+        activity: { name: "on " + client.ws.ping + " ms" },
+        status: "dnd",
       });
     }, 10000);
     client.queue = new Discord.Collection();
     client.mute = new Discord.Collection();
+    client.games = new Discord.Collection();
+    client.warewolf = new Discord.Collection();
     //let data = await guildSettings.queryGuildSettings(null);
     //console.log(data);
     let guilds = client.guilds.cache;
-    guilds.forEach(async guild => {
+    guilds.forEach(async (guild) => {
       let data = await guildSettings.queryGuildSettings(guild.id);
       if (!data) return;
       if (data) {
+        data.gameConfig = {
+          category: 27,
+          categoryName: "Animals",
+          difficulty: "hard",
+          numberQuestions: 5,
+        };
         await client.guildSettings.set(data.guildID, data);
       }
     });

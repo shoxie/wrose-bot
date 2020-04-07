@@ -1,5 +1,6 @@
 const music = require("../../model/musicData");
 const Discord = require("discord.js");
+const Pagination = require("discord-paginationembed");
 module.exports = {
   config: {
     name: "topSongs",
@@ -21,6 +22,7 @@ module.exports = {
         embed.addField(entry.name, entry.count);
       });
       message.channel.send(embed);
+      // sendPage(songs)
     }
     if (!songs) {
       message.channel.send({
@@ -36,6 +38,34 @@ module.exports = {
           }
         }
       });
+    }
+    async function sendPage(songs) {
+      let embeds = [];
+      songs.forEach(entry => {
+        let data = {
+          name: entry.name,
+          count: entry.count
+        };
+        embeds.push(data)
+      });
+      let msg = new Pagination.FieldsEmbed()
+        .setArray(embeds)
+        .setAuthorizedUsers([])
+        .setChannel(message.channel)
+        .setPageIndicator(true)
+        .formatField(`Name`, i => i.name)
+       .formatField("Count", i => i.count, true)
+       .setElementsPerPage(5)
+        .setDeleteOnTimeout(true)
+        .setEmojisFunctionAfterNavigation(true)
+        .setDisabledNavigationEmojis(["DELETE"]);
+      msg.embed
+        .setThumbnail(
+          client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
+        )
+        .setColor("#0390fc")
+        .setFooter("Created by wrose");
+      await msg.build();
     }
   }
 };

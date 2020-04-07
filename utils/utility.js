@@ -6,14 +6,12 @@ const convert = require("xml-js");
 const Discord = require("discord.js");
 const moment = require("moment");
 const jsdom = require("jsdom");
+const { createCanvas } = require("canvas");
 const { JSDOM } = jsdom;
 function sendResponse(message) {
-  const args = message.content
-    .slice(config.prefix.length)
-    .trim()
-    .split(/ +/g);
+  const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   let query = encodeURIComponent(args.join(" "));
-  request(`https://some-random-api.ml/chatbot?message=${query}`, function(
+  request(`https://some-random-api.ml/chatbot?message=${query}`, function (
     error,
     response,
     body
@@ -36,7 +34,7 @@ function sendShit(message) {
   message.channel.send(`https://discord.gg/grd5J3K`);
 }
 
-String.prototype.capitalize = function() {
+String.prototype.capitalize = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
@@ -54,7 +52,7 @@ function sendNews(msg) {
       sendData = data[key1];
     }
     if (sendData) {
-      fs.writeFile("./newsData.json", JSON.stringify(data), "", err => {});
+      fs.writeFile("./newsData.json", JSON.stringify(data), "", (err) => {});
       var { link, desc } = convert_data(sendData.description._cdata);
       let title = sendData.title._text ? sendData.title._text : "Article";
       const embed = new Discord.MessageEmbed()
@@ -71,7 +69,7 @@ function sendNews(msg) {
 }
 
 function updateNews() {
-  request("https://vnexpress.net/rss/tin-moi-nhat.rss", function(
+  request("https://vnexpress.net/rss/tin-moi-nhat.rss", function (
     err,
     response,
     body
@@ -84,7 +82,7 @@ function updateNews() {
     }
     if (!fs.existsSync("./newsData.json")) {
       //  Nếu chưa tồn tại tạo file  mới
-      fs.writeFile("./newsData.json", JSON.stringify(dataTmp), "", err => {
+      fs.writeFile("./newsData.json", JSON.stringify(dataTmp), "", (err) => {
         if (err) throw err;
         console.log("Tạo file newsData.json thành công!");
       });
@@ -113,13 +111,13 @@ function updateNews() {
           }
         }
 
-        cleanData(obj, function(delData, ifNewData) {
+        cleanData(obj, function (delData, ifNewData) {
           del += delData;
           ifNew = ifNew || ifNewData;
         });
 
         if (ifNew)
-          fs.writeFile("./newsData.json", JSON.stringify(obj), "", err => {
+          fs.writeFile("./newsData.json", JSON.stringify(obj), "", (err) => {
             if (err) throw err;
             console.log(
               `Cập nhật newsData.json thành công!\n Thêm ${add} tin. Xóa ${del} tin. Tổng tin: ${obj.length}\n`
@@ -132,11 +130,9 @@ function updateNews() {
 
 function convert_data(data) {
   const $ = cheerio.load(data);
-  var link = $("a")
-    .first()
-    .attr("href");
+  var link = $("a").first().attr("href");
   const dom = new JSDOM('<img src="i-vnexpress.vnecdn.net">', {
-    includeNodeLocations: true
+    includeNodeLocations: true,
   });
   var thumnail = dom.window.document.querySelector("img").getAttribute("src");
   var desc = $.text();
@@ -162,7 +158,7 @@ function cleanData(obj, callback) {
 
 function getChess(data, msg) {
   if (checkSteam(data)) {
-    request(config.getID64URL + data, function(err, response, body) {
+    request(config.getID64URL + data, function (err, response, body) {
       if (err) throw err;
       body = JSON.parse(body).response;
       if (body.success == 1) {
@@ -174,43 +170,42 @@ function getChess(data, msg) {
 }
 
 function sendATC(steamID, msg) {
-  request(config.getDAC + steamID64toSteamID32(steamID) + "/overview", function(
-    err,
-    response,
-    body
-  ) {
-    if (err) throw err;
-    var body = JSON.parse(body).data;
-    if (body) {
-      getUsername(steamID, function(username, avatarLink) {
-        const embed = new Discord.MessageEmbed()
-          .setTitle(`Stats for ${username} :`)
-          .setColor(getRandomColor())
-          .setThumbnail(avatarLink)
-          .addField(
-            ":globe_with_meridians: Rank/Max Rank :",
-            getRank(body.current_level) + "/" + getRank(body.highest_level),
-            true
-          )
-          .addField(
-            ":100: Avg Rank In Match :",
-            Math.round(body.avg_rank * 100) / 100,
-            true
-          )
-          .addField(":wheel_of_dharma: Total Games :", body.total_games, true)
-          .addField(":crown: Top 1 :", body.win_games, true)
-          .addField(":small_orange_diamond: Top 3 :", body.top3_games, true)
-          .addField(":candy: Total candies :", body.total_candies, true)
-          .setFooter("Autochess Stats - autochess.varena.com")
-          .setTimestamp(Date.now());
-        msg.channel.send(embed);
-      });
-    } else msg.channel.send("```SORRY,SOMETHING WENT WRONG```");
-  });
+  request(
+    config.getDAC + steamID64toSteamID32(steamID) + "/overview",
+    function (err, response, body) {
+      if (err) throw err;
+      var body = JSON.parse(body).data;
+      if (body) {
+        getUsername(steamID, function (username, avatarLink) {
+          const embed = new Discord.MessageEmbed()
+            .setTitle(`Stats for ${username} :`)
+            .setColor(getRandomColor())
+            .setThumbnail(avatarLink)
+            .addField(
+              ":globe_with_meridians: Rank/Max Rank :",
+              getRank(body.current_level) + "/" + getRank(body.highest_level),
+              true
+            )
+            .addField(
+              ":100: Avg Rank In Match :",
+              Math.round(body.avg_rank * 100) / 100,
+              true
+            )
+            .addField(":wheel_of_dharma: Total Games :", body.total_games, true)
+            .addField(":crown: Top 1 :", body.win_games, true)
+            .addField(":small_orange_diamond: Top 3 :", body.top3_games, true)
+            .addField(":candy: Total candies :", body.total_candies, true)
+            .setFooter("Autochess Stats - autochess.varena.com")
+            .setTimestamp(Date.now());
+          msg.channel.send(embed);
+        });
+      } else msg.channel.send("```SORRY,SOMETHING WENT WRONG```");
+    }
+  );
 }
 
 function getUsername(steamID, callback) {
-  request(config.getUserInfo + steamID, function(err, response, body) {
+  request(config.getUserInfo + steamID, function (err, response, body) {
     if (err) throw err;
     if (body) {
       body = JSON.parse(body).response.players[0];
@@ -264,7 +259,7 @@ function getStats(username, msg) {
 }
 
 function updateCorona(message) {
-  request("https://coronavirus-tracker-api.herokuapp.com/all", function(
+  request("https://coronavirus-tracker-api.herokuapp.com/all", function (
     error,
     response,
     body
@@ -277,19 +272,19 @@ function updateCorona(message) {
         fields: [
           {
             name: "Infected",
-            value: data.latest.confirmed
+            value: data.latest.confirmed,
           },
 
           {
             name: "Deaths confirmed",
-            value: data.latest.deaths
+            value: data.latest.deaths,
           },
           {
             name: "Recoverd",
-            value: data.latest.recovered
-          }
-        ]
-      }
+            value: data.latest.recovered,
+          },
+        ],
+      },
     });
   });
 }
@@ -298,7 +293,7 @@ function progressBar(message, duration) {
   let intervalTime = duration / progressCount;
   let count = 0;
   let bar = "";
-  thisInterval = setInterval(async function() {
+  thisInterval = setInterval(async function () {
     msg.edit({ embed: {} });
     bar = bar + "=";
     count++;
@@ -306,6 +301,129 @@ function progressBar(message, duration) {
 }
 function progressBarStop() {
   clearInterval(thisInterval);
+}
+async function verify(channel, user, time = 30000) {
+  const yes = ["yes", "y", "ye", "yeah", "yup", "yea", "ya"];
+  const no = ["no", "n", "nah", "nope", "nop"];
+  const filter = (res) => {
+    const value = res.content.toLowerCase();
+    return (
+      (user ? res.author.id === user.id : true) &&
+      (yes.includes(value) || no.includes(value))
+    );
+  };
+  const verify = await channel.awaitMessages(filter, {
+    max: 1,
+    time,
+  });
+  if (!verify.size) return 0;
+  const choice = verify.first().content.toLowerCase();
+  if (yes.includes(choice)) return true;
+  if (no.includes(choice)) return false;
+  return false;
+}
+async function verifyWord(word) {
+  if (startWords.includes(word.toLowerCase())) return true;
+  try {
+    const { body } = await request
+      .get(
+        `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}`
+      )
+      .query({ key: "d1bc37f2-10d5-4b0e-9171-54d13e7b7475" });
+    if (!body.length) return false;
+    return true;
+  } catch (err) {
+    if (err.status === 404) return false;
+    return null;
+  }
+}
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+function shortenText(ctx, text, maxWidth) {
+  let shorten = false;
+  while (ctx.measureText(text).width > maxWidth) {
+    if (!shorten) shorten = true;
+    text = text.substr(0, text.length - 1);
+  }
+  return shorten ? `${text}...` : text;
+}
+function list(arr, conj = "and") {
+  const len = arr.length;
+  return `${arr.slice(0, -1).join(", ")}${
+    len > 1 ? `${len > 2 ? "," : ""} ${conj} ` : ""
+  }${arr.slice(-1)}`;
+}
+function silhouette(ctx, x, y, width, height) {
+  const data = ctx.getImageData(x, y, width, height);
+  for (let i = 0; i < data.data.length; i += 4) {
+    data.data[i] = 0;
+    data.data[i + 1] = 0;
+    data.data[i + 2] = 0;
+  }
+  ctx.putImageData(data, x, y);
+  return ctx;
+}
+function invert(ctx, x, y, width, height) {
+  const data = ctx.getImageData(x, y, width, height);
+  for (let i = 0; i < data.data.length; i += 4) {
+    data.data[i] = 255 - data.data[i];
+    data.data[i + 1] = 255 - data.data[i + 1];
+    data.data[i + 2] = 255 - data.data[i + 2];
+  }
+  ctx.putImageData(data, x, y);
+  return ctx;
+}
+function centerImage(base, data) {
+  const dataRatio = data.width / data.height;
+  const baseRatio = base.width / base.height;
+  let { width, height } = data;
+  let x = 0;
+  let y = 0;
+  if (baseRatio < dataRatio) {
+    height = data.height;
+    width = base.width * (height / base.height);
+    x = (data.width - width) / 2;
+    y = 0;
+  } else if (baseRatio > dataRatio) {
+    width = data.width;
+    height = base.height * (width / base.width);
+    x = 0;
+    y = (data.height - height) / 2;
+  }
+  return { x, y, width, height };
+}
+function sepia(ctx, x, y, width, height) {
+  const data = ctx.getImageData(x, y, width, height);
+  for (let i = 0; i < data.data.length; i += 4) {
+    const brightness =
+      0.34 * data.data[i] + 0.5 * data.data[i + 1] + 0.16 * data.data[i + 2];
+    data.data[i] = brightness + 100;
+    data.data[i + 1] = brightness + 50;
+    data.data[i + 2] = brightness;
+  }
+  ctx.putImageData(data, x, y);
+  return ctx;
+}
+function shorten(text, maxLen = 2000) {
+  return text.length > maxLen ? `${text.substr(0, maxLen - 3)}...` : text;
+}
+function trimArray(arr, maxLen = 10) {
+  if (arr.length > maxLen) {
+    const len = arr.length - maxLen;
+    arr = arr.slice(0, maxLen);
+    arr.push(`${len} more...`);
+  }
+  return arr;
+}
+function sendError(message, error) {
+  message.channel.send({
+    embed: {
+      color: 15158332,
+      title: error.name,
+      description: error.message,
+    },
+  });
 }
 module.exports = {
   sendResponse,
@@ -317,5 +435,17 @@ module.exports = {
   sendNews,
   getChess,
   getStats,
-  updateCorona
+  updateCorona,
+  verify,
+  verifyWord,
+  delay,
+  shortenText,
+  list,
+  silhouette,
+  invert,
+  centerImage,
+  sepia,
+  shorten,
+  trimArray,
+  sendError,
 };

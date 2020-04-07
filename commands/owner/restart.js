@@ -5,13 +5,14 @@ module.exports = {
     aliases: ["rt"],
     description: "Restart the bot",
     ownerOnly: true,
-    enabled: true
+    enabled: true,
   },
   async run(client, message, args) {
     console.log("1");
-    message.channel.send("RESTARTING").then(async m => {
-      await client.destroy();
-      await client.login(process.env.token);
+    message.channel.send("RESTARTING").then(async (m) => {
+      // await client.destroy();
+      // await client.login(process.env.token);
+      process.exit(2);
     });
-  }
+  },
 };
