@@ -6,6 +6,7 @@ let {
   getThumbnail,
   secondsCoverter,
 } = require("../../utils/utility");
+const Pagination = require("discord-paginationembed");
 module.exports = {
   config: {
     name: "playlist",
@@ -22,40 +23,60 @@ module.exports = {
       } else if (!ytdl.validateURL(args[1])) {
         args.splice(args.indexOf("--add"), 1);
         let query = await dude.search(args.join(" "));
-        console.log(args.join(" "));
         let videoUrl = "https://www.youtube.com/watch?v=" + query[0].videoId;
         addPlaylist(videoUrl);
       }
     }
-    if (messageFlags === "--play") {
-      if (!message.mentions.user.first()) {
-        const serverQueue = client.queue.get(message.guild.id);
-        if (!serverQueue) {
-          let tempQueue = {
-            guildID: null,
-            queue: [],
-            isPlaying: false,
-            voiceChannel: voiceChannel,
-            textChannel: message.channel,
-            connection: null,
-            dispatcher: null,
-          };
-          tempQueue.connection = await tempQueue.voiceChannel.join();
-          let songArr = await plModel.getPlaylist(message.author.id);
-          for (const song of songArr) {
-            let songInfo = await getSongInfo(song.link);
-            let songData = {
-              title: songInfo.title,
-              url: songInfo.video_url,
-              thumbnail: getThumbnail(url),
-              duration: secondsCoverter(songInfo.length_seconds),
-              seconds: songInfo.length_seconds,
-              requester: message.author.tag,
-            };
-            tempQueue.queue.push(songData);
-          }
-          client.queue.set(message.guild.id, tempQueue);
-        }
+    if (messageFlags === "--show") {
+      let mention = message.mentions.users.first();
+      let user = mention.id ? mention.id : message.author.id;
+
+      let embeds = [];
+      let songArr = await plModel.getPlaylist(user);
+      for (const song of songArr) {
+        await embeds.push(song.songName);
+      }
+      const playlist = new Pagination.FieldsEmbed()
+        .setArray(embeds)
+        .setAuthorizedUsers([])
+        .setChannel(message.channel)
+        .setPageIndicator(true)
+        .formatField("Name", (i) => i + "\n")
+        .setDeleteOnTimeout(true)
+        .setElementsPerPage(10)
+        .setEmojisFunctionAfterNavigation(true)
+        .setDisabledNavigationEmojis(["DELETE"]);
+      playlist.embed
+        .setThumbnail(
+          client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
+        )
+        .setColor("#0390fc")
+        .setFooter("Created by wrose");
+      await playlist.build();
+    }
+    if (messageFlags === "--delete") {
+      args.splice(args.indexOf(messageFlags), 1);
+      let deletingSong = args.join(" ");
+      try {
+        let a = await plModel.deleteSong(deletingSong, message.author.id);
+        message.channel.send({
+          embed: {
+            color: 15158332,
+            title: "Delete one song from " + message.author.tag + " playlist",
+            fields: [
+              {
+                name: "Song name",
+                value: a.songName,
+              },
+              {
+                name: "Song URL",
+                value: a.link,
+              },
+            ],
+          },
+        });
+      } catch (error) {
+        console.log("error", error);
       }
     }
     async function addPlaylist(url) {

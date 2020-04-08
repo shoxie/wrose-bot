@@ -50,6 +50,8 @@ module.exports = {
       });
     }
     try {
+      let mention = message.mentions.users.first();
+      let user = mention.id ? mention.id : message.author.id;
       if (args[0] !== "--playlist") {
         if (ytcore.validateURL(args[0])) {
           addQueue(args[0]);
@@ -62,12 +64,12 @@ module.exports = {
       }
       if (args[0] === "--playlist" && !serverQueue) {
         let tempQueue = await initQueue(message);
-        tempQueue = await addPlaylistToQueue(message, tempQueue);
+        tempQueue = await addPlaylistToQueue(message, tempQueue, user);
         client.queue.set(message.guild.id, tempQueue);
         play(message.guild.id);
       }
       if (args[0] === "--playlist" && serverQueue) {
-        await addPlaylistToQueue(message, serverQueue);
+        await addPlaylistToQueue(message, serverQueue, user);
       }
 
       //functions

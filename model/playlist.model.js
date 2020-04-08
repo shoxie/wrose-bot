@@ -22,7 +22,12 @@ const getPlaylist = async (authorID) => {
   let playlistArr = playlist.find({ author: authorID });
   return playlistArr;
 };
+const deleteSong = async (song, authorID) => {
+  let a = playlist.findOneAndDelete({ songName: song, author: authorID });
+  return a;
+};
 module.exports = {
   addPlaylist,
-  getPlaylist
+  getPlaylist,
+  deleteSong,
 };

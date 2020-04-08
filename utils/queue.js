@@ -14,8 +14,8 @@ const initQueue = async (message) => {
   tempQueue.connection = await tempQueue.voiceChannel.join();
   return tempQueue;
 };
-const addPlaylistToQueue = async (message, queue) => {
-  let songArr = await plModel.getPlaylist(message.author.id);
+const addPlaylistToQueue = async (message, queue, user) => {
+  let songArr = await plModel.getPlaylist(user);
   for (const song of songArr) {
     let songInfo = await getSongInfo(song.link);
     let songData = {
