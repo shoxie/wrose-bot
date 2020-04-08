@@ -50,8 +50,7 @@ module.exports = {
       });
     }
     try {
-      let mention = message.mentions.users.first();
-      let user = mention.id ? mention.id : message.author.id;
+      let user = message.mentions.users.first() ? message.mentions.users.first().id : message.author.id;
       if (args[0] !== "--playlist") {
         if (ytcore.validateURL(args[0])) {
           addQueue(args[0]);

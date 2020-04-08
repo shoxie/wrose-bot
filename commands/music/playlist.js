@@ -28,9 +28,9 @@ module.exports = {
       }
     }
     if (messageFlags === "--show") {
-      let mention = message.mentions.users.first();
-      let user = mention.id ? mention.id : message.author.id;
-
+      let user = message.mentions.users.first()
+        ? message.mentions.users.first().id
+        : message.author.id;
       let embeds = [];
       let songArr = await plModel.getPlaylist(user);
       for (const song of songArr) {
