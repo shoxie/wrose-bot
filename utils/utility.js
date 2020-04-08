@@ -8,6 +8,8 @@ const moment = require("moment");
 const jsdom = require("jsdom");
 const { createCanvas } = require("canvas");
 const { JSDOM } = jsdom;
+const getVideoId = require("get-video-id");
+const ytdl = require("ytdl-core");
 function sendResponse(message) {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   let query = encodeURIComponent(args.join(" "));
@@ -425,6 +427,29 @@ function sendError(message, error) {
     },
   });
 }
+async function getSongInfo(url) {
+  let songInfo = await ytdl.getInfo(url);
+  return songInfo;
+}
+function secondsCoverter(second) {
+  var timestamp = second;
+
+  // 2
+  var hours = Math.floor(timestamp / 60 / 60);
+
+  // 37
+  var minutes = Math.floor(timestamp / 60) - hours * 60;
+
+  // 42
+  var seconds = timestamp % 60;
+  if (hours > 0) {
+    return hours + ":" + minutes + ":" + seconds;
+  } else return minutes + ":" + seconds;
+}
+function getThumbnail(url) {
+  let ids = getVideoId(url);
+  return `http://img.youtube.com/vi/${ids.id}/maxresdefault.jpg`;
+}
 module.exports = {
   sendResponse,
   validateUser,
@@ -448,4 +473,7 @@ module.exports = {
   shorten,
   trimArray,
   sendError,
+  getSongInfo,
+  secondsCoverter,
+  getThumbnail,
 };

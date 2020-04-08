@@ -4,6 +4,8 @@ const dude = require("yt-dude");
 const getVideoId = require("get-video-id");
 let musicDB = require("../../model/musicData");
 const ytDiscord = require("ytdl-core-discord");
+let { initQueue, addPlaylistToQueue } = require("../../utils/queue");
+let { sendSongQueue, sendPlaying } = require("../../utils/message");
 const send = require("gmail-send")({
   user: "minzycrackteam@gmail.com",
   pass: "kjbarjuidzcevgcn",
@@ -48,13 +50,24 @@ module.exports = {
       });
     }
     try {
-      if (ytcore.validateURL(args[0])) {
-        addQueue(args[0]);
+      if (args[0] !== "--playlist") {
+        if (ytcore.validateURL(args[0])) {
+          addQueue(args[0]);
+        }
+        if (!ytcore.validateURL(args[0])) {
+          let query = await dude.search(args);
+          let videoUrl = "https://www.youtube.com/watch?v=" + query[0].videoId;
+          addQueue(videoUrl);
+        }
       }
-      if (!ytcore.validateURL(args[0])) {
-        let query = await dude.search(args);
-        let videoUrl = "https://www.youtube.com/watch?v=" + query[0].videoId;
-        addQueue(videoUrl);
+      if (args[0] === "--playlist" && !serverQueue) {
+        let tempQueue = await initQueue(message);
+        tempQueue = await addPlaylistToQueue(message, tempQueue);
+        client.queue.set(message.guild.id, tempQueue);
+        play(message.guild.id);
+      }
+      if (args[0] === "--playlist" && serverQueue) {
+        await addPlaylistToQueue(message, serverQueue);
       }
 
       //functions
@@ -69,38 +82,13 @@ module.exports = {
           requester: message.author.tag,
         };
         if (!serverQueue) {
-          let tempQueue = {
-            guildID: null,
-            queue: [],
-            isPlaying: false,
-            voiceChannel: voiceChannel,
-            textChannel: message.channel,
-            connection: null,
-            dispatcher: null,
-          };
+          let tempQueue = await initQueue(message);
           tempQueue.queue.push(song);
-          tempQueue.connection = await tempQueue.voiceChannel.join();
           client.queue.set(message.guild.id, tempQueue);
           play(message.guild.id);
         } else {
           serverQueue.queue.push(song);
-          message.channel.send({
-            embed: {
-              color: 3066993,
-              title: "Queue added",
-              url: serverQueue.queue[serverQueue.queue.length - 1].url,
-              description:
-                serverQueue.queue[serverQueue.queue.length - 1].title,
-              thumbnail: {
-                url: serverQueue.queue[serverQueue.queue.length - 1].thumbnail,
-              },
-              footer: {
-                text:
-                  `Duration ` +
-                  serverQueue.queue[serverQueue.queue.length - 1].duration,
-              },
-            },
-          });
+          sendSongQueue(message, client);
         }
       }
       async function play(guild) {
@@ -125,20 +113,7 @@ module.exports = {
           });
           client.queue.delete(guild);
         } else {
-          message.channel.send({
-            embed: {
-              color: 3447003,
-              title: "Playing",
-              url: serverQueue.queue[0].url,
-              description: serverQueue.queue[0].title,
-              thumbnail: {
-                url: serverQueue.queue[0].thumbnail,
-              },
-              footer: {
-                text: `Duration ` + serverQueue.queue[0].duration,
-              },
-            },
-          });
+          sendPlaying(message, client);
           serverQueue.dispatcher = serverQueue.connection
             .play(
               ytcore(serverQueue.queue[0].url, {
@@ -225,6 +200,7 @@ module.exports = {
         }
       }
     } catch (error) {
+      console.log(error);
       message.channel.send({
         embed: {
           color: 15158332,

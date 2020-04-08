@@ -1,3 +1,4 @@
+let util = require("../../utils/utility");
 module.exports = {
   config: {
     name: "restart",
@@ -8,11 +9,16 @@ module.exports = {
     enabled: true,
   },
   async run(client, message, args) {
-    console.log("1");
-    message.channel.send("RESTARTING").then(async (m) => {
-      // await client.destroy();
-      // await client.login(process.env.token);
-      process.exit(2);
-    });
+    const { exec } = require("child_process");
+    try {
+      exec(`pm2 restart ${process.env.pm2Name}`, async (err, out, stderr) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      return message.channel.send("Restart success");
+    } catch (e) {
+      return util.sendError(message, e);
+    }
   },
 };

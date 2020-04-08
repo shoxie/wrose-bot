@@ -9,24 +9,24 @@ module.exports = {
     aliases: [],
     description: "Send information about a League of Legends champion",
     ownerOnly: false,
-    enabled: true
+    enabled: true,
   },
   async run(client, message, args) {
     let version = null;
     message.channel.send("Champion ?");
     let collected = await message.channel.awaitMessages(
-      m => m.author.id === message.author.id,
+      (m) => m.author.id === message.author.id,
       {
         max: 1,
-        time: 30000
+        time: 30000,
       }
     );
-    let champions
+    let champions;
     let champion = collected.first().content;
     if (champion === "satan") champion = "teemo";
     try {
       if (!version) await fetchVersion();
-      const data = await fetchChampion(champion);
+      const data = await fetchChampion(champion.toLowerCase());
       if (!data) return message.channel.send("Could not find any results.");
       const tips = [].concat(data.allytips, data.enemytips);
       const embed = new MessageEmbed()
@@ -104,7 +104,7 @@ module.exports = {
       return message.channel.send(
         `Tip: ${tips[Math.floor(Math.random() * tips.length)]}`,
         {
-          embed
+          embed,
         }
       );
     } catch (err) {
@@ -135,7 +135,7 @@ module.exports = {
     async function fetchChampion(champion) {
       const champions = await fetchChampions();
       const name = Object.keys(champions.data).find(
-        key => key.toLowerCase() === champion
+        (key) => key.toLowerCase() === champion
       );
       if (!name) return null;
       const { id } = champions.data[name];
@@ -144,5 +144,5 @@ module.exports = {
       );
       return body.data[id];
     }
-  }
+  },
 };
