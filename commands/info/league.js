@@ -140,7 +140,7 @@ module.exports = {
       if (!name) return null;
       const { id } = champions.data[name];
       const { body } = await request.get(
-        `https://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion/${id}.json`
+        `https://ddragon.leagueoflegends.com/cdn/${version}/data/vn_VN/champion/${id}.json`
       );
       return body.data[id];
     }
