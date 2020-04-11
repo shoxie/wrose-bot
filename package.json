@@ -52,6 +52,7 @@
     "canvasjs": "^1.8.3",
     "chart.js": "^2.9.3",
     "common-tags": "^1.8.0",
+    "dadjokes-wrapper": "^0.1.4",
     "discord-logs": "^1.7.5",
     "discord-paginationembed": "^2.0.0-beta.4",
     "moment": "^2.24.0",
