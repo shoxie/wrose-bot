@@ -41,7 +41,7 @@ module.exports = {
       var textB = b.name;
       return textA < textB ? -1 : textA > textB ? 1 : 0;
     });
-    const iptech = new Pagination.FieldsEmbed()
+    const commands = new Pagination.FieldsEmbed()
       .setArray(embeds)
       .setAuthorizedUsers([])
       .setChannel(message.channel)
@@ -53,12 +53,12 @@ module.exports = {
       .setElementsPerPage(10)
       .setEmojisFunctionAfterNavigation(true)
       .setDisabledNavigationEmojis(["DELETE"]);
-    iptech.embed
+      commands.embed
       .setThumbnail(
         client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
       )
       .setColor("#0390fc")
       .setFooter("Created by wrose");
-    await iptech.build();
+    await commands.build();
   }
 };

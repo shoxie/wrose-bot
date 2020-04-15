@@ -23,6 +23,7 @@ module.exports = {
       });
     }
     if (!serverQueue) return emptyQueue(message);
+    if(serverQueue.radio) return message.reply("Playing radio stream")
     if (message.member.roles.cache.has(roleID.id)) {
       if (message.member.voice.channel != serverQueue.voiceChannel) {
         // undefined

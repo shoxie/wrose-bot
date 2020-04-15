@@ -1,5 +1,6 @@
 const stations = require("../../data/stations.json");
-const { play } = require("../../utils/radio");
+const { play, stop, showStations } = require("../../utils/radio");
+const { initQueue } = require("../../utils/queue");
 module.exports = {
   config: {
     name: "radio",
@@ -11,18 +12,31 @@ module.exports = {
   },
   async run(client, message, args) {
     const serverQueue = client.queue.get(message.guild.id);
-    if (serverQueue) return message.reply("Occupied somewhere else.");
+    if (serverQueue && !serverQueue.radio)
+      return message.reply("Occupied somewhere else.");
     try {
       if (args[0] === "--play") {
         let tempQueue = await initQueue(message);
         tempQueue.radio = true;
-        const station = stations[args[1]];
+        args.splice(args.indexOf("--play"), 1);
+        let name = args.join(" ");
+        const station = stations[name];
         if (!station) {
-          return funcs.send("No such station found");
+          await tempQueue.voiceChannel.leave();
+          client.queue.delete(message.guild.id);
+          return message.reply("No such station found");
+        } else {
+          tempQueue.queue.push(station);
+          client.queue.set(message.guild.id, tempQueue);
+          play(client, message, station);
         }
       } else if (args[0] === "--stations") {
+        showStations(client, message)
       } else if (args[0] === "--stop") {
+        stop(client, message);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
