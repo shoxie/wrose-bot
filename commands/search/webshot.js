@@ -14,15 +14,6 @@ module.exports = {
     enabled: true,
   },
   async run(client, message, args) {
-    
-fs.access(path.join(__dirname,"..","..", "file.png"), fs.F_OK, (err) => {
-  if (err) {
-    console.error(err)
-    return
-  }
-  return message.reply('Please try again in 10 seconds')
-  //file exists
-})
     let options = {
       width: 1920,
       height: 1080,
@@ -33,18 +24,14 @@ fs.access(path.join(__dirname,"..","..", "file.png"), fs.F_OK, (err) => {
     for(let word of nonobad) {
         if(message.content.includes(word)) return message.channel.send('NO NSFW BLYAT')
     }
-    let a = captureWebsite.file(args[0], `./file.png`, options).catch(error => {
-        if(error) {
-          return message.channel.send("Something went wrong");
-          sendErrorMail(error)
-        }
-    }).then(async () => {
-      let filepath = path.join(__dirname,"..","..", "file.png")
-      await message.channel.send({
-        files: [{ attachment: filepath, name: "file.png" }]
-        })
-        fs.unlinkSync(filepath);
-    })
-    
+    try {
+    let a = await captureWebsite.buffer(args[0], options)
+    await message.channel.send({
+      files: [{ attachment: a, name: "file.png" }]
+      })
+    } catch (error) {
+      sendErrorMail(error)
+      return message.channel.send("Something went wrong");
+    }
   },
 };
