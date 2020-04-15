@@ -101,7 +101,7 @@ module.exports = {
         const serverQueue = client.queue.get(guild);
         if (!serverQueue.queue[0]) {
           serverQueue.isPlaying = false;
-          updatePresence(serverQueue);
+          updatePresence(message, serverQueue);
           serverQueue.voiceChannel.leave();
           emptyQueue(message, client);
           client.queue.delete(guild);
@@ -123,7 +123,7 @@ module.exports = {
             //   .play(await ytDiscord(serverQueue.queue[0].url), { type: "opus" })
             .on("start", () => {
               serverQueue.isPlaying = true;
-              updatePresence(serverQueue);
+              updatePresence(message, serverQueue);
               addTopSong(serverQueue.queue[0].title);
             })
             .on("finish", () => {
@@ -178,7 +178,6 @@ module.exports = {
           return hours + ":" + minutes + ":" + seconds;
         } else return minutes + ":" + seconds;
       }
-      updatePresence(message, serverQueue)
     } catch (error) {
       console.log(error);
       message.channel.send({

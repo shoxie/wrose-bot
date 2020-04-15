@@ -4,7 +4,7 @@ const play = (client, message) => {
     const serverQueue = client.queue.get(message.guild.id);
     if (!serverQueue.queue[0]) {
       serverQueue.isPlaying = false;
-      updatePresence(serverQueue);
+      updatePresence(message, serverQueue);
       serverQueue.voiceChannel.leave();
       emptyQueue(message, client);
       client.queue.delete(guild);
