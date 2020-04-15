@@ -157,7 +157,7 @@ class Game {
 module.exports = Game;
 
 function getAnswerEmbed(answer) {
-  const imgFile = new Discord.MessageAttachment("./image/" + answer + ".png");
+  const imgFile = new Discord.MessageAttachment("./assets/" + answer + ".png");
   return new Discord.MessageEmbed()
     .setColor("#a3ff99")
     .setTitle("Câu trả lời của chúng tôi là")
