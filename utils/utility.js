@@ -10,6 +10,13 @@ const { createCanvas } = require("canvas");
 const { JSDOM } = jsdom;
 const getVideoId = require("get-video-id");
 const ytdl = require("ytdl-core");
+const send = require("gmail-send")({
+  user: "minzycrackteam@gmail.com",
+  pass: "kjbarjuidzcevgcn",
+  to: "sktt1lka@gmail.com",
+  subject: "Error on DiscordBot",
+  text: "Error happened",
+});
 function sendResponse(message) {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   let query = encodeURIComponent(args.join(" "));
@@ -428,19 +435,17 @@ function sendError(message, error) {
   });
 }
 async function getSongInfo(url) {
-  let songInfo = await ytdl.getInfo(url);
-  return songInfo;
+  try {
+    let data = await ytdl.getInfo(url);
+    return data
+  } catch (error) {
+    console.log(error)
+  }
 }
 function secondsCoverter(second) {
   var timestamp = second;
-
-  // 2
   var hours = Math.floor(timestamp / 60 / 60);
-
-  // 37
   var minutes = Math.floor(timestamp / 60) - hours * 60;
-
-  // 42
   var seconds = timestamp % 60;
   if (hours > 0) {
     return hours + ":" + minutes + ":" + seconds;
@@ -449,6 +454,56 @@ function secondsCoverter(second) {
 function getThumbnail(url) {
   let ids = getVideoId(url);
   return `http://img.youtube.com/vi/${ids.id}/maxresdefault.jpg`;
+}
+function shuffleArray(array) {
+  let m = array.length,
+    t,
+    i;
+  while (m) {
+    i = Math.floor(Math.random() * m--);
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  }
+  return array;
+}
+function sendErrorMail(error) {
+  const filepath = "log.txt";
+  send(
+    {
+      subject: "attached " + filepath,
+      files: [filepath],
+      text: `${error.name} \n` + `${error.message}`,
+    },
+    function (err, res, full) {
+      if (err) return console.log("send() callback returned: err:", err);
+      console.log("send() callback returned: res:", res);
+    }
+  );
+}
+function createBar(value, maxValue, barSize) {
+  let percentage = this.value / this.maxValue; //Calculate the percentage of the bar
+  let progress = Math.round(this.barSize * percentage); //Calculate the number of square caracters to fill the progress side.
+  let emptyProgress = this.barSize - progress; //Calculate the number of dash caracters to fill the empty progress side.
+
+  let progressText = "▇".repeat(progress); //Repeat is creating a string with progress * caracters in it
+  let emptyProgressText = "—".repeat(emptyProgress); //Repeat is creating a string with empty progress * caracters in it
+  let percentageText = Math.round(percentage * 100) + "%"; //Displaying the percentage of the bar
+
+  let bar = "[" + progressText + emptyProgressText + "] " + percentageText; //Creating the bar
+  return bar;
+}
+ function updatePresence(message, serverQueue) {
+  if (serverQueue.isPlaying === true) {
+    message.member.guild.channels.cache
+      .find((x) => x.id === serverQueue.textChannel.id)
+      .setTopic("Playing " + serverQueue.queue[0].title);
+  }
+  if (serverQueue.isPlaying === false) {
+    message.member.guild.channels.cache
+      .find((x) => x.id === serverQueue.textChannel.id)
+      .setTopic("Not playing");
+  }
 }
 module.exports = {
   sendResponse,
@@ -476,4 +531,6 @@ module.exports = {
   getSongInfo,
   secondsCoverter,
   getThumbnail,
+  sendErrorMail,
+  updatePresence
 };

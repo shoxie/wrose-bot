@@ -34,7 +34,24 @@ const sendPlaying = (message, client) => {
     },
   });
 };
+const emptyQueue = (message) => {
+  message.channel.send({
+    embed: {
+      color: 15158332,
+      title: "No songs in the queue",
+      author: {
+        name: message.client.user.username,
+        icon_url: message.client.user.avatarURL({
+          format: "png",
+          dynamic: true,
+          size: 1024,
+        }),
+      },
+    },
+  });
+};
 module.exports = {
   sendSongQueue,
   sendPlaying,
+  emptyQueue,
 };

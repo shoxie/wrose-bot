@@ -1,7 +1,7 @@
 let util = require("../utils/utility");
 let config = require("../config/config.json");
-module.exports = client => {
-  return async function(message) {
+module.exports = (client) => {
+  return async function (message) {
     //let message.guild.id = message.guild.id;
     if (message.guild) {
       let guildConfig = client.guildSettings.get(message.guild.id);
@@ -13,10 +13,7 @@ module.exports = client => {
       }
       //args definition
       if (prefix.length === 0) return;
-      const args = message.content
-        .slice(prefix.length)
-        .trim()
-        .split(/ +/g);
+      const args = message.content.slice(prefix.length).trim().split(/ +/g);
       const cmd = args.shift().toLowerCase();
       //message filter
 
@@ -73,7 +70,6 @@ module.exports = client => {
 
       //misc utilities
       if (message.channel.id === "683780012541083704") {
-        let util = require("../utils/utility");
         util.sendResponse(message);
       }
       if (client.awayuser && message.mentions.users.first()) {
@@ -83,15 +79,6 @@ module.exports = client => {
           message.mentions.users.has(client.awayuser.get(mentionedUser).user.id)
         ) {
           util.sendShit(message);
-        }
-      }
-      // functions
-      function runCommands(cmd) {
-        if (commands.has(cmd)) {
-          commands.get(cmd).run(client, message, args);
-        }
-        if (aliases.has(cmd)) {
-          aliases.get(cmd).run(client, message, args);
         }
       }
     }

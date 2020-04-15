@@ -6,6 +6,7 @@ const initQueue = async (message) => {
     guildID: null,
     queue: [],
     isPlaying: false,
+    radio: false,
     voiceChannel: voiceChannel,
     textChannel: message.channel,
     connection: null,

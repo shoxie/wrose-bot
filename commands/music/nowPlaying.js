@@ -1,3 +1,4 @@
+let Bar = require("../../utils/progressBar");
 module.exports = {
   config: {
     name: "nowPlaying",
@@ -5,7 +6,7 @@ module.exports = {
     aliases: ["np"],
     description: "Send information of playing song",
     ownerOnly: false,
-    enabled: true
+    enabled: true,
   },
   async run(client, message, args) {
     const serverQueue = client.queue.get(message.guild.id);
@@ -13,48 +14,58 @@ module.exports = {
       return message.channel.send({
         embed: {
           color: 15158332,
-          title: "I'm not playing anything right now"
-        }
+          title: "I'm not playing anything right now",
+        },
       });
     } else {
-      message.channel.send({
-        embed: {
-          color: 3447003,
-          title: "Now playing",
-          url: serverQueue.queue[0].url,
-          fields: [
-            {
-              name: "Song name",
-              value: serverQueue.queue[0].title
+      try {
+        let bar = new Bar(
+          Math.floor((parseInt(serverQueue.dispatcher.streamTime) / 1000)),
+          serverQueue.queue[0].seconds,
+          20
+        );
+        let progress = bar.createBar();
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: "Now playing",
+            url: serverQueue.queue[0].url,
+            fields: [
+              {
+                name: "Song name",
+                value: serverQueue.queue[0].title,
+              },
+              {
+                name: "Duration",
+                value: serverQueue.queue[0].duration,
+              },
+              {
+                name: "Requested by",
+                value: serverQueue.queue[0].requester,
+              },
+              {
+                name: "Current seek",
+                value: msToTime() + "\n" + progress,
+              },
+            ],
+            thumbnail: {
+              url: message.client.user.avatarURL({
+                format: "png",
+                dynamic: true,
+                size: 1024,
+              }),
             },
-            {
-              name: "Duration",
-              value: serverQueue.queue[0].duration
+            image: {
+              url: serverQueue.queue[0].thumbnail,
             },
-            {
-              name: "Requested by",
-              value: serverQueue.queue[0].requester
+            footer: {
+              text: "Created by wrose",
             },
-            {
-              name: "Current seek",
-              value: msToTime()
-            }
-          ],
-          thumbnail: {
-            url: message.client.user.avatarURL({
-              format: "png",
-              dynamic: true,
-              size: 1024
-            })
           },
-          image: {
-            url: serverQueue.queue[0].thumbnail
-          },
-          footer: {
-            text: "Created by wrose"
-          }
-        }
-      });
+        });
+      } catch (error) {
+        message.channel.send(error.message);
+      }
     }
     function msToTime() {
       let duration = serverQueue.dispatcher.streamTime;
@@ -69,5 +80,5 @@ module.exports = {
 
       return minutes + ":" + seconds;
     }
-  }
+  },
 };

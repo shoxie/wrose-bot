@@ -19,7 +19,7 @@ module.exports = async (client, message) => {
         .join(".");
       let cmdObj = require("../commands/" + dir + "/" + filename);
       client.commands.set(filename.toLowerCase(), cmdObj);
-      if (cmdObj.config.aliases) {
+      if (cmdObj.config.aliases) {  
         for (let i in cmdObj.config.aliases) {
           client.aliases.set(cmdObj.config.aliases[i], cmdObj);
         }

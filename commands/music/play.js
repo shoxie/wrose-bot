@@ -5,7 +5,9 @@ const getVideoId = require("get-video-id");
 let musicDB = require("../../model/musicData");
 const ytDiscord = require("ytdl-core-discord");
 let { initQueue, addPlaylistToQueue } = require("../../utils/queue");
-let { sendSongQueue, sendPlaying } = require("../../utils/message");
+let { sendSongQueue, sendPlaying, emptyQueue } = require("../../utils/message");
+let { sendErrorMail, updatePresence } = require("../../utils/utility");
+
 const send = require("gmail-send")({
   user: "minzycrackteam@gmail.com",
   pass: "kjbarjuidzcevgcn",
@@ -25,6 +27,7 @@ module.exports = {
   async run(client, message, args) {
     const serverQueue = client.queue.get(message.guild.id);
     const voiceChannel = message.member.voice.channel;
+    if(serverQueue && serverQueue.radio === true) return message.reply('Occupied somewhere else')
     if (serverQueue) {
       if (
         message.member.voice.channel &&
@@ -50,7 +53,9 @@ module.exports = {
       });
     }
     try {
-      let user = message.mentions.users.first() ? message.mentions.users.first().id : message.author.id;
+      let user = message.mentions.users.first()
+        ? message.mentions.users.first().id
+        : message.author.id;
       if (args[0] !== "--playlist") {
         if (ytcore.validateURL(args[0])) {
           addQueue(args[0]);
@@ -98,20 +103,7 @@ module.exports = {
           serverQueue.isPlaying = false;
           updatePresence(serverQueue);
           serverQueue.voiceChannel.leave();
-          message.channel.send({
-            embed: {
-              color: 15158332,
-              title: "No songs in the queue",
-              author: {
-                name: message.client.user.username,
-                icon_url: message.client.user.avatarURL({
-                  format: "png",
-                  dynamic: true,
-                  size: 1024,
-                }),
-              },
-            },
-          });
+          emptyQueue(message, client);
           client.queue.delete(guild);
         } else {
           sendPlaying(message, client);
@@ -159,6 +151,7 @@ module.exports = {
             })
             .on("error", (error) => {
               console.log(error);
+              sendErrorMail(error)
             });
         }
       }
@@ -185,21 +178,7 @@ module.exports = {
           return hours + ":" + minutes + ":" + seconds;
         } else return minutes + ":" + seconds;
       }
-      function updatePresence(serverQueue) {
-        if (serverQueue.isPlaying === true) {
-          message.member.guild.channels.cache
-            .find((x) => x.id === serverQueue.textChannel.id)
-            .setTopic("Playing " + serverQueue.queue[0].title);
-        }
-        if (serverQueue.isPlaying === false) {
-          message.member.guild.channels.cache
-            .find((x) => x.id === serverQueue.textChannel.id)
-            .setTopic("Not playing");
-        }
-        if (message.content.includes("--lyrics")) {
-          // util;
-        }
-      }
+      updatePresence(message, serverQueue)
     } catch (error) {
       console.log(error);
       message.channel.send({
@@ -209,17 +188,7 @@ module.exports = {
           description: error.message,
         },
       });
-      const filepath = "log.txt";
-      send(
-        {
-          subject: "attached " + filepath,
-          files: [filepath],
-        },
-        function (err, res, full) {
-          if (err) return console.log("send() callback returned: err:", err);
-          console.log("send() callback returned: res:", res);
-        }
-      );
+      sendErrorMail(error)
     }
   },
 };
