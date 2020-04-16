@@ -1,5 +1,5 @@
-module.exports = client => {
-  return async function(oldState, newState) {
+module.exports = (client) => {
+  return async function (oldState, newState) {
     const serverQueue = client.queue.get(newState.guild.id);
     if (!serverQueue) return;
     if (serverQueue) {
@@ -7,7 +7,8 @@ module.exports = client => {
         setTimeout(() => {
           serverQueue.queue = [];
           serverQueue.textChannel.send("Tao đã chờ ở đây quá lâu rồi!");
-          serverQueue.connection.dispatcher.end();
+          if (serverQueue.radio) serverQueue.dispatcher.destroy();
+          else serverQueue.connection.dispatcher.end();
         }, 10000);
       }
     }

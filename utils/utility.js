@@ -505,6 +505,11 @@ function createBar(value, maxValue, barSize) {
       .setTopic("Not playing");
   }
 }
+function ytValidate(url) {
+  let y =/(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/g.test(url)
+    let s = /((https:\/\/)|(http:\/\/)|(www.)|(m\.)|(\s))+(soundcloud.com\/)+[a-zA-Z0-9\-\.]+(\/)+[a-zA-Z0-9\-\.]+/g.test(url);
+    return true ? y : false
+}
 module.exports = {
   sendResponse,
   validateUser,
@@ -532,5 +537,6 @@ module.exports = {
   secondsCoverter,
   getThumbnail,
   sendErrorMail,
-  updatePresence
+  updatePresence,
+  ytValidate
 };

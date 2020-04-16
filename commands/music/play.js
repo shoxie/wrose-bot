@@ -6,7 +6,7 @@ let musicDB = require("../../model/musicData");
 const ytDiscord = require("ytdl-core-discord");
 let { initQueue, addPlaylistToQueue } = require("../../utils/queue");
 let { sendSongQueue, sendPlaying, emptyQueue } = require("../../utils/message");
-let { sendErrorMail, updatePresence } = require("../../utils/utility");
+let { sendErrorMail, updatePresence, ytValidate } = require("../../utils/utility");
 
 const send = require("gmail-send")({
   user: "minzycrackteam@gmail.com",
@@ -57,7 +57,7 @@ module.exports = {
         ? message.mentions.users.first().id
         : message.author.id;
       if (args[0] !== "--playlist") {
-        if (ytcore.validateURL(args[0])) {
+        if (ytcore.validateURL(args[0]) || !ytValidate(args[0]) ) {
           addQueue(args[0]);
         }
         if (!ytcore.validateURL(args[0])) {
