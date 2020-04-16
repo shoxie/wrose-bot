@@ -20,10 +20,12 @@ module.exports = {
       fullPage: true,
       cookies: [],
       timeout: 30, // add beforeScreenshot to filter out IP or something
-      args: [
-				'--no-sandbox',
-				'--disable-setuid-sandbox'
-			]
+      launchOptions: {
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox'
+        ]
+      }
     };
     for(let word of nonobad) {
         if(message.content.includes(word)) return message.channel.send('NO NSFW BLYAT')
