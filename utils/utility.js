@@ -440,6 +440,7 @@ async function getSongInfo(url) {
     return data
   } catch (error) {
     console.log(error)
+    sendErrorMail(error)
   }
 }
 function secondsCoverter(second) {

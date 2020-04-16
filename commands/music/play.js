@@ -3,10 +3,15 @@ const model = require("../../model/model.js");
 const dude = require("yt-dude");
 const getVideoId = require("get-video-id");
 let musicDB = require("../../model/musicData");
-const ytDiscord = require("ytdl-core-discord");
+// const ytDiscord = require("ytdl-core-discord");
 let { initQueue, addPlaylistToQueue } = require("../../utils/queue");
 let { sendSongQueue, sendPlaying, emptyQueue } = require("../../utils/message");
-let { sendErrorMail, updatePresence, ytValidate } = require("../../utils/utility");
+let {
+  sendErrorMail,
+  updatePresence,
+  ytValidate,
+  getSongInfo,
+} = require("../../utils/utility");
 
 const send = require("gmail-send")({
   user: "minzycrackteam@gmail.com",
@@ -27,7 +32,8 @@ module.exports = {
   async run(client, message, args) {
     const serverQueue = client.queue.get(message.guild.id);
     const voiceChannel = message.member.voice.channel;
-    if(serverQueue && serverQueue.radio === true) return message.reply('Occupied somewhere else')
+    if (serverQueue && serverQueue.radio === true)
+      return message.reply("Occupied somewhere else");
     if (serverQueue) {
       if (
         message.member.voice.channel &&
@@ -57,7 +63,7 @@ module.exports = {
         ? message.mentions.users.first().id
         : message.author.id;
       if (args[0] !== "--playlist") {
-        if (ytcore.validateURL(args[0]) || !ytValidate(args[0]) ) {
+        if (ytcore.validateURL(args[0])) {
           addQueue(args[0]);
         }
         if (!ytcore.validateURL(args[0])) {
@@ -78,7 +84,7 @@ module.exports = {
 
       //functions
       async function addQueue(url) {
-        let songInfo = await ytcore.getInfo(url);
+        let songInfo = await getSongInfo(url);
         let song = {
           title: songInfo.title,
           url: songInfo.video_url,
@@ -151,7 +157,7 @@ module.exports = {
             })
             .on("error", (error) => {
               console.log(error);
-              sendErrorMail(error)
+              sendErrorMail(error);
             });
         }
       }
@@ -187,7 +193,7 @@ module.exports = {
           description: error.message,
         },
       });
-      sendErrorMail(error)
+      sendErrorMail(error);
     }
   },
 };
