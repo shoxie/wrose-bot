@@ -3,7 +3,6 @@ const model = require("../../model/model.js");
 const dude = require("yt-dude");
 const getVideoId = require("get-video-id");
 let musicDB = require("../../model/musicData");
-// const ytDiscord = require("ytdl-core-discord");
 let { initQueue, addPlaylistToQueue } = require("../../utils/queue");
 let { sendSongQueue, sendPlaying, emptyQueue } = require("../../utils/message");
 let {
@@ -125,8 +124,6 @@ module.exports = {
                 ],
               })
             )
-            // serverQueue.dispatcher = serverQueue.connection
-            //   .play(await ytDiscord(serverQueue.queue[0].url), { type: "opus" })
             .on("start", () => {
               serverQueue.isPlaying = true;
               updatePresence(message, serverQueue);

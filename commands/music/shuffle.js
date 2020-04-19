@@ -1,4 +1,5 @@
 let { emptyQueue } = require("../../utils/message");
+let { shuffleArray } = require("../../utils/utility");
 module.exports = {
   config: {
     name: "shuffle",
@@ -12,8 +13,11 @@ module.exports = {
     let normaldj = message.guild.roles.cache.find((x) => x.name === "dj");
     let bigdj = message.guild.roles.cache.find((x) => x.name === "DJ");
     let roleID = bigdj ? bigdj : normaldj;
-    const serverQueue = client.queue.get(message.channel.id);
-    if (!serverQueue) return emptyQueue(message);
+    const serverQueue = client.queue.get(message.guild.id);
+    if (!serverQueue) {
+      console.log(serverQueue);
+      return emptyQueue(message);
+    }
     if (message.member.roles.cache.has(roleID.id)) {
       if (message.member.voice.channel != serverQueue.voiceChannel) {
         // undefined
@@ -33,9 +37,7 @@ module.exports = {
         });
       } else {
         let queue = serverQueue.queue;
-        let first = queue.shift();
-        let shuffled = shuffle(queue);
-        shuffled.unshift(first);
+        queue = shuffleArray(queue);
         message.channel.send("Queue shuffled");
       }
     } else

@@ -5,6 +5,7 @@ const ytcore = require("ytdl-core");
 const stations = require("../data/stations.json");
 const play = (client, message, station) => {
   const serverQueue = client.queue.get(message.guild.id);
+  console.log(serverQueue);
   if (!serverQueue.queue[0]) {
     serverQueue.isPlaying = false;
     updatePresence(message, serverQueue);
@@ -76,25 +77,25 @@ const showStations = async (client, message) => {
     embeds.push(data);
   }
   const infor = new Pagination.FieldsEmbed()
-      .setArray(embeds)
-      .setAuthorizedUsers([])
-      .setChannel(message.channel)
-      .setPageIndicator(true)
-      .formatField("Name", i => i.name + "\n")
-      .setDeleteOnTimeout(true)
-      .setElementsPerPage(10)
-      .setEmojisFunctionAfterNavigation(true)
-      .setDisabledNavigationEmojis(["DELETE"]);
-      infor.embed
-      .setThumbnail(
-        client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
-      )
-      .setColor("#0390fc")
-      .setFooter("Created by wrose");
-    await infor.build();
+    .setArray(embeds)
+    .setAuthorizedUsers([])
+    .setChannel(message.channel)
+    .setPageIndicator(true)
+    .formatField("Name", (i) => i.name + "\n")
+    .setDeleteOnTimeout(true)
+    .setElementsPerPage(10)
+    .setEmojisFunctionAfterNavigation(true)
+    .setDisabledNavigationEmojis(["DELETE"]);
+  infor.embed
+    .setThumbnail(
+      client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
+    )
+    .setColor("#0390fc")
+    .setFooter("Created by wrose");
+  await infor.build();
 };
 module.exports = {
   play,
   stop,
-  showStations
+  showStations,
 };

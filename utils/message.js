@@ -50,8 +50,44 @@ const emptyQueue = (message) => {
     },
   });
 };
+const redMessage = (message, title, description) => {
+  message.channel.send({
+    embed: {
+      color: 15158332,
+      title: title,
+      description: description,
+      author: {
+        name: message.client.user.username,
+        icon_url: message.client.user.avatarURL({
+          format: "png",
+          dynamic: true,
+          size: 1024,
+        }),
+      },
+    }
+  })
+}
+const blueMessage = (message, title, description) => {
+  message.channel.send({
+    embed: {
+      color: 3447003,
+      title: title,
+      description: description,
+      author: {
+        name: message.client.user.username,
+        icon_url: message.client.user.avatarURL({
+          format: "png",
+          dynamic: true,
+          size: 1024,
+        }),
+      },
+    }
+  })
+}
 module.exports = {
   sendSongQueue,
   sendPlaying,
   emptyQueue,
+  blueMessage,
+  redMessage
 };

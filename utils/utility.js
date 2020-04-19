@@ -539,5 +539,6 @@ module.exports = {
   getThumbnail,
   sendErrorMail,
   updatePresence,
-  ytValidate
+  ytValidate,
+  shuffleArray
 };

@@ -1,5 +1,6 @@
 let gameModel = require("../../model/warewolf");
 let rules = require("../../config/rules.json");
+let { redMessage, blueMessage } = require("../../utils/message");
 module.exports = {
   config: {
     name: "warewolf",
@@ -7,7 +8,7 @@ module.exports = {
     aliases: [],
     description: "Start a warewolf game [9+ users required]",
     ownerOnly: true,
-    enabled: true
+    enabled: true,
   },
   async run(client, message, args) {
     const serverGame = client.warewolf.get(message.guild.id);
@@ -27,17 +28,17 @@ module.exports = {
           color: 3447003,
           description:
             "Please read the rule below, and click ✅ to mark yourself ready.",
-          fields: ruleFields
-        }
+          fields: ruleFields,
+        },
       });
       await msg.react("✅");
       let collected = await message.channel.awaitMessages(
-        m =>
+        (m) =>
           m.author.id === message.author.id &&
           m.content.toLowerCase() === "start",
         {
           max: 1,
-          time: 60000
+          time: 60000,
         }
       );
       let user_list = msg.reactions.cache.first().users.cache;
@@ -49,5 +50,5 @@ module.exports = {
         throw message.reply("Stop spamming!");
       } else gameModel.init(client, message, players);
     }
-  }
+  },
 };

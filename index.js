@@ -1,5 +1,8 @@
 const Discord = require("discord.js");
-const client = new Discord.Client({ disableEveryone: true });
+const client = new Discord.Client({
+  disableEveryone: true,
+  fetchAllMembers: true,
+});
 const config = require("./config/config.json");
 const mongoose = require("mongoose");
 const logs = require("discord-logs");
@@ -15,7 +18,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-    useCreateIndex: true
+    useCreateIndex: true,
   })
   .then(() => {
     console.log("CONNECTED DIT CON ME MAY");
