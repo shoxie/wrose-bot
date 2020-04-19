@@ -12,7 +12,7 @@ module.exports = {
     let normaldj = message.guild.roles.cache.find((x) => x.name === "dj");
     let bigdj = message.guild.roles.cache.find((x) => x.name === "DJ");
     let roleID = bigdj ? bigdj : normaldj;
-    const serverQueue = client.queue.get(message.queue.id);
+    const serverQueue = client.queue.get(message.channel.id);
     if (!serverQueue) return emptyQueue(message);
     if (message.member.roles.cache.has(roleID.id)) {
       if (message.member.voice.channel != serverQueue.voiceChannel) {
