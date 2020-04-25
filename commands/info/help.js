@@ -20,11 +20,12 @@ module.exports = {
             fields: [
               {
                 name: "Prefix",
-                value: client.guildSettings.get(message.guild.id).prefix,
+                value:
+                  client.guildSettings.get(message.guild.id).prefix || "\u200b",
               },
               {
                 name: "Running in ",
-                value: client.guilds.cache.size + " servers",
+                value: client.guilds.cache.size + " servers" || "\u200b",
               },
             ],
             thumbnail: {

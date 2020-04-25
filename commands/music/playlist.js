@@ -19,7 +19,7 @@ module.exports = {
     let messageFlags = args[0];
     if (messageFlags === "--add") {
       if (ytdl.validateURL(args[1])) {
-        addSong(args[1]);
+        addPlaylist(args[1]);
       } else if (!ytdl.validateURL(args[1])) {
         args.splice(args.indexOf("--add"), 1);
         let query = await dude.search(args.join(" "));
