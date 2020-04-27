@@ -36,7 +36,7 @@ module.exports = (client) => {
       ) {
         //console.log(message.channel.id === musicTextChannel[key]);
 
-        message.delete();
+        await message.delete();
       }
       //command execution
       if (cmd.length === 0) return;
@@ -69,9 +69,6 @@ module.exports = (client) => {
       }
 
       //misc utilities
-      if (message.channel.id === "683780012541083704") {
-        util.sendResponse(message);
-      }
       if (client.awayuser && message.mentions.users.first()) {
         let mentionedUser = message.mentions.users.first().username;
 

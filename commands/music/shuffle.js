@@ -40,7 +40,7 @@ module.exports = {
         let temp = queue[0];
         queue.shift();
         queue = shuffleArray(queue);
-        queue.unsift(temp);
+        queue.unshift(temp);
         message.channel.send("Queue shuffled");
       }
     } else

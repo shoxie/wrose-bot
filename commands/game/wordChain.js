@@ -1,6 +1,9 @@
 const { stripIndents } = require("common-tags");
 const startWords = require("../../assets/json/word-list");
 const util = require("../../utils/utility");
+const { redMessage } = require("../../utils/message");
+var checkWord = require("check-word");
+var check = checkWord("en");
 module.exports = {
   config: {
     name: "wordChain",
@@ -8,7 +11,7 @@ module.exports = {
     description: "Challenge a user to play word following game.",
     aliases: [],
     ownerOnly: false,
-    enabled: true
+    enabled: true,
   },
   async run(client, message, args) {
     let time = 10;
@@ -48,13 +51,13 @@ module.exports = {
         await message.channel.send(
           `It's ${player}'s turn! The letter is **${letter}**.`
         );
-        const filter = res =>
+        const filter = (res) =>
           res.author.id === player.id &&
           /^[a-zA-Z']+$/i.test(res.content) &&
           res.content.length < 50;
         const wordChoice = await message.channel.awaitMessages(filter, {
           max: 1,
-          time: time * 1000
+          time: time * 1000,
         });
         if (!wordChoice.size) {
           await message.channel.send("Time!");
@@ -64,7 +67,7 @@ module.exports = {
         const choice = wordChoice.first().content.toLowerCase();
         if (choice === "challenge") {
           const checked = await util.verifyWord(lastWord);
-          if (!checked) {
+          if (!check.check(lastWord)) {
             await message.channel.send(
               `Caught red-handed! **${lastWord}** is not valid!`
             );
@@ -85,6 +88,11 @@ module.exports = {
       }
       client.games.delete(message.channel.id);
       if (!winner) return message.channel.send("Oh... No one won.");
+      let a = "";
+      for (let word of words) {
+        a = a + word + ", ";
+      }
+      redMessage(message, "Game result", a);
       return message.channel.send(
         `The game is over! The winner is ${winner}! \n ${words.length} was answered`
       );
@@ -92,5 +100,5 @@ module.exports = {
       client.games.delete(message.channel.id);
       throw err;
     }
-  }
+  },
 };

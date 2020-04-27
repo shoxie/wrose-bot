@@ -130,7 +130,6 @@ module.exports = {
               addTopSong(serverQueue.queue[0].title);
             })
             .on("finish", () => {
-              console.log("stop playing");
               serverQueue.queue.shift();
               play(message.guild.id);
             })

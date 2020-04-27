@@ -10,6 +10,7 @@ const { createCanvas } = require("canvas");
 const { JSDOM } = jsdom;
 const getVideoId = require("get-video-id");
 const ytdl = require("ytdl-core");
+const startWords = require('../assets/json/word-list.json')
 const send = require("gmail-send")({
   user: "minzycrackteam@gmail.com",
   pass: "kjbarjuidzcevgcn",
