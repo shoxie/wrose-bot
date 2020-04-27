@@ -37,7 +37,10 @@ module.exports = {
         });
       } else {
         let queue = serverQueue.queue;
+        let temp = queue[0];
+        queue.shift();
         queue = shuffleArray(queue);
+        queue.unsift(temp);
         message.channel.send("Queue shuffled");
       }
     } else
