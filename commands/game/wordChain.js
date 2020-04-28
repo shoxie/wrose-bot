@@ -15,7 +15,7 @@ module.exports = {
   },
   async run(client, message, args) {
     let time = 10;
-    let opponent = message.mentions.users.first();
+    const opponent = message.mentions.users.first();
     if (opponent.bot) return message.reply("Bots may not be played against.");
     if (opponent.id === message.author.id)
       return message.reply("You may not play against yourself.");
@@ -65,16 +65,15 @@ module.exports = {
           break;
         }
         const choice = wordChoice.first().content.toLowerCase();
-        if (choice === "challenge") {
-          const checked = await util.verifyWord(lastWord);
-          if (!check.check(lastWord)) {
+        if (choice) {
+          if (!check.check(choice)) {
             await message.channel.send(
               `Caught red-handed! **${lastWord}** is not valid!`
             );
-            winner = player;
+            winner = userTurn ? opponent : message.author;
             break;
           }
-          await message.channel.send(`Sorry, **${lastWord}** is indeed valid!`);
+          await message.channel.send(`Sorry, **${choice}** is indeed valid!`);
           continue;
         }
         if (!choice.startsWith(letter) || words.includes(choice)) {
