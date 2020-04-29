@@ -51,7 +51,6 @@
   "devDependencies": {
     "axios": "^0.19.2",
     "canvas": "^2.6.1",
-    "capture-website": "^0.8.1",
     "chart.js": "^2.9.3",
     "common-tags": "^1.8.0",
     "dadjokes-wrapper": "^0.1.4",
