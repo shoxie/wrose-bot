@@ -470,11 +470,10 @@ function shuffleArray(array) {
   return array;
 }
 function sendErrorMail(error) {
-  const filepath = "log.txt";
+  // const filepath = "log.txt";
   send(
     {
       subject: "attached " + filepath,
-      files: [filepath],
       text: `${error.name} \n` + `${error.message}`,
     },
     function (err, res, full) {
