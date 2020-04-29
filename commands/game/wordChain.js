@@ -65,18 +65,17 @@ module.exports = {
           break;
         }
         const choice = wordChoice.first().content.toLowerCase();
-        if (choice) {
-          if (!check.check(choice)) {
-            await message.channel.send(
-              `Caught red-handed! **${lastWord}** is not valid!`
-            );
-            winner = userTurn ? opponent : message.author;
+        if (choice === "challenge") {
+          const checked = await this.verifyWord(lastWord);
+          if (!checked) {
+            await msg.say(`Caught red-handed! **${lastWord}** is not valid!`);
+            winner = player;
             break;
           }
-          await message.channel.send(`Sorry, **${choice}** is indeed valid!`);
+          await msg.say(`Sorry, **${lastWord}** is indeed valid!`);
           continue;
         }
-        if (!choice.startsWith(letter) || words.includes(choice)) {
+        if (!choice.startsWith(letter) || words.includes(choice) || !check.check(choice)) {
           await message.channel.send("Sorry! You lose!");
           winner = userTurn ? opponent : message.author;
           break;
