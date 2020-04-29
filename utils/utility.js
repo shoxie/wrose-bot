@@ -473,7 +473,7 @@ function sendErrorMail(error) {
   // const filepath = "log.txt";
   send(
     {
-      subject: "attached " + filepath,
+      subject: "attached ",
       text: `${error.name} \n` + `${error.message}`,
     },
     function (err, res, full) {
