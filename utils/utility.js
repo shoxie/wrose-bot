@@ -10,7 +10,7 @@ const { createCanvas } = require("canvas");
 const { JSDOM } = jsdom;
 const getVideoId = require("get-video-id");
 const ytdl = require("ytdl-core");
-const startWords = require('../assets/json/word-list.json')
+const startWords = require("../assets/json/word-list.json");
 const send = require("gmail-send")({
   user: "minzycrackteam@gmail.com",
   pass: "kjbarjuidzcevgcn",
@@ -438,14 +438,16 @@ function sendError(message, error) {
 async function getSongInfo(url) {
   try {
     let data = await ytdl.getInfo(url);
-    return data
+    return data;
   } catch (error) {
-    console.log(error)
-    sendErrorMail(error)
+    console.log(error);
+    sendErrorMail(error);
   }
 }
-function secondsCoverter(second) {
-  var timestamp = second;
+function secondsCoverter(time) {
+  console.log(time);
+  let second = time.split(".");
+  var timestamp = parseInt(second[0]);
   var hours = Math.floor(timestamp / 60 / 60);
   var minutes = Math.floor(timestamp / 60) - hours * 60;
   var seconds = timestamp % 60;
@@ -482,19 +484,7 @@ function sendErrorMail(error) {
     }
   );
 }
-function createBar(value, maxValue, barSize) {
-  let percentage = this.value / this.maxValue; //Calculate the percentage of the bar
-  let progress = Math.round(this.barSize * percentage); //Calculate the number of square caracters to fill the progress side.
-  let emptyProgress = this.barSize - progress; //Calculate the number of dash caracters to fill the empty progress side.
-
-  let progressText = "▇".repeat(progress); //Repeat is creating a string with progress * caracters in it
-  let emptyProgressText = "—".repeat(emptyProgress); //Repeat is creating a string with empty progress * caracters in it
-  let percentageText = Math.round(percentage * 100) + "%"; //Displaying the percentage of the bar
-
-  let bar = "[" + progressText + emptyProgressText + "] " + percentageText; //Creating the bar
-  return bar;
-}
- function updatePresence(message, serverQueue) {
+function updatePresence(message, serverQueue) {
   if (serverQueue.isPlaying === true) {
     message.member.guild.channels.cache
       .find((x) => x.id === serverQueue.textChannel.id)
@@ -506,10 +496,17 @@ function createBar(value, maxValue, barSize) {
       .setTopic("Not playing");
   }
 }
-function ytValidate(url) {
-  let y =/(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/g.test(url)
-    let s = /((https:\/\/)|(http:\/\/)|(www.)|(m\.)|(\s))+(soundcloud.com\/)+[a-zA-Z0-9\-\.]+(\/)+[a-zA-Z0-9\-\.]+/g.test(url);
-    return true ? y : false
+function isYT(url) {
+  let y = /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/g.test(
+    url
+  );
+  return true ? y : false;
+}
+function isSC(url) {
+  let s = /((https:\/\/)|(http:\/\/)|(www.)|(m\.)|(\s))+(soundcloud.com\/)+[a-zA-Z0-9\-\.]+(\/)+[a-zA-Z0-9\-\.]+/g.test(
+    url
+  );
+  return true ? s : false;
 }
 module.exports = {
   sendResponse,
@@ -539,6 +536,7 @@ module.exports = {
   getThumbnail,
   sendErrorMail,
   updatePresence,
-  ytValidate,
-  shuffleArray
+  isYT,
+  isSC,
+  shuffleArray,
 };

@@ -34,5 +34,21 @@
   "rap": {
     "name": "Rap",
     "url": "http://198.105.216.204:8146/stream/1/"
+  },
+  "kpop": {
+    "name": "Kpop",
+    "url": "https://listen.moe/kpop/fallback"
+  },
+  "jpop": {
+    "name": "Jpop",
+    "url": "https://listen.moe/fallback"
+  },
+  "lofi": {
+    "name": "Lofi",
+    "url": "http://hyades.shoutca.st:8043/stream"
+  },
+  "vapourwave": {
+    "name": "Vapourwave",
+    "url": "http://radio.plaza.one/mp3"
   }
 }
