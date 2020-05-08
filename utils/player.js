@@ -4,8 +4,13 @@ const dude = require("yt-dude");
 const util = require("util");
 const youtubeDL = require("youtube-dl");
 const getInfo = util.promisify(youtubeDL.getInfo);
-let { sendSongQueue, sendPlaying, emptyQueue } = require("./message");
-
+const {
+  sendSongQueue,
+  sendPlaying,
+  emptyQueue,
+  redMessage,
+} = require("./message");
+const { updateCount } = require("../model/musicData");
 let youtubeDLOptions = [
   "--quiet",
   "--ignore-errors",
@@ -50,7 +55,9 @@ const player = async (client, message) => {
   const serverQueue = client.queue.get(message.guild.id);
   if (!serverQueue.queue[0]) {
     serverQueue.isPlaying = false;
+    updatePresence(message, serverQueue);
     serverQueue.voiceChannel.leave();
+    emptyQueue(message);
     client.queue.delete(message.guild.id);
   } else {
     sendPlaying(message, client);
@@ -58,6 +65,8 @@ const player = async (client, message) => {
       .play(youtubeDL(serverQueue.queue[0].url))
       .on("start", () => {
         serverQueue.isPlaying = true;
+        updatePresence(message, serverQueue);
+        updateCount(serverQueue.queue[0].title);
       })
       .on("finish", () => {
         serverQueue.queue.shift();
@@ -82,7 +91,7 @@ const player = async (client, message) => {
         serverQueue.queue.shift();
       })
       .on("error", (error) => {
-        console.log(error);
+        redMessage(message, error.name, "null");
       });
   }
 };
