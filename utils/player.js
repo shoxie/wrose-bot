@@ -1,4 +1,4 @@
-const { isSC, isYT, secondsCoverter } = require("./utility");
+const { isSC, isYT, secondsCoverter, updatePresence } = require("./utility");
 const { initQueue } = require("./queue");
 const dude = require("yt-dude");
 const util = require("util");
@@ -91,7 +91,7 @@ const player = async (client, message) => {
         serverQueue.queue.shift();
       })
       .on("error", (error) => {
-        redMessage(message, error.name, "null");
+        redMessage(message, error.name, error.message);
       });
   }
 };
