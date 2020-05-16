@@ -1,4 +1,4 @@
-const { isSC, isYT, secondsCoverter, updatePresence } = require("./utility");
+const { isSC, isYT, secondsCoverter, updatePresence, sendError } = require("./utility");
 const { initQueue } = require("./queue");
 const dude = require("yt-dude");
 const util = require("util");
@@ -92,6 +92,20 @@ const player = async (client, message) => {
       })
       .on("error", (error) => {
         redMessage(message, error.name, error.message);
+        const { exec } = require("child_process");
+        try {
+          exec(
+            `pm2 restart ${process.env.pm2Name}`,
+            async (err, out, stderr) => {
+              if (err) {
+                console.log(err);
+              }
+            }
+          );
+          return message.channel.send("Restart success");
+        } catch (e) {
+          return sendError(message, e);
+        }
       });
   }
 };
