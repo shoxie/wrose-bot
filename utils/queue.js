@@ -1,5 +1,10 @@
 const plModel = require("../model/playlist.model");
-let { secondsCoverter, getThumbnail, getSongInfo } = require("./utility");
+let {
+  secondsCoverter,
+  getThumbnail,
+  getSongInfo,
+  shuffleArray,
+} = require("./utility");
 const initQueue = async (message) => {
   let voiceChannel = message.member.voice.channel;
   let tempQueue = {
@@ -17,6 +22,7 @@ const initQueue = async (message) => {
 };
 const addPlaylistToQueue = async (message, queue, user) => {
   let songArr = await plModel.getPlaylist(user);
+  songArr = shuffleArray(songArr);
   for (const song of songArr) {
     let songInfo = await getSongInfo(song.link);
     let songData = {
