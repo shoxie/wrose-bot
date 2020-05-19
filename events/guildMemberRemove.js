@@ -1,4 +1,3 @@
-const path = require("path");
 const Discord = require("discord.js");
 const Canvas = require("discord-canvas");
 module.exports = (client) => {
@@ -7,7 +6,7 @@ module.exports = (client) => {
       (ch) => ch.name === "new-member"
     );
     if (!channel) return;
-    const image = await new Canvas.Welcome()
+    const image = await new Canvas.Goodbye()
       .setUsername(member.user.username)
       .setDiscriminator(member.user.discriminator)
       .setMemberCount(member.guild.members.cache.size)
