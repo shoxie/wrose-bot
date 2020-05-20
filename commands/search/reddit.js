@@ -12,8 +12,16 @@ module.exports = {
   },
   async run(client, message, args) {
     let subreddit = args[0];
-    if (!subreddit) {
-      return message.channel.send("Please specify a subreddit");
+    if (!args[0]) {
+      await message.channel.send("Which subreddit ?");
+      let collected = await message.channel.awaitMessages(
+        (m) => m.author.id === message.author.id,
+        {
+          max: 1,
+          time: 30000,
+        }
+      );
+      subreddit = collected.first().content;
     }
     await message.channel.send(
       `Do you want to get the top posts from past hour/week/month/year or all?`
