@@ -47,20 +47,19 @@ module.exports = (client) => {
         let ownerID = client.config.get("ownerID");
         if (commands.has(cmd)) {
           if (commands.get(cmd).config.enabled === false) return;
-          if (
-            commands.get(cmd).config.ownerOnly === true &&
-            author.id !== ownerID
-          )
-            return;
-          commands.get(cmd).run(client, message, args);
+          if (commands.get(cmd).config.ownerOnly === true && author.id !== ownerID){
+            return message.channel.send("You are not the owner");
+          }
+          else {
+            commands.get(cmd).run(client, message, args);
+          }
         } else if (aliases.has(cmd)) {
           if (aliases.get(cmd).config === false) return;
-          if (
-            aliases.get(cmd).config.ownerOnly === true &&
-            author.id !== ownerID
-          )
+          if (aliases.get(cmd).config.ownerOnly === true &&author.id !== ownerID)
             return;
-          aliases.get(cmd).run(client, message, args);
+           else {
+             aliases.get(cmd).run(client, message, args);
+            }
         }
       }
 

@@ -50,7 +50,7 @@ const emptyQueue = (message) => {
     },
   });
 };
-const redMessage = (message, title, description) => {
+const redMessage = (message, title, description = null) => {
   message.channel.send({
     embed: {
       color: 15158332,
@@ -64,10 +64,10 @@ const redMessage = (message, title, description) => {
           size: 1024,
         }),
       },
-    }
-  })
-}
-const blueMessage = (message, title, description) => {
+    },
+  });
+};
+const blueMessage = (message, title, description = null) => {
   message.channel.send({
     embed: {
       color: 3447003,
@@ -81,13 +81,13 @@ const blueMessage = (message, title, description) => {
           size: 1024,
         }),
       },
-    }
-  })
-}
+    },
+  });
+};
 module.exports = {
   sendSongQueue,
   sendPlaying,
   emptyQueue,
   blueMessage,
-  redMessage
+  redMessage,
 };
