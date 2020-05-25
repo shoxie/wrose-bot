@@ -40,7 +40,7 @@ function updateIgnoredChannels(data) {
     if (result) {
       result.ignoredChannels.push(data.ignoredChannel);
       result.save().then(() => {
-        console.log("saved ignore channel");
+        console.log("saved ignore channel\n" + result);
       });
     }
   });
