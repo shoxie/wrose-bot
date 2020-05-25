@@ -14,11 +14,9 @@ let guildSettingsSchema = mongoose.Schema({
   },
   musicTextChannel: {
     type: String,
-    unique: true
   },
   musicVoiceChannel: {
     type: String,
-    unique: true
   },
   ignoredChannels: []
 });

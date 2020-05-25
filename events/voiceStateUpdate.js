@@ -12,5 +12,20 @@ module.exports = (client) => {
         }, 10000);
       }
     }
+    const tempVoiceChannel = newState.guild.channels.cache.find(x => x.name ==="Create new voice");
+    if(!tempVoiceChannel) return;
+      if(newState.member.voice.channel === tempVoiceChannel) {
+        const alreadyC = newState.guild.channels.cache.find(
+          (x) => x.name === newState.member.user.username
+        );
+        if (alreadyC) await newState.member.voice.setChannel(shit);
+        else {
+          let temp = await newState.guild.channels.create(
+            newState.member.user.username,
+            { type: "voice" }
+          );
+          await newState.member.voice.setChannel(tempVoiceChannel);
+        }
+    }
   };
 };
