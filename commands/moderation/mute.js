@@ -1,4 +1,3 @@
-let roleModel = require("../../model/roles.model");
 module.exports = {
   config: {
     name: "mute",

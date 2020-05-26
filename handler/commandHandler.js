@@ -4,7 +4,6 @@ const Discord = require("discord.js");
 const ascii = require("ascii-table");
 let table = new ascii("Commands");
 table.setHeading("Command", "Active status");
-//let commandModel = require("../model/cac.js");
 module.exports = async (client, message) => {
   client.commands = new Discord.Collection();
   client.aliases = new Discord.Collection();
