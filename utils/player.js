@@ -1,4 +1,10 @@
-const { isSC, isYT, secondsCoverter, updatePresence, sendError } = require("./utility");
+const {
+  isSC,
+  isYT,
+  secondsCoverter,
+  updatePresence,
+  sendError,
+} = require("./utility");
 const { initQueue } = require("./queue");
 const dude = require("yt-dude");
 const util = require("util");
@@ -53,60 +59,65 @@ const addQueue = async (client, message, url) => {
 };
 const player = async (client, message) => {
   const serverQueue = client.queue.get(message.guild.id);
-  if (!serverQueue.queue[0]) {
-    serverQueue.isPlaying = false;
-    updatePresence(message, serverQueue);
-    serverQueue.voiceChannel.leave();
-    emptyQueue(message);
-    client.queue.delete(message.guild.id);
-  } else {
-    sendPlaying(message, client);
-    serverQueue.dispatcher = serverQueue.connection
-      .play(youtubeDL(serverQueue.queue[0].url))
-      .on("start", () => {
-        serverQueue.isPlaying = true;
-        updatePresence(message, serverQueue);
-        updateCount(serverQueue.queue[0].title);
-      })
-      .on("finish", () => {
-        serverQueue.queue.shift();
-        player(client, message);
-      })
-      .on("volumeChange", (oldVolume, newVolume) => {
-        message.channel.send({
-          embed: {
-            title: `Volume changed from ${oldVolume} to ${newVolume}.`,
-            author: {
-              name: message.client.user.username,
-              icon_url: message.client.user.avatarURL({
-                format: "png",
-                dynamic: true,
-                size: 1024,
-              }),
+  try {
+    if (!serverQueue.queue[0]) {
+      serverQueue.isPlaying = false;
+      updatePresence(message, serverQueue);
+      serverQueue.voiceChannel.leave();
+      emptyQueue(message);
+      client.queue.delete(message.guild.id);
+    } else {
+      sendPlaying(message, client);
+      serverQueue.dispatcher = serverQueue.connection
+        .play(youtubeDL(serverQueue.queue[0].url))
+        .on("start", () => {
+          serverQueue.isPlaying = true;
+          updatePresence(message, serverQueue);
+          updateCount(serverQueue.queue[0].title);
+        })
+        .on("finish", () => {
+          serverQueue.queue.shift();
+          player(client, message);
+        })
+        .on("volumeChange", (oldVolume, newVolume) => {
+          message.channel.send({
+            embed: {
+              title: `Volume changed from ${oldVolume} to ${newVolume}.`,
+              author: {
+                name: message.client.user.username,
+                icon_url: message.client.user.avatarURL({
+                  format: "png",
+                  dynamic: true,
+                  size: 1024,
+                }),
+              },
             },
-          },
-        });
-      })
-      .on("end", () => {
-        serverQueue.queue.shift();
-      })
-      .on("error", (error) => {
-        redMessage(message, error.name, error.message);
-        const { exec } = require("child_process");
-        try {
-          exec(
-            `pm2 restart ${process.env.pm2Name}`,
-            async (err, out, stderr) => {
-              if (err) {
-                console.log(err);
+          });
+        })
+        .on("end", () => {
+          serverQueue.queue.shift();
+        })
+        .on("error", (error) => {
+          redMessage(message, error.name, error.message);
+          const { exec } = require("child_process");
+          try {
+            exec(
+              `pm2 restart ${process.env.pm2Name}`,
+              async (err, out, stderr) => {
+                if (err) {
+                  console.log(err);
+                }
               }
-            }
-          );
-          return message.channel.send("Restart success");
-        } catch (e) {
-          return sendError(message, e);
-        }
-      });
+            );
+            return message.channel.send("Restart success");
+          } catch (e) {
+            return sendError(message, e);
+          }
+        });
+    }
+  } catch (error) {
+    await serverQueue.voiceChannel.leave();
+    client.queue.delete(message.guild.id);
   }
 };
 
