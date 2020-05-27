@@ -99,20 +99,20 @@ const player = async (client, message) => {
         })
         .on("error", (error) => {
           redMessage(message, error.name, error.message);
-          const { exec } = require("child_process");
-          try {
-            exec(
-              `pm2 restart ${process.env.pm2Name}`,
-              async (err, out, stderr) => {
-                if (err) {
-                  console.log(err);
-                }
-              }
-            );
-            return message.channel.send("Restart success");
-          } catch (e) {
-            return sendError(message, e);
-          }
+          // const { exec } = require("child_process");
+          // try {
+          //   exec(
+          //     `pm2 restart ${process.env.pm2Name}`,
+          //     async (err, out, stderr) => {
+          //       if (err) {
+          //         console.log(err);
+          //       }
+          //     }
+          //   );
+          //   return message.channel.send("Restart success");
+          // } catch (e) {
+          //   return sendError(message, e);
+          // }
         });
     }
   } catch (error) {
