@@ -9,6 +9,7 @@ const { initQueue } = require("./queue");
 const dude = require("yt-dude");
 const util = require("util");
 const youtubeDL = require("youtube-dl");
+const ytdl = require('ytdl-core')
 const getInfo = util.promisify(youtubeDL.getInfo);
 const {
   sendSongQueue,
