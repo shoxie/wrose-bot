@@ -1,5 +1,4 @@
 const ytcore = require("ytdl-core");
-const model = require("../../model/model.js");
 const dude = require("yt-dude");
 const getVideoId = require("get-video-id");
 let musicDB = require("../../model/musicData");
