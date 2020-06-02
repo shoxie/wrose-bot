@@ -29,5 +29,30 @@ module.exports = (client) => {
       "goodbye-image.png"
     );
     channel.send(attachment);
+    if (!process.env.capcha) return;
+    if (process.env.capcha === "true") {
+      let msg = await member.send("react to this");
+      msg.react("✅").then(() => msg.react("👎"));
+
+      const filter = (reaction, user) => {
+        return ["✅"].includes(reaction.emoji.name) && user.id === member.id;
+      };
+
+      msg
+        .awaitReactions(filter, { max: 1, time: 60000, errors: ["time"] })
+        .then(async (collected) => {
+          const reaction = collected.first();
+
+          if (reaction.emoji.name === "✅") {
+            msg.reply("you reacted with a ✅.");
+          } else {
+            msg.reply("you reacted with a thumbs down.");
+            await member.kick();
+          }
+        })
+        .catch((collected) => {
+          msg.reply("you reacted with neither a thumbs up, nor a thumbs down.");
+        });
+    }
   };
 };

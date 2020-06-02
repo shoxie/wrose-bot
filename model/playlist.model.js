@@ -26,8 +26,13 @@ const deleteSong = async (song, authorID) => {
   let a = playlist.findOneAndDelete({ songName: song, author: authorID });
   return a;
 };
+const destroyPlaylist = async (authorID) => {
+  let a = playlist.deleteMany({ author: authorID });
+  return a;
+};
 module.exports = {
   addPlaylist,
   getPlaylist,
   deleteSong,
+  destroyPlaylist,
 };

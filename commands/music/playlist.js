@@ -7,6 +7,7 @@ let {
   secondsCoverter,
 } = require("../../utils/utility");
 const Pagination = require("discord-paginationembed");
+const { redMessage } = require("../../utils/message");
 module.exports = {
   config: {
     name: "playlist",
@@ -33,6 +34,8 @@ module.exports = {
         : message.author.id;
       let embeds = [];
       let songArr = await plModel.getPlaylist(user);
+      if (songArr.length === 0)
+        return redMessage(message, "You don't have any song on your playlist");
       for (const song of songArr) {
         await embeds.push(song.songName);
       }
@@ -77,6 +80,16 @@ module.exports = {
         });
       } catch (error) {
         console.log("error", error);
+      }
+    }
+    if (messageFlags === "--destroy") {
+      let id = message.author.id;
+      try {
+        let query = await plModel.destroyPlaylist(id);
+        console.log(query);
+        message.channel.send("Deleted playlist for " + message.author.tag);
+      } catch (error) {
+        redMessage(message, error.title, error.message);
       }
     }
     async function addPlaylist(url) {
