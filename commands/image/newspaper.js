@@ -7,19 +7,20 @@ module.exports = {
     aliases: [],
     description: "Draw a fake newspaper",
     ownerOnly: false,
-    enabled: true
+    enabled: true,
   },
   async run(client, message, args) {
     message.channel.send("Nhap headline va body trong 2 tin nhan");
     let collected = await message.channel.awaitMessages(
-      m => m.author.id === message.author.id,
+      (m) => m.author.id === message.author.id,
       {
         max: 2,
-        time: 30000
+        time: 30000,
       }
     );
     let headline = collected.array()[0].content;
     let body = collected.array()[1].content;
+    if (!headline || !body) return message.reply("STOP SPAMMING NIGGER!");
     try {
       const { text } = await request
         .post("https://www.fodey.com/generators/newspaper/snippet.asp")
@@ -36,5 +37,5 @@ module.exports = {
         `Oh no, an error occurred: \`${err.message}\`. Try again later!`
       );
     }
-  }
+  },
 };

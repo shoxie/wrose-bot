@@ -35,9 +35,8 @@ const addPlaylistToQueue = async (message, queue, user) => {
       requester: message.author.tag,
     };
     queue.queue.push(songData);
-    blueMessage(message, "Added " + songArr.length + " songs to queue");
   }
-
+  blueMessage(message, "Added " + songArr.length + " songs to queue");
   return queue;
 };
 module.exports = {
