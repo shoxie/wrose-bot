@@ -24,10 +24,11 @@ const initQueue = async (message) => {
 const addPlaylistToQueue = async (message, queue, user) => {
   let songArr = await plModel.getPlaylist(user);
   songArr = shuffleArray(songArr);
+  let i = 1;
   for (const song of songArr) {
     let songInfo = await getSongInfo(song.link);
     let songData = {
-      title: songInfo.title,
+      title: `${i}/` + songInfo.title,
       url: songInfo.video_url,
       thumbnail: getThumbnail(songInfo.video_url),
       duration: secondsCoverter(songInfo.length_seconds),
