@@ -2,8 +2,7 @@ const { stripIndents } = require("common-tags");
 const startWords = require("../../assets/json/word-list");
 const util = require("../../utils/utility");
 const { redMessage } = require("../../utils/message");
-var checkWord = require("check-word");
-var check = checkWord("en");
+var checkWord = require("spellchecker");
 var request = require("request");
 module.exports = {
   config: {
@@ -62,6 +61,12 @@ module.exports = {
           max: 1,
           time: time * 1000,
         });
+        const misspelled = await checkWord.isMisspelled(wordChoice.first().content.toLowerCase());
+        if (misspelled) {
+          await msg.reply("Sorry! You lose!");
+          winner = userTurn ? opponent : msg.author;
+          break;
+        }
         if (!wordChoice.size) {
           await msg.reply("Time!");
           winner = userTurn ? opponent : msg.author;
@@ -69,7 +74,8 @@ module.exports = {
         }
         const choice = wordChoice.first().content.toLowerCase();
         if (choice === "challenge") {
-          const checked = await this.verifyWord(lastWord);
+          const checked = await verifyWord(lastWord);
+          console.log(checked);
           if (!checked) {
             await msg.reply(`Caught red-handed! **${lastWord}** is not valid!`);
             winner = player;
@@ -107,6 +113,7 @@ module.exports = {
             `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}`
           )
           .query({ key: "032fbf78-d658-49c9-afc7-4c6f1d420d15" });
+        console.log(body);
         if (!body.length) return false;
         return true;
       } catch (err) {
