@@ -61,10 +61,12 @@ module.exports = {
           max: 1,
           time: time * 1000,
         });
-        const misspelled = await checkWord.isMisspelled(wordChoice.first().content.toLowerCase());
+        const misspelled = await checkWord.isMisspelled(
+          wordChoice.first().content.toLowerCase()
+        );
         if (misspelled) {
           await msg.reply("Sorry! You lose!");
-          winner = userTurn ? opponent : msg.author;
+          winner = opponent;
           break;
         }
         if (!wordChoice.size) {
@@ -75,7 +77,6 @@ module.exports = {
         const choice = wordChoice.first().content.toLowerCase();
         if (choice === "challenge") {
           const checked = await verifyWord(lastWord);
-          console.log(checked);
           if (!checked) {
             await msg.reply(`Caught red-handed! **${lastWord}** is not valid!`);
             winner = player;
