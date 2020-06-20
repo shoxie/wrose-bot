@@ -39,6 +39,7 @@
     "imdb-api": "^4.0.3",
     "jsdom": "^16.2.2",
     "lowdb": "^1.0.0",
+    "mal-scraper": "^2.6.9",
     "mathjs": "^7.0.1",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.31",
