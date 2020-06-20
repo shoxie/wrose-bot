@@ -52,7 +52,6 @@ module.exports = {
       .setDeleteOnTimeout(true)
       .setElementsPerPage(10)
       .setEmojisFunctionAfterNavigation(true)
-      .setDisabledNavigationEmojis(["DELETE"]);
       commands.embed
       .setThumbnail(
         client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })

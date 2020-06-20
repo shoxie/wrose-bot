@@ -6,12 +6,12 @@ module.exports = {
     name: "game",
     aliases: [],
     category: "millionaire",
-    description: "Info of this game and config game",
-    usage:
+    description:
       "[game] \n    [game set category :id] \n    [game set difficulty {easy|medium|hard}] \n    [game set totalQues {0<number<=50}]\n   [game get]",
+    usage: "Info of this game and config game",
     enabled: true,
-    ownerOnly: false
-    },
+    ownerOnly: false,
+  },
   run: async (client, message, args) => {
     let config = client.guildSettings.get(message.guild.id).gameConfig;
     if (args.length == 0) {

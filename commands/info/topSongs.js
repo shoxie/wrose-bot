@@ -58,7 +58,6 @@ module.exports = {
        .setElementsPerPage(5)
         .setDeleteOnTimeout(true)
         .setEmojisFunctionAfterNavigation(true)
-        .setDisabledNavigationEmojis(["DELETE"]);
       msg.embed
         .setThumbnail(
           client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })

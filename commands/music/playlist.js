@@ -39,23 +39,26 @@ module.exports = {
       for (const song of songArr) {
         await embeds.push(song.songName);
       }
-      const playlist = new Pagination.FieldsEmbed()
-        .setArray(embeds)
-        .setAuthorizedUsers([])
-        .setChannel(message.channel)
-        .setPageIndicator(true)
-        .formatField("Name", (i) => i + "\n")
-        .setDeleteOnTimeout(true)
-        .setElementsPerPage(10)
-        .setEmojisFunctionAfterNavigation(true)
-        .setDisabledNavigationEmojis(["DELETE"]);
-      playlist.embed
-        .setThumbnail(
-          client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
-        )
-        .setColor("#0390fc")
-        .setFooter("Created by wrose");
-      await playlist.build();
+      try {
+        const playlist = new Pagination.FieldsEmbed()
+          .setArray(embeds)
+          .setAuthorizedUsers([])
+          .setChannel(message.channel)
+          .setPageIndicator(true)
+          .formatField("Name", (i) => i + "\n")
+          .setDeleteOnTimeout(true)
+          .setElementsPerPage(10)
+          .setEmojisFunctionAfterNavigation(true);
+        playlist.embed
+          .setThumbnail(
+            client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
+          )
+          .setColor("#0390fc")
+          .setFooter("Created by wrose");
+        await playlist.build();
+      } catch (error) {
+        message.channel.send(error.message);
+      }
     }
     if (messageFlags === "--delete") {
       args.splice(args.indexOf(messageFlags), 1);

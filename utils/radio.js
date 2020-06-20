@@ -84,8 +84,7 @@ const showStations = async (client, message) => {
     .formatField("Name", (i) => i.name + "\n")
     .setDeleteOnTimeout(true)
     .setElementsPerPage(10)
-    .setEmojisFunctionAfterNavigation(true)
-    .setDisabledNavigationEmojis(["DELETE"]);
+    .setEmojisFunctionAfterNavigation(true);
   infor.embed
     .setThumbnail(
       client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
