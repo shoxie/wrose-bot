@@ -37,7 +37,7 @@ module.exports = {
           .addField("Anime duration", anime.duration, true)
           .addField("Anime rank", anime.ranked, true)
           .addField("Anime popularity", anime.popularity, true)
-          .addField(`${anime.genres.join(", ")}`, true);
+          .addField("Anime genres", `${anime.genres.join(", ")}`, true);
 
         message.channel.send(embed);
       })

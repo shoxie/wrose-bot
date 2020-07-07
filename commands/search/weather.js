@@ -78,7 +78,6 @@ module.exports = {
         }
 
         let city_tz = geotz(res.coord.lat, res.coord.lon);
-
         const weatherEmbed = new MessageEmbed()
             .setColor(tempColors)
             .setAuthor("Forecast today",  "https://cdn1.iconfinder.com/data/icons/weather-429/64/weather_icons_color-06-512.png")

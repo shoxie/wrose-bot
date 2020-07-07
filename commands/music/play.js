@@ -9,6 +9,7 @@ let {
   updatePresence,
   ytValidate,
   getSongInfo,
+  getvideourl,
 } = require("../../utils/utility");
 
 const send = require("gmail-send")({
@@ -65,9 +66,10 @@ module.exports = {
           addQueue(args[0]);
         }
         if (!ytcore.validateURL(args[0])) {
-          let query = await dude.search(args);
-          let videoUrl = "https://www.youtube.com/watch?v=" + query[0].videoId;
-          addQueue(videoUrl);
+          let params = args.join(" ");
+          let videoUrl = await getvideourl(params);
+          if (videoUrl !== null) addQueue(videoUrl);
+          else return message.reply("Please retry after 5 seconds");
         }
       }
       if (args[0] === "--playlist" && !serverQueue) {
@@ -156,7 +158,6 @@ module.exports = {
             });
         }
       }
-
       function getThumbnail(url) {
         let ids = getVideoId(url);
         return `http://img.youtube.com/vi/${ids.id}/maxresdefault.jpg`;

@@ -18,6 +18,7 @@ const send = require("gmail-send")({
   subject: "Error on DiscordBot",
   text: "Error happened",
 });
+const yts = require("yt-search");
 function sendResponse(message) {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   let query = encodeURIComponent(args.join(" "));
@@ -511,6 +512,11 @@ function isSC(url) {
 function formatNumber(number) {
   return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 }
+async function getvideourl(args) {
+  const r = await yts(args);
+  if (r) return r.videos[0].url;
+  else return null;
+}
 module.exports = {
   sendResponse,
   validateUser,
@@ -543,4 +549,5 @@ module.exports = {
   isSC,
   shuffleArray,
   formatNumber,
+  getvideourl,
 };

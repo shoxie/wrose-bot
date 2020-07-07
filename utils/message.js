@@ -84,6 +84,21 @@ const blueMessage = (message, title, description = null) => {
     },
   });
 };
+const sendLyrics = async (message, lyrics) => {
+  var output = lyrics.split("\n");
+  var myfields = [];
+  var tmp = 0;
+  var sttmp = "";
+  for (var i = 0; i <= output.length; i++) {
+    sttmp += output[i] + " \n ";
+    tmp++;
+    if (tmp == 15) {
+      myfields.push({ name: "\u200B", value: sttmp });
+      tmp = 0;
+      sttmp = "";
+    }
+  }
+};
 module.exports = {
   sendSongQueue,
   sendPlaying,

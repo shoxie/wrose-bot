@@ -57,6 +57,7 @@
     "xml-js": "^1.6.11",
     "youtube-dl": "^3.0.2",
     "yt-dude": "^1.0.13",
+    "yt-search": "^2.1.1",
     "ytdl-core": "^2.1.7"
   },
   "devDependencies": {

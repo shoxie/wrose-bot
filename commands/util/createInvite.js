@@ -9,7 +9,7 @@ module.exports = {
     enabled: true,
   },
   async run(client, message, args) {
-    let channel = message.guild.channels.cache.find(message.channel.id);
+    let channel = message.guild.channels.cache.get(message.channel.id);
     let inviteOption = {
       temporary: false,
       maxAge: 0,
@@ -27,11 +27,6 @@ module.exports = {
             value: "https://discord.com/invite/" + invite.code,
           },
         ],
-        image: {
-          url: message.mentions.users
-            .first()
-            .avatarURL({ format: "png", dynamic: true, size: 1024 }),
-        },
         author: {
           name: message.client.user.username,
           icon_url: message.client.user.avatarURL({
