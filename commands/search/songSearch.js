@@ -30,13 +30,16 @@ module.exports = {
             fields: [
               {
                 name: "Song title",
-                value: songName + "by " + songArtist,
+                value: songName + " by " + songArtist,
               },
               {
                 name: "URL",
                 value: r.videos[0].url,
               },
             ],
+            thumbnail: {
+              url: r.videos[0].thumbnail,
+            },
           },
         });
       });
