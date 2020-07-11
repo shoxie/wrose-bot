@@ -5,7 +5,7 @@ module.exports = {
   config: {
     name: "topSongs",
     usage: "topSongs",
-    description: "Show top songs played by me",
+    description: "Show top songs played. Use --server to show guild stats",
     ownerOnly: false,
     enabled: true,
   },
