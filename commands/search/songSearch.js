@@ -3,16 +3,18 @@ const request = require("request-promise-native");
 const cheerio = require("cheerio");
 const fetch = require("node-fetch");
 const yts = require("yt-search");
+const { removeAccents } = require("../../utils/utility");
 module.exports = {
   config: {
     name: "songSearch",
     usage: "songSearch [lyrics]",
     aliases: [],
-    description: "Search for a song by lyrics",
+    description: "Search for a song by lyrics. use --v for vietnamese",
     ownerOnly: false,
     enabled: true,
   },
   async run(client, message, args) {
+    if (args.includes("--v")) return vietnamSongs();
     let params = encodeURIComponent(args.join(" "));
     let url = "https://songsear.ch/q/" + params;
     fetch(url)
@@ -21,6 +23,8 @@ module.exports = {
         let $ = cheerio.load(body);
         var songName = $("div.head > h2 > a").first().text();
         var songArtist = $("div.head > h3 > b").first().text();
+        let shortLyrics = $("div.fragments > p").first().text();
+        shortLyrics.replace(args.join(" "), `**${args.join(" ")}**`);
         let r = await yts(songName);
         if (!r) return message.reply("I don't know");
         message.channel.send({
@@ -84,5 +88,43 @@ module.exports = {
     //     }
     //   }
     // });
+
+    async function vietnamSongs() {
+      args = args.filter(function (value, index, arr) {
+        return value !== "--v";
+      });
+      let params = args.join("+");
+      params = removeAccents(params);
+      let url = `https://www.nhaccuatui.com/tim-kiem?q=${params}&b=lyric&s=default&l=tat-ca`;
+      console.log(url);
+      fetch(url)
+        .then((res) => res.text())
+        .then(async (body) => {
+          let $ = cheerio.load(body);
+          let a = $("h3.title_song > a").first().prop("title");
+          let b = $("h4.singer_song > a").first().text();
+          let r = await yts(a);
+          if (!r) return message.reply("I don't know");
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              title: "My guess",
+              fields: [
+                {
+                  name: "Song title",
+                  value: a + " by " + b,
+                },
+                {
+                  name: "URL",
+                  value: r.videos[0].url,
+                },
+              ],
+              thumbnail: {
+                url: r.videos[0].thumbnail,
+              },
+            },
+          });
+        });
+    }
   },
 };

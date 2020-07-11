@@ -2,28 +2,35 @@ let mongoose = require("mongoose");
 let musicSchema = mongoose.Schema({
   name: {
     type: String,
-    unique: true
+    unique: true,
   },
   count: {
     type: Number,
-    default: 1
-  }
+    default: 1,
+  },
+  guildID: {
+    type: String,
+  },
 });
 var music = mongoose.model("music", musicSchema);
-async function updateCount(title) {
-  music.findOne({ name: title }, async function(error, result) {
+async function updateCount(title, guildID) {
+  music.findOne({ name: title, guildID: guildID }, async function (
+    error,
+    result
+  ) {
     if (result) {
       music.findOneAndUpdate(
-        { name: title },
+        { name: title, guildID: guildID },
         { $inc: { count: 1 } },
-        async function(error, doc, res) {
+        async function (error, doc, res) {
           if (error) console.log(error);
         }
       );
     }
     if (!result) {
       let song = new music({
-        name: title
+        name: title,
+        guildID: guildID,
       });
       await song.save().then(() => {
         console.log("saved");
@@ -33,11 +40,15 @@ async function updateCount(title) {
   });
 }
 async function getSongs() {
-  let songs = await music
-    .find({})
-    .sort({ count: -1 })
-     .limit(10)
-    .exec();
+  let songs = await music.find({}).sort({ count: -1 }).limit(10).exec();
   return songs;
 }
-module.exports = { updateCount, getSongs };
+const guildTop = async (guildID) => {
+  let songs = await music
+    .find({ guildID: guildID })
+    .sort({ count: -1 })
+    .limit(10)
+    .exec();
+  return songs;
+};
+module.exports = { updateCount, getSongs, guildTop };

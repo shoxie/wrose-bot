@@ -128,7 +128,7 @@ module.exports = {
             .on("start", () => {
               serverQueue.isPlaying = true;
               updatePresence(message, serverQueue);
-              addTopSong(serverQueue.queue[0].title);
+              addTopSong(serverQueue.queue[0].title, message.guild.id);
             })
             .on("finish", () => {
               serverQueue.queue.shift();
@@ -163,7 +163,7 @@ module.exports = {
         return `http://img.youtube.com/vi/${ids.id}/maxresdefault.jpg`;
       }
       function addTopSong(title) {
-        musicDB.updateCount(title);
+        musicDB.updateCount(title, message.guild.id);
       }
       function secondsCoverter(second) {
         var timestamp = second;
