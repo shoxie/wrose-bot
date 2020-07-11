@@ -15,7 +15,6 @@ module.exports = {
     let songs = args.includes("--server")
       ? await music.guildTop(message.guild.id)
       : await music.getSongs();
-    console.log(await music.guildTop(message.guild.id));
     if (songs) {
       let embed = new Discord.MessageEmbed()
         .setColor("#0390fc")

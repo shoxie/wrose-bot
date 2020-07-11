@@ -2,7 +2,6 @@ let mongoose = require("mongoose");
 let musicSchema = mongoose.Schema({
   name: {
     type: String,
-    unique: true,
   },
   count: {
     type: Number,
