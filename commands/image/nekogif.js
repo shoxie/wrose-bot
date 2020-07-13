@@ -1,6 +1,6 @@
 const neko = require('nekos.life')
 const owo = new neko()
-const { blueMessage, redMessage } = require('../../utils/message')
+const { redMessage } = require('../../utils/message')
 module.exports = {
   config: {
     name: 'nekogif',

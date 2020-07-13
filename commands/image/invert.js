@@ -21,7 +21,7 @@ module.exports = {
       ctx.drawImage(data, 0, 0)
       util.invert(ctx, 0, 0, data.width, data.height)
       const attachment = canvas.toBuffer()
-      if (Buffer.byteLength(attachment) > 8e6) { return msg.reply('Resulting image was above 8 MB.') }
+      if (Buffer.byteLength(attachment) > 8e6) { return message.reply('Resulting image was above 8 MB.') }
       return message.channel.send({
         files: [{ attachment, name: 'invert.png' }]
       })

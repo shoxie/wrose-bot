@@ -1,5 +1,3 @@
-const request = require('request-promise-native')
-const cheerio = require('cheerio')
 const req = require('request')
 module.exports = {
   config: {

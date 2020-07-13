@@ -1,6 +1,6 @@
 const util = require('../../utils/utility')
-const config = require('../../config/config.json')
 const request = require('request')
+const { tryAgain } = require('../../utils/message')
 module.exports = {
   config: {
     name: 'corona',
@@ -23,6 +23,7 @@ module.exports = {
         response,
         body
       ) {
+        if(!body) return tryAgain(message)
         const data = JSON.parse(body)
         message.channel.send({
           embed: {

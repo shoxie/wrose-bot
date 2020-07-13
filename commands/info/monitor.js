@@ -12,10 +12,10 @@ module.exports = {
     enabled: true
   },
   async run (client, message, args) {
-    const curOnline = message.guild.members.cache.filter(m => m.presence.status == 'online').size
-    const curOffline = message.guild.members.cache.filter(m => m.presence.status == 'offline').size
-    const curDnd = message.guild.members.cache.filter(m => m.presence.status == 'dnd').size
-    const curIdle = message.guild.members.cache.filter(m => m.presence.status == 'idle').size
+    const curOnline = message.guild.members.cache.filter(m => m.presence.status === 'online').size
+    const curOffline = message.guild.members.cache.filter(m => m.presence.status === 'offline').size
+    const curDnd = message.guild.members.cache.filter(m => m.presence.status === 'dnd').size
+    const curIdle = message.guild.members.cache.filter(m => m.presence.status === 'idle').size
     const guildMembers = message.guild.memberCount
     if (curOnline == 0) {
       var differenceOnline = 10

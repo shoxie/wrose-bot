@@ -121,7 +121,6 @@ module.exports = {
             }
           })
         }
-        const hits = JSON.parse(body).response.hits
         request(url, function (error, reponse, body) {
           const $ = cheerio.load(body)
           const lyrics = $('p')

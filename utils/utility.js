@@ -298,20 +298,6 @@ function updateCorona (message) {
     })
   })
 }
-function progressBar (message, duration) {
-  const progressCount = 30
-  const intervalTime = duration / progressCount
-  let count = 0
-  let bar = ''
-  thisInterval = setInterval(async function () {
-    msg.edit({ embed: {} })
-    bar = bar + '='
-    count++
-  }, intervalTime)
-}
-function progressBarStop () {
-  clearInterval(thisInterval)
-}
 async function verify (channel, user, time = 30000) {
   const yes = ['yes', 'y', 'ye', 'yeah', 'yup', 'yea', 'ya']
   const no = ['no', 'n', 'nah', 'nope', 'nop']

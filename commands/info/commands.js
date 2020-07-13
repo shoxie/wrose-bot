@@ -1,7 +1,5 @@
-const Discord = require('discord.js')
 const conf = require('../../config/config.json')
 const Pagination = require('discord-paginationembed')
-const { MessageEmbed } = require('discord.js')
 module.exports = {
   config: {
     name: 'commands',
@@ -28,7 +26,6 @@ module.exports = {
 
     client.commands.forEach(command => {
       const status = command.config.enabled ? '✅' : '❌'
-      const value = `${conf.prefix}${command.config.usage}` + ' ' + `${status}`
       const data = {
         name: command.config.name,
         usage: command.config.usage,

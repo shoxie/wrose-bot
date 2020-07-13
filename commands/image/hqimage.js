@@ -1,6 +1,4 @@
 const request = require('request-promise-native')
-const cheerio = require('cheerio')
-const rq = require('request')
 module.exports = {
   config: {
     name: 'hqimage',

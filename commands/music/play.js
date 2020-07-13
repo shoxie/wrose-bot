@@ -1,5 +1,4 @@
 const ytcore = require('ytdl-core')
-const dude = require('yt-dude')
 const getVideoId = require('get-video-id')
 const musicDB = require('../../model/musicData')
 const { initQueue, addPlaylistToQueue } = require('../../utils/queue')
@@ -7,7 +6,6 @@ const { sendSongQueue, sendPlaying, emptyQueue } = require('../../utils/message'
 const {
   sendErrorMail,
   updatePresence,
-  ytValidate,
   getSongInfo,
   getvideourl
 } = require('../../utils/utility')
