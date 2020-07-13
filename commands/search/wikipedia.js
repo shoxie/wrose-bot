@@ -1,22 +1,22 @@
-const { MessageEmbed } = require("discord.js");
-const { Colors } = require("../../utils/canvas");
-const axios = require("axios");
+const { MessageEmbed } = require('discord.js')
+const { Colors } = require('../../utils/canvas')
+const axios = require('axios')
 module.exports = {
   config: {
-    name: "wikipedia",
-    usage: "wikipedia",
-    aliases: ["wiki"],
-    description: "Search for something on Wikipedia",
+    name: 'wikipedia',
+    usage: 'wikipedia',
+    aliases: ['wiki'],
+    description: 'Search for something on Wikipedia',
     ownerOnly: false,
-    enabled: true,
+    enabled: true
   },
-  async run(client, message, args) {
-    let query = args.join(" ");
+  async run (client, message, args) {
+    const query = args.join(' ')
     if (!query) {
       return Errors.wrongText(
         message,
-        "Please provide query to search on Wikipedia"
-      );
+        'Please provide query to search on Wikipedia'
+      )
     }
 
     axios
@@ -26,22 +26,22 @@ module.exports = {
         )}`
       )
       .then((res) => {
-        const article = res.data;
+        const article = res.data
 
         if (!article.content_urls) {
           return Errors.resStatus(
-            "404",
+            '404',
             message,
             "I couldn't find a wikipedia article with that title!"
-          );
+          )
         }
 
         const articleEmbed = new MessageEmbed()
           .setColor(Colors.WIKIPEDIA)
           .setAuthor(
-            "Wikipedia Search Engine",
-            "https://i.imgur.com/C665mkB.png",
-            "https://en.wikipedia.org/"
+            'Wikipedia Search Engine',
+            'https://i.imgur.com/C665mkB.png',
+            'https://en.wikipedia.org/'
           )
           .setTitle(article.title)
           .setURL(article.content_urls.desktop.page)
@@ -49,10 +49,10 @@ module.exports = {
             article.originalimage ? article.originalimage.source : null
           )
           .setDescription(article.extract)
-          .setFooter("Powered by Wikipedia")
-          .setTimestamp();
+          .setFooter('Powered by Wikipedia')
+          .setTimestamp()
 
-        message.channel.send(articleEmbed);
-      });
-  },
-};
+        message.channel.send(articleEmbed)
+      })
+  }
+}

@@ -1,35 +1,35 @@
-let Discord = require("discord.js");
+const Discord = require('discord.js')
 module.exports = {
   config: {
-    name: "queue",
-    usage: "queue",
-    aliases: ["q"],
-    description: "Show current queue songs.",
+    name: 'queue',
+    usage: 'queue',
+    aliases: ['q'],
+    description: 'Show current queue songs.',
     ownerOnly: false,
     enabled: true
   },
-  async run(client, message, args) {
-    const serverQueue = client.queue.get(message.guild.id);
+  async run (client, message, args) {
+    const serverQueue = client.queue.get(message.guild.id)
     if (!serverQueue) {
       message.channel.send({
         embed: {
           color: 15158332,
-          title: "No songs in queue"
+          title: 'No songs in queue'
         }
-      });
+      })
     } else {
-      let songs = serverQueue.queue;
-      let embed = new Discord.MessageEmbed()
-        .setColor("#0390fc")
-        .setTitle("Songs in queue")
+      const songs = serverQueue.queue
+      const embed = new Discord.MessageEmbed()
+        .setColor('#0390fc')
+        .setTitle('Songs in queue')
         .setThumbnail(
-          client.user.avatarURL({ format: "png", dynamic: true, size: 1024 })
-        );
+          client.user.avatarURL({ format: 'png', dynamic: true, size: 1024 })
+        )
       songs.forEach(entry => {
-        let requestedBy = "Requested " + entry.requester;
-        embed.addField(entry.title, requestedBy);
-      });
-      message.channel.send(embed);
+        const requestedBy = 'Requested ' + entry.requester
+        embed.addField(entry.title, requestedBy)
+      })
+      message.channel.send(embed)
     }
   }
-};
+}

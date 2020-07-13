@@ -1,29 +1,28 @@
-const moment = require("moment");
-const { MessageEmbed } = require("discord.js");
-const { stripIndents } = require("common-tags");
-const filterLevels = ["Off", "No Role", "Everyone"];
+const moment = require('moment')
+const { MessageEmbed } = require('discord.js')
+const { stripIndents } = require('common-tags')
+const filterLevels = ['Off', 'No Role', 'Everyone']
 const verificationLevels = [
-  "None",
-  "Low",
-  "Medium",
-  "(╯°□°）╯︵ ┻━┻",
-  "┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻"
-];
+  'None',
+  'Low',
+  'Medium',
+  '(╯°□°）╯︵ ┻━┻',
+  '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'
+]
 module.exports = {
   config: {
-    name: "server",
-    usage: "server",
+    name: 'server',
+    usage: 'server',
     aliases: [],
-    description: "Show description for current Discord server",
+    description: 'Show description for current Discord server',
     ownerOnly: false,
     enabled: true
   },
-  async run(client, message, args) {
-    if (!message.guild.members.cache.has(message.guild.ownerID))
-      await message.guild.members.fetch(message.guild.ownerID);
+  async run (client, message, args) {
+    if (!message.guild.members.cache.has(message.guild.ownerID)) { await message.guild.members.fetch(message.guild.ownerID) }
     const embed = new MessageEmbed()
       .setColor(0x00ae86)
-      .setThumbnail(message.guild.iconURL({ format: "png" }))
+      .setThumbnail(message.guild.iconURL({ format: 'png' }))
       .setAuthor(message.guild.name).setDescription(stripIndents`
             **General Info:**
             • ID: ${message.guild.id}
@@ -31,7 +30,7 @@ module.exports = {
             • Region: ${message.guild.region.toUpperCase()}
             • Creation Date: ${moment
               .utc(message.guild.createdAt)
-              .format("MM/DD/YYYY h:mm A")}
+              .format('MM/DD/YYYY h:mm A')}
             • Explicit Filter: ${
               filterLevels[message.guild.explicitContentFilter]
             }
@@ -43,10 +42,10 @@ module.exports = {
             • Roles: ${message.guild.roles.cache.size}
             • Channels: ${
               message.guild.channels.cache.filter(
-                channel => channel.type !== "category"
+                channel => channel.type !== 'category'
               ).size
             }
-        `);
-    return message.channel.send(embed);
+        `)
+    return message.channel.send(embed)
   }
-};
+}

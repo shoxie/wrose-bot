@@ -1,18 +1,18 @@
 module.exports = {
   config: {
-    name: "catStatusCode",
-    usage: "",
-    aliases: ["catus"],
-    description: "",
+    name: 'catStatusCode',
+    usage: '',
+    aliases: ['catus'],
+    description: '',
     ownerOnly: false,
-    enabled: true,
+    enabled: true
   },
-  async run(client, message, args) {
-    if (!args[0]) return message.reply("Please provide a status code.");
+  async run (client, message, args) {
+    if (!args[0]) return message.reply('Please provide a status code.')
     const referenceUrl =
-      "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/";
+      'https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/'
     try {
-      const statusCode = args[0];
+      const statusCode = args[0]
       const status_codes = [
         100,
         101,
@@ -70,21 +70,21 @@ module.exports = {
         509,
         510,
         511,
-        599,
-      ];
+        599
+      ]
 
       if (status_codes.includes(parseInt(statusCode))) {
-        message.reply(`https://http.cat/${statusCode}`);
+        message.reply(`https://http.cat/${statusCode}`)
         message.reply(
           `For more information, see: <${referenceUrl}${statusCode}>`
-        );
+        )
       } else {
         message.reply(
           "Sorry, the cats of the HTTP underworld don't recognize that code."
-        );
+        )
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  },
-};
+  }
+}

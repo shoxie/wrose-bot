@@ -1,5 +1,5 @@
-let mongoose = require("mongoose");
-let guildSettingsSchema = mongoose.Schema({
+const mongoose = require('mongoose')
+const guildSettingsSchema = mongoose.Schema({
   guildID: {
     type: String,
     unique: true
@@ -10,72 +10,72 @@ let guildSettingsSchema = mongoose.Schema({
   prefix: {
     type: String,
     max: 1,
-    default: "."
+    default: '.'
   },
   musicTextChannel: {
-    type: String,
+    type: String
   },
   musicVoiceChannel: {
-    type: String,
+    type: String
   },
   ignoredChannels: []
-});
-var guildSettings = mongoose.model("guildSettings", guildSettingsSchema);
-function updateMusicChannel(data) {
+})
+var guildSettings = mongoose.model('guildSettings', guildSettingsSchema)
+function updateMusicChannel (data) {
   guildSettings.findOneAndUpdate(
     { guildID: data.guildID },
     {
       musicTextChannel: data.musicTextChannel,
       musicVoiceChannel: data.musicVoiceChannel
     },
-    function(error, doc, res) {
-      if (error) console.log(error);
-      if (res) console.log("done");
+    function (error, doc, res) {
+      if (error) console.log(error)
+      if (res) console.log('done')
     }
-  );
+  )
 }
-function updateIgnoredChannels(data) {
-  guildSettings.findOne({ guildID: data.guildID }, function(error, result) {
-    if (error) console.log(error);
+function updateIgnoredChannels (data) {
+  guildSettings.findOne({ guildID: data.guildID }, function (error, result) {
+    if (error) console.log(error)
     if (result) {
-      result.ignoredChannels.push(data.ignoredChannel);
+      result.ignoredChannels.push(data.ignoredChannel)
       result.save().then(() => {
-        console.log("saved ignore channel\n" + result);
-      });
+        console.log('saved ignore channel\n' + result)
+      })
     }
-  });
+  })
 }
 
-async function addNewGuild(guild) {
-  guildSettings.findOne({ guildID: guild.id }, async function(error, result) {
-    if (error) console.log(error);
-    if (result) return;
+async function addNewGuild (guild) {
+  guildSettings.findOne({ guildID: guild.id }, async function (error, result) {
+    if (error) console.log(error)
+    if (result) return
     if (!result) {
-      let newGuild = new guildSettings({
+      const newGuild = new guildSettings({
         guildID: guild.id,
         guildName: guild.name,
         musicVoiceChannel: null,
         musicTextChannel: null
-      });
-      await newGuild.save().then(function(err) {
-        if (err) console.log(err);
-        console.log("saved new guild\n" + newGuild);
-      });
+      })
+      await newGuild.save().then(function (err) {
+        if (err) console.log(err)
+        console.log('saved new guild\n' + newGuild)
+      })
     }
-  });
+  })
 }
-async function queryGuildSettings(guildID) {
-  let result = await guildSettings.findOne({ guildID: guildID }).exec();
-  return result;
+async function queryGuildSettings (guildID) {
+  const result = await guildSettings.findOne({ guildID: guildID }).exec()
+  return result
 }
-async function updatePrefix(prefix, guildID) {
-  let a = await guildSettings.findOneAndUpdate(
+async function updatePrefix (prefix, guildID) {
+  const a = await guildSettings.findOneAndUpdate(
     { guildID: guildID },
     {
       prefix: prefix
     }
-  );
-  return a;
+  )
+  return a
 }
 module.exports = {
   updateIgnoredChannels,
@@ -83,4 +83,4 @@ module.exports = {
   addNewGuild,
   queryGuildSettings,
   updatePrefix
-};
+}

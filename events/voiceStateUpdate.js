@@ -2,6 +2,8 @@ const muteModel = require("../model/mute.model");
 module.exports = (client) => {
   return async function (oldState, newState) {
     const serverQueue = client.queue.get(newState.guild.id);
+    if (newState.id === client.user.id && serverQueue)
+      return client.queue.delete(newState.guild.id);
     if (serverQueue) {
       if (serverQueue.voiceChannel.members.size < 2) {
         setTimeout(() => {
@@ -18,7 +20,6 @@ module.exports = (client) => {
     };
     const user = await muteModel.exist(userData);
     let i = 0;
-    console.log(newState.id + `changed ${i++}`);
     if (user.length !== 0) {
       if (!newState.guild.me.hasPermission("MUTE_MEMBERS")) return;
       if (newState.serverMute === false) newState.setMute(true);

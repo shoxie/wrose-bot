@@ -1,6 +1,6 @@
-let guildSettings = require("../model/guildSettingsModel");
+const guildSettings = require('../model/guildSettingsModel')
 module.exports = client => {
-  return function(guild) {
+  return function (guild) {
     //   console.log(guild.id);
     //   let guildId = guild.id;
     //   let guildSettings = {
@@ -10,6 +10,6 @@ module.exports = client => {
     //     ignoredChannels: []
     //   };
     //   guildSettingsModel.addNewGuild(guildId, guildSettings);
-    guildSettings.addNewGuild(guild);
-  };
-};
+    guildSettings.addNewGuild(guild)
+  }
+}

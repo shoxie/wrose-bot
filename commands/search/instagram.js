@@ -1,33 +1,33 @@
-const { Colors } = require("../../utils/canvas");
-const { redMessage } = require("../../utils/message");
-const request = require("request-promise-native");
-const { MessageEmbed } = require("discord.js");
-const { stripIndents } = require("common-tags");
-const { formatNumber } = require("../../utils/utility");
+const { Colors } = require('../../utils/canvas')
+const { redMessage } = require('../../utils/message')
+const request = require('request-promise-native')
+const { MessageEmbed } = require('discord.js')
+const { stripIndents } = require('common-tags')
+const { formatNumber } = require('../../utils/utility')
 module.exports = {
   config: {
-    name: "instagram",
-    usage: "instagram",
-    aliases: ["ig"],
-    description: "Search for an Instagram account",
+    name: 'instagram',
+    usage: 'instagram',
+    aliases: ['ig'],
+    description: 'Search for an Instagram account',
     ownerOnly: false,
-    enabled: true,
+    enabled: true
   },
-  async run(client, message, args) {
-    let name = args[0];
+  async run (client, message, args) {
+    const name = args[0]
     request(`https://instagram.com/${name}/?__a=1`, async function (
       error,
       response,
       body
     ) {
-      let data = JSON.parse(body);
-      let account = data.graphql.user;
+      const data = JSON.parse(body)
+      const account = data.graphql.user
       const instagramEmbed = new MessageEmbed()
         .setColor(Colors.INSTAGRAM)
         .setAuthor(
-          "Instagram Search Engine",
-          "https://i.imgur.com/wgMjJvq.png",
-          "https://instagram.com/"
+          'Instagram Search Engine',
+          'https://i.imgur.com/wgMjJvq.png',
+          'https://instagram.com/'
         )
         .setTitle(account.full_name)
         .setURL(`https://instagram.com/${name}`)
@@ -36,29 +36,29 @@ module.exports = {
           stripIndents`
                     ${
                       account.biography.length === 0
-                        ? "None"
+                        ? 'None'
                         : account.biography
                     }
-                    ${account.external_url || " "}`
+                    ${account.external_url || ' '}`
         )
-        .addField("Username", `@${account.username}`, true)
-        .addField("Verified", account.is_verified ? "Yes" : "No", true)
-        .addField("Private", account.is_private ? "Yes 🔐" : "No 🔓", true)
+        .addField('Username', `@${account.username}`, true)
+        .addField('Verified', account.is_verified ? 'Yes' : 'No', true)
+        .addField('Private', account.is_private ? 'Yes 🔐' : 'No 🔓', true)
         .addField(
-          "Posts",
+          'Posts',
           formatNumber(account.edge_owner_to_timeline_media.count),
           true
         )
         .addField(
-          "Followers",
+          'Followers',
           formatNumber(account.edge_followed_by.count),
           true
         )
-        .addField("Following", formatNumber(account.edge_follow.count), true)
-        .setFooter("Powered by Instagram")
-        .setTimestamp();
+        .addField('Following', formatNumber(account.edge_follow.count), true)
+        .setFooter('Powered by Instagram')
+        .setTimestamp()
 
-      message.channel.send(instagramEmbed);
-    });
-  },
-};
+      message.channel.send(instagramEmbed)
+    })
+  }
+}

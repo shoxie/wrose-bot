@@ -1,13 +1,13 @@
 module.exports = {
   config: {
-    name: "deleteMap",
-    usage: "deleteMap",
+    name: 'deleteMap',
+    usage: 'deleteMap',
     aliases: [],
-    description: "deleteMap",
+    description: 'deleteMap',
     ownerOnly: true,
-    enabled: true,
+    enabled: true
   },
-  async run(client, message, args) {
-    client.games.clear();
-  },
-};
+  async run (client, message, args) {
+    client.games.clear()
+  }
+}
