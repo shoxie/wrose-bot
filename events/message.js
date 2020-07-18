@@ -39,7 +39,7 @@ module.exports = (client) => {
         await message.delete();
       }
       //xp
-      if (client.guildSettings.xp == true) {
+      if (guildConfig.xp == true) {
         const randomAmountOfXp = Math.floor(Math.random() * 29) + 1; // Min 1, Max 30
         const hasLeveledUp = await client.levels.appendXp(
           message.author.id,

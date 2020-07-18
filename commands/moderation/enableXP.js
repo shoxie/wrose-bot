@@ -12,12 +12,13 @@ module.exports = {
   async run(client, message, args) {
     if (!message.member.hasPermission("ADMINISTRATOR"))
       return message.reply("Insufficient permission.");
-    if (client.guildSettings.xp == true) {
-      client.guildSettings.xp = false;
+    let serverSettings = client.guildSettings.get(message.guild.id);
+    if (serverSettings.xp == true) {
+      serverSettings.xp = false;
       updateXPstatus(message.guild.id, false);
       message.reply("Disabled xp for chat.");
     } else {
-      client.guildSettings.xp = true;
+      serverSettings.xp = true;
       updateXPstatus(message.guild.id, true);
       message.reply("Enabled xp for chat.");
     }
