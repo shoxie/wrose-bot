@@ -3,12 +3,13 @@ module.exports = {
   config: {
     name: "fakeYoutubeComment",
     usage: "fakeYoutubeComment",
-    aliases: ['fakeyt'],
+    aliases: ["fakeyt"],
     description: "Fake youtube comment",
     ownerOnly: false,
     enabled: true,
   },
   async run(client, message, args) {
+    await message.delete();
     let user = message.mentions.users.first()
       ? message.mentions.users.first()
       : message.author;
