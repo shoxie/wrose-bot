@@ -1,46 +1,38 @@
 module.exports = {
   config: {
-    name: 'avatar',
-    usage: 'avatar @user',
-    aliases: ['avt'],
-    description: 'Show the default resolution of a user avatar',
+    name: "avatar",
+    usage: "avatar @user",
+    aliases: ["avt"],
+    description: "Show the default resolution of a user avatar",
     ownerOnly: false,
-    enabled: true
+    enabled: true,
   },
-  async run (client, message, args) {
-    if (message.mentions.users.first()) {
+  async run(client, message, args) {
+    let user = message.mentions.users.first()
+      ? message.mentions.users.first()
+      : message.author;
+    if (user) {
       message.channel.send({
         embed: {
           color: 3447003,
           fields: [
             {
-              name: 'Avatar',
-              value: message.mentions.users.first().tag
-            }
+              name: "Avatar",
+              value: user.tag,
+            },
           ],
           image: {
-            url: message.mentions.users
-              .first()
-              .avatarURL({ format: 'png', dynamic: true, size: 1024 })
+            url: user.avatarURL({ format: "png", dynamic: true, size: 1024 }),
           },
           author: {
             name: message.client.user.username,
             icon_url: message.client.user.avatarURL({
-              format: 'png',
+              format: "png",
               dynamic: true,
-              size: 1024
-            })
-          }
-        }
-      })
+            }),
+          },
+        },
+      });
     }
-    if (!message.mentions.users.first()) {
-      return message.channel.send({
-        embed: {
-          color: 15158332,
-          title: 'You have to mention the one who want me to get avatar'
-        }
-      })
-    }
-  }
-}
+  },
+};

@@ -4,7 +4,7 @@ module.exports = (client) => {
   return async function (message) {
     // let message.guild.id = message.guild.id;
     if (message.guild) {
-      const guildConfig = client.guildSettings.get(message.guild.id);
+      const guildConfig = await client.guildSettings.get(message.guild.id);
       let prefix = "";
       if (guildConfig) {
         prefix = guildConfig.prefix.toString();
