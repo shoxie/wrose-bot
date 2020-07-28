@@ -1,10 +1,10 @@
 const { redMessage } = require('../../utils/message')
 module.exports = {
   config: {
-    name: 'pause',
-    usage: 'pause',
+    name: 'unpause',
+    usage: 'unpause',
     aliases: [],
-    description: 'Pause current song queue',
+    description: 'Unpause current song queue',
     ownerOnly: false,
     enabled: true
   },
@@ -12,6 +12,6 @@ module.exports = {
     const serverQueue = client.queue.get(message.guild.id)
     if (!serverQueue) redMessage(message, 'Not playing')
     message.react('👍')
-    serverQueue.dispatcher.pause()
+    serverQueue.dispatcher.resume()
   }
 }
