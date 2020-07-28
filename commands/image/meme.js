@@ -1,5 +1,5 @@
-const request = require('request-promise-native');
-const{ tryAgain } = require('../../utils/message')
+const request = require('request-promise-native')
+const { tryAgain } = require('../../utils/message')
 module.exports = {
   config: {
     name: 'meme',
@@ -10,7 +10,7 @@ module.exports = {
   },
   async run (client, message, args) {
     request('https://some-random-api.ml/meme', function (error, response, body) {
-      if(!body) return tryAgain(message);
+      if (!body) return tryAgain(message)
       const data = JSON.parse(body)
       message.channel.send({
         embed: {

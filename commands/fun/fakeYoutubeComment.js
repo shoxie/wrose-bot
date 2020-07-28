@@ -1,40 +1,40 @@
-const Discord = require("discord.js");
+const Discord = require('discord.js')
 module.exports = {
   config: {
-    name: "fakeYoutubeComment",
-    usage: "fakeYoutubeComment",
-    aliases: ["fakeyt"],
-    description: "Fake youtube comment",
+    name: 'fakeYoutubeComment',
+    usage: 'fakeYoutubeComment',
+    aliases: ['fakeyt'],
+    description: 'Fake youtube comment',
     ownerOnly: false,
-    enabled: true,
+    enabled: true
   },
-  async run(client, message, args) {
-    await message.delete();
-    let user = message.mentions.users.first()
+  async run (client, message, args) {
+    await message.delete()
+    const user = message.mentions.users.first()
       ? message.mentions.users.first()
-      : message.author;
-    let userAvatar = user.avatarURL({
-      format: "png",
+      : message.author
+    const userAvatar = user.avatarURL({
+      format: 'png',
       dynamic: true,
-      size: 1024,
-    });
+      size: 1024
+    })
     if (user) {
-      let argsWithoutMentions = [],
-        mentions = [];
+      const argsWithoutMentions = []
+      const mentions = []
 
-      for (let arg of args) {
-        if (Discord.MessageMentions.USERS_PATTERN.test(arg)) mentions.push(arg);
-        else argsWithoutMentions.push(arg);
+      for (const arg of args) {
+        if (Discord.MessageMentions.USERS_PATTERN.test(arg)) mentions.push(arg)
+        else argsWithoutMentions.push(arg)
       }
-      let url =
-        "https://some-random-api.ml/canvas/youtube-comment?comment=" +
-        encodeURIComponent(argsWithoutMentions.join(" ")) +
-        "&username=" +
+      const url =
+        'https://some-random-api.ml/canvas/youtube-comment?comment=' +
+        encodeURIComponent(argsWithoutMentions.join(' ')) +
+        '&username=' +
         user.username +
-        "&avatar=" +
-        userAvatar;
-      let att = new Discord.MessageAttachment(url);
-      message.channel.send(att);
+        '&avatar=' +
+        userAvatar
+      const att = new Discord.MessageAttachment(url)
+      message.channel.send(att)
     }
-  },
-};
+  }
+}

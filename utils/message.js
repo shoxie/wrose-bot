@@ -1,55 +1,55 @@
 const sendSongQueue = (message, client) => {
-  const serverQueue = client.queue.get(message.guild.id);
+  const serverQueue = client.queue.get(message.guild.id)
   message.channel.send({
     embed: {
       color: 3066993,
-      title: "Queue added",
+      title: 'Queue added',
       url: serverQueue.queue[serverQueue.queue.length - 1].url,
       description: serverQueue.queue[serverQueue.queue.length - 1].title,
       thumbnail: {
-        url: serverQueue.queue[serverQueue.queue.length - 1].thumbnail,
+        url: serverQueue.queue[serverQueue.queue.length - 1].thumbnail
       },
       footer: {
         text:
-          "Duration " +
-          serverQueue.queue[serverQueue.queue.length - 1].duration,
-      },
-    },
-  });
-};
+          'Duration ' +
+          serverQueue.queue[serverQueue.queue.length - 1].duration
+      }
+    }
+  })
+}
 const sendPlaying = (message, client) => {
-  const serverQueue = client.queue.get(message.guild.id);
+  const serverQueue = client.queue.get(message.guild.id)
   message.channel.send({
     embed: {
       color: 3447003,
-      title: "Playing",
+      title: 'Playing',
       url: serverQueue.queue[0].url,
       description: serverQueue.queue[0].title,
       thumbnail: {
-        url: serverQueue.queue[0].thumbnail,
+        url: serverQueue.queue[0].thumbnail
       },
       footer: {
-        text: "Duration " + serverQueue.queue[0].duration,
-      },
-    },
-  });
-};
+        text: 'Duration ' + serverQueue.queue[0].duration
+      }
+    }
+  })
+}
 const emptyQueue = (message) => {
   message.channel.send({
     embed: {
       color: 15158332,
-      title: "No songs in the queue",
+      title: 'No songs in the queue',
       author: {
         name: message.client.user.username,
         icon_url: message.client.user.avatarURL({
-          format: "png",
+          format: 'png',
           dynamic: true,
-          size: 1024,
-        }),
-      },
-    },
-  });
-};
+          size: 1024
+        })
+      }
+    }
+  })
+}
 const redMessage = (message, title, description = null) => {
   message.channel.send({
     embed: {
@@ -59,14 +59,14 @@ const redMessage = (message, title, description = null) => {
       author: {
         name: message.client.user.username,
         icon_url: message.client.user.avatarURL({
-          format: "png",
+          format: 'png',
           dynamic: true,
-          size: 1024,
-        }),
-      },
-    },
-  });
-};
+          size: 1024
+        })
+      }
+    }
+  })
+}
 const blueMessage = (message, title, description = null) => {
   message.channel.send({
     embed: {
@@ -76,37 +76,37 @@ const blueMessage = (message, title, description = null) => {
       author: {
         name: message.client.user.username,
         icon_url: message.client.user.avatarURL({
-          format: "png",
+          format: 'png',
           dynamic: true,
-          size: 1024,
-        }),
-      },
-    },
-  });
-};
+          size: 1024
+        })
+      }
+    }
+  })
+}
 const sendLyrics = async (message, lyrics) => {
-  var output = lyrics.split("\n");
-  var myfields = [];
-  var tmp = 0;
-  var sttmp = "";
+  var output = lyrics.split('\n')
+  var myfields = []
+  var tmp = 0
+  var sttmp = ''
   for (var i = 0; i <= output.length; i++) {
-    sttmp += output[i] + " \n ";
-    tmp++;
+    sttmp += output[i] + ' \n '
+    tmp++
     if (tmp == 15) {
-      myfields.push({ name: "\u200B", value: sttmp });
-      tmp = 0;
-      sttmp = "";
+      myfields.push({ name: '\u200B', value: sttmp })
+      tmp = 0
+      sttmp = ''
     }
   }
-};
+}
 const tryAgain = async (message) => {
-  message.reply("Something happened. Please try again later");
-};
+  message.reply('Something happened. Please try again later')
+}
 module.exports = {
   sendSongQueue,
   sendPlaying,
   emptyQueue,
   blueMessage,
   redMessage,
-  tryAgain,
-};
+  tryAgain
+}

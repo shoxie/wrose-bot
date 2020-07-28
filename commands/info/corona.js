@@ -23,7 +23,7 @@ module.exports = {
         response,
         body
       ) {
-        if(!body) return tryAgain(message)
+        if (!body) return tryAgain(message)
         const data = JSON.parse(body)
         message.channel.send({
           embed: {

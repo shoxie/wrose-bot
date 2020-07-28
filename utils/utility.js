@@ -111,7 +111,9 @@ function updateNews () {
         for (const key1 of Object.keys(dataTmp)) {
           var check = false
           for (const key2 of Object.keys(obj)) {
-            if (obj[key2].title._text == dataTmp[key1].title._text) { check = true }
+            if (obj[key2].title._text == dataTmp[key1].title._text) {
+              check = true
+            }
           }
           if (!check) {
             obj.push(dataTmp[key1])
@@ -526,6 +528,31 @@ function removeAccents (str) {
   }
   return str
 }
+const isDJ = function (message) {
+  const normaldj = message.guild.roles.cache.find((x) => x.name === 'dj')
+  const bigdj = message.guild.roles.cache.find((x) => x.name === 'DJ')
+  const roleID = bigdj || normaldj
+  if (!roleID) {
+    message.channel.send({
+      embed: {
+        color: 15158332,
+        title:
+          'Your guild does not have the DJ role, please contact your guild owner/administrator/moderator to create and add the role.'
+      }
+    })
+    return false
+  }
+  if (!message.member.roles.cache.has(roleID.id)) {
+    message.channel.send({
+      embed: {
+        color: 15158332,
+        title: 'You do not have the DJ role.'
+      }
+    })
+    return false
+  }
+  return true
+}
 module.exports = {
   sendResponse,
   validateUser,
@@ -559,5 +586,6 @@ module.exports = {
   shuffleArray,
   formatNumber,
   getvideourl,
-  removeAccents
+  removeAccents,
+  isDJ
 }

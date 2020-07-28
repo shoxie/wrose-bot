@@ -1,5 +1,5 @@
 const { emptyQueue } = require('../../utils/message')
-
+const { isDJ } = require('../../utils/utility')
 module.exports = {
   config: {
     name: 'skip',
@@ -10,21 +10,9 @@ module.exports = {
   },
   async run (client, message, args) {
     const serverQueue = client.queue.get(message.guild.id)
-    const normaldj = message.guild.roles.cache.find((x) => x.name === 'dj')
-    const bigdj = message.guild.roles.cache.find((x) => x.name === 'DJ')
-    const roleID = bigdj || normaldj
-    if (!roleID) {
-      return message.channel.send({
-        embed: {
-          color: 15158332,
-          title:
-            'Your guild does not have the DJ role, please contact your guild owner/administrator/moderator to create and add the role.'
-        }
-      })
-    }
     if (!serverQueue) return emptyQueue(message)
     if (serverQueue.radio) return message.reply('Playing radio stream')
-    if (message.member.roles.cache.has(roleID.id)) {
+    if (isDJ(message)) {
       if (message.member.voice.channel != serverQueue.voiceChannel) {
         // undefined
         return message.channel.send({
@@ -42,13 +30,6 @@ module.exports = {
           }
         })
       } else serverQueue.connection.dispatcher.end()
-    } else {
-      return message.channel.send({
-        embed: {
-          color: 15158332,
-          title: 'You do not have the DJ role.'
-        }
-      })
-    }
+    } else return
   }
 }

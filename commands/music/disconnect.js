@@ -1,3 +1,4 @@
+const { isDJ } = require('../../utils/utility')
 const { stop } = require('../../utils/radio')
 module.exports = {
   config: {
@@ -9,18 +10,6 @@ module.exports = {
   },
   async run (client, message, args) {
     const serverQueue = client.queue.get(message.guild.id)
-    const normaldj = message.guild.roles.cache.find((x) => x.name === 'dj')
-    const bigdj = message.guild.roles.cache.find((x) => x.name === 'DJ')
-    const roleID = bigdj || normaldj
-    if (!roleID) {
-      return message.channel.send({
-        embed: {
-          color: 15158332,
-          title:
-            'Your guild does not have the DJ role, please contact your guild owner/administrator/moderator to create and add the role.'
-        }
-      })
-    }
     if (!serverQueue.voiceChannel) {
       return message.channel.send({
         embed: {
@@ -39,7 +28,7 @@ module.exports = {
       })
     }
     if (serverQueue.voiceChannel) {
-      if (message.member.roles.cache.has(roleID.id)) {
+      if (isDJ(message)) {
         if (!serverQueue.radio) {
           serverQueue.queue = []
           serverQueue.connection.dispatcher.end()
@@ -57,7 +46,7 @@ module.exports = {
             }
           })
         } else stop(client, message)
-      } else return message.channel.send('Mày định đảo chính hả ???')
+      }
     }
   }
 }

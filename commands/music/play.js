@@ -83,11 +83,11 @@ module.exports = {
       async function addQueue (url) {
         const songInfo = await getSongInfo(url)
         const song = {
-          title: songInfo.title,
-          url: songInfo.video_url,
+          title: songInfo.videoDetails.title,
+          url: songInfo.videoDetails.video_url,
           thumbnail: getThumbnail(url),
-          duration: secondsCoverter(songInfo.length_seconds),
-          seconds: songInfo.length_seconds,
+          duration: secondsCoverter(songInfo.videoDetails.lengthSeconds),
+          seconds: songInfo.videoDetails.lengthSeconds,
           requester: message.author.tag
         }
         if (!serverQueue) {
