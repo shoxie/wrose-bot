@@ -4,10 +4,10 @@ const Discord = require('discord.js')
 
 module.exports = {
   config: {
-    name: '',
-    usage: '',
+    name: 'monitor',
+    usage: 'monitor',
     aliases: [],
-    description: '',
+    description: 'Send a picture of monitoring member status',
     ownerOnly: false,
     enabled: true
   },
