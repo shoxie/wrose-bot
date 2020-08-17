@@ -1,52 +1,57 @@
 const request = require('request')
 const cheerio = require('cheerio')
+const { getLyrics } = require('../../utils/radio')
+const radio = require('../../utils/radio')
 module.exports = {
   config: {
     name: 'lyrics',
     usage: 'lyrics [song name]',
+    aliases: ['ly'],
     description: 'Show lyrics for requested song.',
     ownerOnly: false,
     enabled: true
   },
   async run (client, message, args) {
+    const serverQueue = client.queue.get(message.guild.id)
     const query = encodeURIComponent(args.join(' '))
-    const msg = await message.channel.send('Searching. . .')
-    request(`https://some-random-api.ml/lyrics?title=${query}`, async function (
-      error,
-      response,
-      body
-    ) {
-      if (error) throw error
-
-      const data = JSON.parse(body)
-      if (data.error) {
-        message.channel.send({
-          embed: {
-            color: 15158332,
-            title: "I can't find that song. Using another engine"
-          }
-        })
-        await geniusLyrics()
-        return
-      }
-      var output = data.lyrics.split('\n')
-      var myfields = []
-      var tmp = 0
-      var sttmp = ''
-      for (var i = 0; i <= output.length; i++) {
-        sttmp += output[i] + ' \n '
-        tmp++
-        if (tmp == 15) {
-          myfields.push({ name: '\u200B', value: sttmp })
-          tmp = 0
-          sttmp = ''
+    if (!args[0] && !serverQueue) {
+      let bool = false
+      for (const actv of message.author.presence.activities) {
+        if (actv.name === 'Spotify') {
+          const key = encodeURIComponent(actv.details)
+          const [data, myfields] = await getLyrics(key)
+          sendMsg(data, myfields)
+          bool = true
+          return
         }
       }
-      // if (data.lyrics.length >= 2048) {
-      //   var cut = data.lyrics.length - 2000;
-      //   data.lyrics = data.lyrics.slice(0, 0 - cut) + "...";
-      // }
+      if (bool === false) {
+        return message.channel.send(
+          'Neither you are not listening to anything nor im not playing any music'
+        )
+      }
+    }
+    if (!args[0] && serverQueue) {
+      const key = encodeURIComponent(serverQueue.queue[0].title)
+      const [data, myfields] = await getLyrics(key)
+      sendMsg(data, myfields)
+      return
+    }
+    const msg = await message.channel.send('Searching. . .')
 
+    const [data, myfields] = await getLyrics(query)
+    if (data.error) {
+      message.channel.send({
+        embed: {
+          color: 15158332,
+          title: "I can't find that song. Using another engine"
+        }
+      })
+      await geniusLyrics()
+      return
+    }
+    sendMsg(data, myfields)
+    function sendMsg (data, myfields) {
       message.channel.send({
         embed: {
           color: 3447003,
@@ -96,63 +101,6 @@ module.exports = {
             })
           }
         }
-      })
-    })
-
-    function geniusLyrics () {
-      var replacedString = JSON.stringify(args)
-      replacedString = replacedString.replace(/ /g, '%20')
-      const options = {
-        method: 'GET',
-        url: 'https://api.genius.com/search',
-        qs: {
-          q: replacedString,
-          access_token:
-            'ZilEYmeGT3qw_4Sfz3qOCnejUa1Jsbvogq55JoCqNw233YpyAUj779BFdgmGv6Wv'
-        }
-      }
-      request(options, function (error, reponse, body) {
-        if (error) {
-          return message.channel.send({
-            embed: {
-              color: 15158332,
-              title: '__***Shit***__',
-              description: 'Something gone wrong'
-            }
-          })
-        }
-        const hits = JSON.parse(body).response.hits
-        const $ = cheerio.load(body)
-        const lyrics = $('p').first().eq(0).text().trim().split('\n')
-        if (lyrics.length === 1) {
-          return message.channel.send({
-            embed: {
-              color: 15158332,
-              title: "I can't find that song."
-            }
-          })
-        }
-        var myfields = []
-        var tmp = 0
-        var sttmp = ''
-        for (var i = 0; i <= lyrics.length; i++) {
-          sttmp += lyrics[i] + ' \n '
-          tmp++
-          if (tmp == 15) {
-            myfields.push({
-              name: '------------------------------------------------',
-              value: sttmp
-            })
-            tmp = 0
-            sttmp = ''
-          }
-        }
-        message.channel.send({
-          embed: {
-            color: 3447003,
-            fields: myfields
-          }
-        })
       })
     }
   }

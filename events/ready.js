@@ -21,7 +21,7 @@ module.exports = (client) => {
     client.games = new Discord.Collection()
     client.warewolf = new Discord.Collection()
     client.levels = require('../utils/xpclass.js')
-    //client.levels.setURL(process.env.MONGO_URL)
+    // client.levels.setURL(process.env.MONGO_URL)
     // let data = await guildSettings.queryGuildSettings(null);
     // console.log(data);
     const guilds = client.guilds.cache

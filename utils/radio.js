@@ -3,6 +3,8 @@ const { updatePresence, sendErrorMail } = require('./utility')
 const Pagination = require('discord-paginationembed')
 const ytcore = require('ytdl-core')
 const stations = require('../data/stations.json')
+const request = require('request-promise')
+const cheerio = require('cheerio')
 const play = (client, message, station) => {
   const serverQueue = client.queue.get(message.guild.id)
   console.log(serverQueue)
@@ -93,8 +95,95 @@ const showStations = async (client, message) => {
     .setFooter('Created by wrose')
   await infor.build()
 }
+
+const getLyrics = async (args) => {
+  try {
+    const a = await request(`https://some-random-api.ml/lyrics?title=${args}`)
+
+    const data = JSON.parse(a)
+
+    if (data.error) {
+      data = await getLyricsFromGenius()
+      return
+    }
+    var output = data.lyrics.split('\n')
+    var myfields = []
+    var tmp = 0
+    var sttmp = ''
+    for (var i = 0; i <= output.length; i++) {
+      sttmp += output[i] + ' \n '
+      tmp++
+      if (tmp == 15) {
+        myfields.push({ name: '\u200B', value: sttmp })
+        tmp = 0
+        sttmp = ''
+      }
+    }
+
+    return [data, myfields]
+  } catch (error) {
+    console.log(error.stack)
+  }
+}
+const getLyricsFromGenius = async (args) => {
+  var replacedString = JSON.stringify(args)
+  replacedString = replacedString.replace(/ /g, '%20')
+  const options = {
+    method: 'GET',
+    url: 'https://api.genius.com/search',
+    qs: {
+      q: replacedString,
+      access_token:
+            'ZilEYmeGT3qw_4Sfz3qOCnejUa1Jsbvogq55JoCqNw233YpyAUj779BFdgmGv6Wv'
+    }
+  }
+  request(options, function (error, reponse, body) {
+    if (error) {
+      return message.channel.send({
+        embed: {
+          color: 15158332,
+          title: '__***Shit***__',
+          description: 'Something gone wrong'
+        }
+      })
+    }
+    const hits = JSON.parse(body).response.hits
+    const $ = cheerio.load(body)
+    const lyrics = $('p').first().eq(0).text().trim().split('\n')
+    if (lyrics.length === 1) {
+      return message.channel.send({
+        embed: {
+          color: 15158332,
+          title: "I can't find that song."
+        }
+      })
+    }
+    var myfields = []
+    var tmp = 0
+    var sttmp = ''
+    for (var i = 0; i <= lyrics.length; i++) {
+      sttmp += lyrics[i] + ' \n '
+      tmp++
+      if (tmp == 15) {
+        myfields.push({
+          name: '------------------------------------------------',
+          value: sttmp
+        })
+        tmp = 0
+        sttmp = ''
+      }
+    }
+    message.channel.send({
+      embed: {
+        color: 3447003,
+        fields: myfields
+      }
+    })
+  })
+}
 module.exports = {
   play,
   stop,
-  showStations
+  showStations,
+  getLyrics
 }
