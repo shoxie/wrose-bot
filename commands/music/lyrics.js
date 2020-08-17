@@ -14,8 +14,8 @@ module.exports = {
   async run (client, message, args) {
     const serverQueue = client.queue.get(message.guild.id)
     const query = encodeURIComponent(args.join(' '))
+    let bool = false
     if (!args[0] && !serverQueue) {
-      let bool = false
       for (const actv of message.author.presence.activities) {
         if (actv.name === 'Spotify') {
           const key = encodeURIComponent(actv.details)
@@ -25,17 +25,18 @@ module.exports = {
           return
         }
       }
-      if (bool === false) {
-        return message.channel.send(
-          'Neither you are not listening to anything nor im not playing any music'
-        )
-      }
     }
     if (!args[0] && serverQueue) {
       const key = encodeURIComponent(serverQueue.queue[0].title)
       const [data, myfields] = await getLyrics(key)
+      bool = true
       sendMsg(data, myfields)
       return
+    }
+    if (bool === false) {
+      return message.channel.send(
+        'Neither you are not listening to anything nor im not playing any music'
+      )
     }
     const msg = await message.channel.send('Searching. . .')
 
