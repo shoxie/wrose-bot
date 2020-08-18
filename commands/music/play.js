@@ -2,7 +2,12 @@ const ytcore = require('ytdl-core')
 const getVideoId = require('get-video-id')
 const musicDB = require('../../model/musicData')
 const { initQueue, addPlaylistToQueue } = require('../../utils/queue')
-const { sendSongQueue, sendPlaying, emptyQueue } = require('../../utils/message')
+const {
+  sendSongQueue,
+  sendPlaying,
+  emptyQueue,
+  redMessage
+} = require('../../utils/message')
 const {
   sendErrorMail,
   updatePresence,
@@ -27,9 +32,12 @@ module.exports = {
     enabled: true
   },
   async run (client, message, args) {
+    if (!message.member.voice.channel.joinable) { return redMessage(message, "I can't join that voice channel!") }
     const serverQueue = client.queue.get(message.guild.id)
     const voiceChannel = message.member.voice.channel
-    if (serverQueue && serverQueue.radio === true) { return message.reply('Occupied somewhere else') }
+    if (serverQueue && serverQueue.radio === true) {
+      return message.reply('Occupied somewhere else')
+    }
     if (serverQueue) {
       if (
         message.member.voice.channel &&
