@@ -2,6 +2,8 @@
 
 I still have junk codes tho.
 
+### I started my new bot at [wrose-bot-v2](https://github.com/shoxie/wrose-bot-v2)
+
 ### Installing the dependencies
 
 `npm i`
