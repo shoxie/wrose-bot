@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/shoxie/rebuildDiscord#readme",
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
+    "@discordjs/opus": "^0.8.0",
     "ascii-table": "0.0.9",
     "canvas-constructor": "^4.1.0",
     "cheerio": "^1.0.0-rc.3",
